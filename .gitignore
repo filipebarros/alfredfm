@@ -36,6 +36,8 @@
 ehthumbs.db
 Thumbs.db
 
-# Specific files #
-##################
+# Specific files and folders #
+##############################
 workflow/info.yml
+workflow/.bundle
+workflow/bundle

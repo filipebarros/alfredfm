@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>me.filipebarros.alfredfm</string>
+	<string>com.filipebarros.alfredfm</string>
 	<key>connections</key>
 	<dict>
 		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
@@ -176,27 +176,27 @@
 		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
 		<dict>
 			<key>ypos</key>
-			<real>250</real>
+			<real>250.0</real>
 		</dict>
 		<key>42D05639-3F0F-4760-8214-317167E4173D</key>
 		<dict>
 			<key>ypos</key>
-			<real>10</real>
+			<real>10.0</real>
 		</dict>
 		<key>805FF46B-824F-4247-BDCB-32BB6ED55AFF</key>
 		<dict>
 			<key>ypos</key>
-			<real>10</real>
+			<real>10.0</real>
 		</dict>
 		<key>9DCB99DA-36FF-45DA-9920-A659E03EB861</key>
 		<dict>
 			<key>ypos</key>
-			<real>250</real>
+			<real>250.0</real>
 		</dict>
 		<key>BA17BE41-176A-4E9A-B958-A3F0BEA36829</key>
 		<dict>
 			<key>ypos</key>
-			<real>130</real>
+			<real>130.0</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
