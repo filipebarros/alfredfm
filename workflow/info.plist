@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
 	<string>com.filipebarros.alfredfm</string>
 	<key>connections</key>
 	<dict>
-		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>9DCB99DA-36FF-45DA-9920-A659E03EB861</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
-		<key>805FF46B-824F-4247-BDCB-32BB6ED55AFF</key>
+		<key>110CBA6F-F5EC-4559-8972-97209CE1A5FE</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
@@ -28,8 +17,19 @@
 				<string></string>
 			</dict>
 		</array>
-		<key>9DCB99DA-36FF-45DA-9920-A659E03EB861</key>
+		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
 		<array/>
+		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>110CBA6F-F5EC-4559-8972-97209CE1A5FE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>BA17BE41-176A-4E9A-B958-A3F0BEA36829</key>
 		<array/>
 	</dict>
@@ -46,27 +46,17 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>argumenttype</key>
-				<integer>2</integer>
 				<key>escaping</key>
 				<integer>127</integer>
-				<key>keyword</key>
-				<string>setup</string>
 				<key>script</key>
 				<string>/usr/bin/ruby ./setup.rb</string>
-				<key>subtext</key>
-				<string>Initial Setup to Fully Interact with Last.fm Through Alfred!</string>
-				<key>title</key>
-				<string>Setup Last.fm Account</string>
 				<key>type</key>
 				<integer>0</integer>
-				<key>withspace</key>
-				<false/>
 			</dict>
 			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
+			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>805FF46B-824F-4247-BDCB-32BB6ED55AFF</string>
+			<string>110CBA6F-F5EC-4559-8972-97209CE1A5FE</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -76,7 +66,7 @@
 				<key>lastpathcomponent</key>
 				<false/>
 				<key>onlyshowifquerypopulated</key>
-				<false/>
+				<true/>
 				<key>output</key>
 				<integer>0</integer>
 				<key>removeextension</key>
@@ -92,6 +82,27 @@
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>42D05639-3F0F-4760-8214-317167E4173D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>setup</string>
+				<key>subtext</key>
+				<string>Initial Setup to Fully Interact with Last.fm Through Alfred!</string>
+				<key>text</key>
+				<string>Setup Last.fm Account</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>4BE8F656-584D-4E0A-B8E6-A0142A51859E</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -121,21 +132,6 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>BA17BE41-176A-4E9A-B958-A3F0BEA36829</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>plusspaces</key>
-				<false/>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>9DCB99DA-36FF-45DA-9920-A659E03EB861</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -173,30 +169,30 @@
 	<string></string>
 	<key>uidata</key>
 	<dict>
+		<key>110CBA6F-F5EC-4559-8972-97209CE1A5FE</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
 		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
 		<dict>
 			<key>ypos</key>
-			<real>250.0</real>
+			<real>250</real>
 		</dict>
 		<key>42D05639-3F0F-4760-8214-317167E4173D</key>
 		<dict>
 			<key>ypos</key>
-			<real>10.0</real>
+			<real>10</real>
 		</dict>
-		<key>805FF46B-824F-4247-BDCB-32BB6ED55AFF</key>
+		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
 		<dict>
 			<key>ypos</key>
-			<real>10.0</real>
-		</dict>
-		<key>9DCB99DA-36FF-45DA-9920-A659E03EB861</key>
-		<dict>
-			<key>ypos</key>
-			<real>250.0</real>
+			<real>10</real>
 		</dict>
 		<key>BA17BE41-176A-4E9A-B958-A3F0BEA36829</key>
 		<dict>
 			<key>ypos</key>
-			<real>130.0</real>
+			<real>130</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>

@@ -14,15 +14,16 @@ Alfred.with_friendly_error do |alfred|
   lastfm = Lastfm.new(api_key, api_secret)
   token = lastfm.auth.get_token
 
-  `open http://www.last.fm/api/auth/?api_key=#{api_key}&token=#{token}`
-  sleep 30
+  `open "http://www.last.fm/api/auth/?api_key=#{api_key}&token=#{token}"`
+  sleep 15
 
   begin
     lastfm.auth.get_session(:token => token)['key']
     File.open(File.join(alfred.storage_path, 'token.yml'), "w") { |file|
       file.write("token:#{token}")
     }
+    puts "Authentication Successful!"
   rescue Exception => e
-    raise e
+    puts "Authentication Failed!"
   end
 end

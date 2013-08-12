@@ -20,11 +20,8 @@ Alfred.with_friendly_error do |alfred|
     :subtitle     => "rescue feedback item" ,
     :arg          => ""                     ,
     :autocomplete => "failed"               ,
-    :valid        => "no"                   ,
+    :valid        => "yes"                  ,
   })
 
   puts fb.to_xml(ARGV)
 end
-
-
-
