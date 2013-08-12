@@ -20,7 +20,7 @@ Alfred.with_friendly_error do |alfred|
   begin
     lastfm.auth.get_session(:token => token)['key']
     File.open(File.join(alfred.storage_path, 'token.yml'), "w") { |file|
-      file.write("token:#{token}")
+      file.write("token: #{token}")
     }
     puts "Authentication Successful!"
   rescue Exception => e
