@@ -69,9 +69,9 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>./love.rb</string>
+				<string>/usr/bin/ruby love.rb</string>
 				<key>type</key>
-				<integer>2</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
@@ -132,9 +132,9 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>./setup.rb</string>
+				<string>/usr/bin/ruby setup.rb</string>
 				<key>type</key>
-				<integer>2</integer>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
