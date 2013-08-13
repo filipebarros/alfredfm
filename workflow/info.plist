@@ -28,8 +28,6 @@
 				<string></string>
 			</dict>
 		</array>
-		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
-		<array/>
 		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
 		<array>
 			<dict>
@@ -46,6 +44,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>1F93FD0B-FDA7-4071-977F-2785C331188D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>F41B23CE-B218-4699-B891-670A90D4049F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>7CECE298-DB4C-41F7-9823-BFAD1A4A8AC1</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -104,6 +113,23 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>/usr/bin/ruby setup.rb</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>110CBA6F-F5EC-4559-8972-97209CE1A5FE</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>lastpathcomponent</key>
 				<false/>
 				<key>onlyshowifquerypopulated</key>
@@ -123,23 +149,6 @@
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>42D05639-3F0F-4760-8214-317167E4173D</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>escaping</key>
-				<integer>127</integer>
-				<key>script</key>
-				<string>/usr/bin/ruby setup.rb</string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>110CBA6F-F5EC-4559-8972-97209CE1A5FE</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -167,20 +176,37 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>plusspaces</key>
+				<true/>
+				<key>url</key>
+				<string>http://www.last.fm/music/{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>7CECE298-DB4C-41F7-9823-BFAD1A4A8AC1</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
-				<integer>62</integer>
+				<integer>127</integer>
 				<key>keyword</key>
 				<string>similar</string>
 				<key>runningsubtext</key>
-				<string>working...</string>
+				<string>Getting Similar Artists</string>
 				<key>script</key>
-				<string>/usr/bin/ruby ./main.rb {query}</string>
+				<string>/usr/bin/ruby similar.rb</string>
 				<key>subtext</key>
-				<string>Ruby Based Workflow Template</string>
+				<string>Get Similar Artists</string>
 				<key>title</key>
-				<string>Test Alfred Feedback</string>
+				<string>Similar Artists</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -189,7 +215,7 @@
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>21557827-8003-42B7-A042-16D4C9278FEC</string>
+			<string>F41B23CE-B218-4699-B891-670A90D4049F</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -208,25 +234,30 @@
 			<key>ypos</key>
 			<real>10</real>
 		</dict>
-		<key>21557827-8003-42B7-A042-16D4C9278FEC</key>
-		<dict>
-			<key>ypos</key>
-			<real>250</real>
-		</dict>
 		<key>42D05639-3F0F-4760-8214-317167E4173D</key>
 		<dict>
 			<key>ypos</key>
-			<real>70</real>
+			<real>120</real>
 		</dict>
 		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
 		<dict>
 			<key>ypos</key>
 			<real>120</real>
 		</dict>
+		<key>7CECE298-DB4C-41F7-9823-BFAD1A4A8AC1</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
+		</dict>
 		<key>D6C96E2B-8524-4DD4-A648-74A2190852CD</key>
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
+		</dict>
+		<key>F41B23CE-B218-4699-B891-670A90D4049F</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
