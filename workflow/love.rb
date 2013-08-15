@@ -15,12 +15,12 @@ Alfred.with_friendly_error do |alfred|
   fb = alfred.feedback
 
   it = Appscript.app('iTunes')
-
   lastfm = Lastfm.new(api_key, api_secret)
-  token = YAML.load_file(File.join(alfred.storage_path, 'token.yml'))
+
+  information = YAML.load_file(File.join(alfred.storage_path, 'user_info.yml'))
 
   begin
-    lastfm.session = lastfm.auth.get_session(:token => token['token'])['key']
+    lastfm.session = lastfm.auth.get_session(:token => information['token'])['key']
     lastfm.track.love(:artist => it.current_track.artist.get, :track => it.current_track.name.get)
     puts "Successfully Loved #{it.current_track.name.get} by #{it.current_track.artist.get}!"
   rescue Exception => e

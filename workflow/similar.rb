@@ -15,7 +15,6 @@ Alfred.with_friendly_error do |alfred|
   fb = alfred.feedback
 
   it = Appscript.app('iTunes')
-
   lastfm = Lastfm.new(api_key, api_secret)
 
   similar = lastfm.artist.get_similar(:artist => it.current_track.artist.get)
