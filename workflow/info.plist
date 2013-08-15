@@ -28,6 +28,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
 		<array>
 			<dict>
@@ -206,6 +217,35 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>friends</string>
+				<key>runningsubtext</key>
+				<string>Fetching Friends Information...</string>
+				<key>script</key>
+				<string>/usr/bin/ruby friends.rb</string>
+				<key>subtext</key>
+				<string>Get Friend Information</string>
+				<key>title</key>
+				<string>Friends</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>plusspaces</key>
 				<true/>
 				<key>url</key>
@@ -246,29 +286,6 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>F41B23CE-B218-4699-B891-670A90D4049F</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>2</integer>
-				<key>escaping</key>
-				<integer>127</integer>
-				<key>keyword</key>
-				<string>friends</string>
-				<key>script</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<false/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -391,7 +408,7 @@
 		<key>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</key>
 		<dict>
 			<key>ypos</key>
-			<real>830</real>
+			<real>340</real>
 		</dict>
 		<key>42D05639-3F0F-4760-8214-317167E4173D</key>
 		<dict>
@@ -411,12 +428,12 @@
 		<key>691C93B3-E98C-40E5-8CBD-51D284B7354B</key>
 		<dict>
 			<key>ypos</key>
-			<real>120</real>
+			<real>180</real>
 		</dict>
 		<key>7CECE298-DB4C-41F7-9823-BFAD1A4A8AC1</key>
 		<dict>
 			<key>ypos</key>
-			<real>340</real>
+			<real>450</real>
 		</dict>
 		<key>7F6B3D85-4180-4352-865D-2B4C89DA04EB</key>
 		<dict>
@@ -436,7 +453,7 @@
 		<key>F41B23CE-B218-4699-B891-670A90D4049F</key>
 		<dict>
 			<key>ypos</key>
-			<real>340</real>
+			<real>450</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
