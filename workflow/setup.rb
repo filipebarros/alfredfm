@@ -22,7 +22,7 @@ Alfred.with_friendly_error do |alfred|
   sleep 15
 
   begin
-    user_info['sesssion'] = lastfm.auth.get_session(:token => token)['key']
+    user_info['session'] = lastfm.auth.get_session(:token => token)['key']
     File.write(File.join(alfred.storage_path, 'user_info.yml'), user_info.to_yaml)
     puts "Authentication Successful!"
   rescue Exception => e
