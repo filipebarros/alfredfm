@@ -20,7 +20,7 @@ Alfred.with_friendly_error do |alfred|
   information = YAML.load_file(File.join(alfred.storage_path, 'user_info.yml'))
 
   begin
-    lastfm.session = lastfm.auth.get_session(:token => information['token'])['key']
+    lastfm.session = information['session']
     lastfm.track.love(:artist => it.current_track.artist.get, :track => it.current_track.name.get)
     puts "Successfully Loved #{it.current_track.name.get} by #{it.current_track.artist.get}!"
   rescue Exception => e
