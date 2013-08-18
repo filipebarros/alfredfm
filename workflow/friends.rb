@@ -33,19 +33,17 @@ Alfred.with_friendly_error do |alfred|
     else
       "#{friend['realname']} - #{friend['name']}"
     end
-    icon_path = unless File.exists?(File.join(alfred.storage_path, "#{friend['name']}.png"))
-      if friend['image'][2]['content']
-        img = Net::HTTP.get(URI(friend['image'][2]['content']))
-        File.write(File.join(alfred.storage_path, "#{friend['name']}.png"), img)
-        { :type => 'default', :name => File.join(alfred.storage_path, "#{friend['name']}.png") }
+    icon_path = unless File.exists?(File.join(alfred.volatile_storage_path, "#{friend['name']}.png"))
+      if friend['image'][1]['content']
+        img = Net::HTTP.get(URI(friend['image'][1]['content']))
+        File.write(File.join(alfred.volatile_storage_path, "#{friend['name']}.png"), img)
+        { :type => 'default', :name => File.join(alfred.volatile_storage_path, "#{friend['name']}.png") }
       else
         nil
       end
     else
-      { :type => "default", :name => File.join(alfred.storage_path, "#{friend['name']}.png") }
+      { :type => "default", :name => File.join(alfred.volatile_storage_path, "#{friend['name']}.png") }
     end
-
-    # puts icon_path
 
     fb.add_item({
       :uid        => '',

@@ -37,18 +37,39 @@ Alfred.with_friendly_error do |alfred|
     tag['name']
   }
 
+  image = artist_info['image'][1]['content'].split('/')[-1]
+  icon_path = unless File.exists?(File.join(alfred.volatile_storage_path, image))
+    if artist_info['image'][1]['content']
+      img = Net::HTTP.get(URI(artist_info['image'][1]['content']))
+      File.write(File.join(alfred.volatile_storage_path, image), img)
+      { :type => 'default', :name => File.join(alfred.volatile_storage_path, image) }
+    else
+      nil
+    end
+  else
+    { :type => "default", :name => File.join(alfred.volatile_storage_path, image) }
+  end
+
+  band_dates = if artist_info['bio']['formationlist']['formation']['yearto'].empty?
+    "#{artist_info['bio']['formationlist']['formation']['yearfrom']} to Present"
+  else
+    "#{artist_info['bio']['formationlist']['formation']['yearfrom']} to #{artist_info['bio']['formationlist']['formation']['yearto']}"
+  end
+
   fb.add_item({
     :uid        => '',
     :title      => artist_info['name'],
     :subtitle   => band_members.join(', '),
     :arg        => artist_info['url'],
+    :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
     :uid        => '',
     :title      => artist_info['bio']['placeformed'],
-    :subtitle   => "#{artist_info['bio']['formationlist']['formation']['yearfrom']} - #{artist_info['bio']['formationlist']['formation']['yearto']}",
+    :subtitle   => band_dates,
     :arg        => artist_info['url'],
+    :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
@@ -56,6 +77,7 @@ Alfred.with_friendly_error do |alfred|
     :title      => "User Playcount: #{separate_comma(artist_info['stats']['userplaycount'])}",
     :subtitle   => "Total Playcount: #{separate_comma(artist_info['stats']['playcount'])}",
     :arg        => artist_info['url'],
+    :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
@@ -63,6 +85,7 @@ Alfred.with_friendly_error do |alfred|
     :title      => "Tags",
     :subtitle   => artist_tags.join(', '),
     :arg        => artist_info['url'],
+    :icon       => icon_path,
     :valid      => 'yes'
   })
 

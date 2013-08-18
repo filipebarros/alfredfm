@@ -20,11 +20,24 @@ Alfred.with_friendly_error do |alfred|
   similar = lastfm.artist.get_similar(:artist => it.current_track.artist.get)
   similar.shift
   similar.each { |artist|
+    image = artist['image'][1]['content'].split('/')[-1]
+    icon_path = unless File.exists?(File.join(alfred.volatile_storage_path, image))
+      if artist['image'][1]['content']
+        img = Net::HTTP.get(URI(artist['image'][1]['content']))
+        File.write(File.join(alfred.volatile_storage_path, image), img)
+        { :type => 'default', :name => File.join(alfred.volatile_storage_path, image) }
+      else
+        nil
+      end
+    else
+      { :type => "default", :name => File.join(alfred.volatile_storage_path, image) }
+    end
     fb.add_item({
       :uid        => '',
       :title      => artist['name'],
       :subtitle   => "#{artist['match'].to_f * 100}% Match",
       :arg        => artist['name'],
+      :icon       => icon_path,
       :valid      => 'yes'
     })
   }
