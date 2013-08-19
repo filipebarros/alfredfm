@@ -2,28 +2,14 @@
 # encoding: utf-8
 
 require 'alfred'
-require 'lastfm'
-require 'appscript'
-require 'yaml'
+require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
 
 Alfred.with_friendly_error do |alfred|
-  app_info = YAML.load_file("info.yml")
-
-  api_key = app_info['api_key']
-  api_secret = app_info['api_secret']
+  alfredfm = AlfredfmHelper.new
+  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
+  AlfredfmHelper.load_user_information
 
   fb = alfred.feedback
-
-  it = Appscript.app('iTunes')
-  lastfm = Lastfm.new(api_key, api_secret)
-
-  information = YAML.load_file(File.join(alfred.storage_path, 'user_info.yml'))
-
-  begin
-    lastfm.session = information['session']
-    lastfm.track.love(:artist => it.current_track.artist.get, :track => it.current_track.name.get)
-    puts "Successfully Loved #{it.current_track.name.get} by #{it.current_track.artist.get}!"
-  rescue Exception => e
-    puts "Unsuccessful!"
-  end
+  track_info = alfredfm.love_track
+  puts track_info
 end

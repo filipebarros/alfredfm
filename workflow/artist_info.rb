@@ -2,63 +2,30 @@
 # encoding: utf-8
 
 require 'alfred'
-require 'lastfm'
-require 'appscript'
-require 'yaml'
-
-def separate_comma(number)
-  number.to_s.chars.to_a.reverse.each_slice(3).map(&:join).join(",").reverse
-end
+require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
 
 Alfred.with_friendly_error do |alfred|
-  app_info = YAML.load_file("info.yml")
-
-  api_key = app_info['api_key']
-  api_secret = app_info['api_secret']
+  alfredfm = AlfredfmHelper.new
+  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
+  AlfredfmHelper.load_user_information
 
   fb = alfred.feedback
 
-  it = Appscript.app('iTunes')
-  lastfm = Lastfm.new(api_key, api_secret)
+  artist_info = alfredfm.get_artist_information
 
-  information = YAML.load_file(File.join(alfred.storage_path, 'user_info.yml'))
-
-  artist_info = lastfm.artist.get_info(
-    :artist => it.current_track.artist.get,
-    :username => information['username']
-  )
-
-  band_members = artist_info['bandmembers']['member'].map { |member|
-    member['name'].strip
-  }
-
-  artist_tags = artist_info['tags']['tag'].map { |tag|
-    tag['name']
-  }
+  band_members = AlfredfmHelper.map_information artist_info['bandmembers']['member'], 'name', 'No Band Members!'
+  artist_tags = AlfredfmHelper.map_information artist_info['tags']['tag'], 'name', 'No Tags!'
 
   image = artist_info['image'][1]['content'].split('/')[-1]
-  icon_path = unless File.exists?(File.join(alfred.volatile_storage_path, image))
-    if artist_info['image'][1]['content']
-      img = Net::HTTP.get(URI(artist_info['image'][1]['content']))
-      File.write(File.join(alfred.volatile_storage_path, image), img)
-      { :type => 'default', :name => File.join(alfred.volatile_storage_path, image) }
-    else
-      nil
-    end
-  else
-    { :type => "default", :name => File.join(alfred.volatile_storage_path, image) }
-  end
+  icon_path = AlfredfmHelper.generate_feedback_icon artist_info['image'][1]['content'], :volatile_storage_path, image
 
-  band_dates = if artist_info['bio']['formationlist']['formation']['yearto'].empty?
-    "#{artist_info['bio']['formationlist']['formation']['yearfrom']} to Present"
-  else
-    "#{artist_info['bio']['formationlist']['formation']['yearfrom']} to #{artist_info['bio']['formationlist']['formation']['yearto']}"
-  end
+  band_time_information = AlfredfmHelper.get_timestamp_string artist_info['bio']['formationlist']['formation']
 
+  begin
   fb.add_item({
     :uid        => '',
     :title      => artist_info['name'],
-    :subtitle   => band_members.join(', '),
+    :subtitle   => band_members,
     :arg        => artist_info['url'],
     :icon       => icon_path,
     :valid      => 'yes'
@@ -66,15 +33,15 @@ Alfred.with_friendly_error do |alfred|
   fb.add_item({
     :uid        => '',
     :title      => artist_info['bio']['placeformed'],
-    :subtitle   => band_dates,
+    :subtitle   => band_time_information,
     :arg        => artist_info['url'],
     :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
     :uid        => '',
-    :title      => "User Playcount: #{separate_comma(artist_info['stats']['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{separate_comma(artist_info['stats']['playcount'])}",
+    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['userplaycount'])}",
+    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['playcount'])}",
     :arg        => artist_info['url'],
     :icon       => icon_path,
     :valid      => 'yes'
@@ -82,11 +49,15 @@ Alfred.with_friendly_error do |alfred|
   fb.add_item({
     :uid        => '',
     :title      => "Tags",
-    :subtitle   => artist_tags.join(', '),
+    :subtitle   => artist_tags,
     :arg        => artist_info['url'],
     :icon       => icon_path,
     :valid      => 'yes'
   })
+
+  rescue Exception => e
+    puts e
+  end
 
   puts fb.to_xml
 end

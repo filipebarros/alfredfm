@@ -2,28 +2,23 @@
 # encoding: utf-8
 
 require 'alfred'
-require 'lastfm'
-require 'yaml'
+require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
 
 Alfred.with_friendly_error do |alfred|
-  app_info = YAML.load_file("info.yml")
+  alfredfm = AlfredfmHelper.new
+  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
 
-  api_key = app_info['api_key']
-  api_secret = app_info['api_secret']
-
-  lastfm = Lastfm.new(api_key, api_secret)
-  token = lastfm.auth.get_token
+  token = alfredfm.get_token
 
   user_info = Hash.new
   user_info['username'] = ARGV[0]
   user_info['token'] = token
 
-  `open "http://www.last.fm/api/auth/?api_key=#{api_key}&token=#{token}"`
-  sleep 15
+  alfredfm.open_in_browser token
 
   begin
-    user_info['session'] = lastfm.auth.get_session(:token => token)['key']
-    File.write(File.join(alfred.storage_path, 'user_info.yml'), user_info.to_yaml)
+    user_info['session'] = alfredfm.get_session token
+    AlfredfmHelper.save_hash_to_file :storage_path, 'user_info.yml', user_info
     puts "Authentication Successful!"
   rescue Exception => e
     puts "Authentication Failed!"
