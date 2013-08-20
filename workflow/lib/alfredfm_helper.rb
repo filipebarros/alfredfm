@@ -141,4 +141,10 @@ class AlfredfmHelper
       :user => @@username
     )
   end
+
+  def get_loved_tracks
+    return @lastfm.user.get_loved_tracks(
+      :user => @@username,
+    )
+  end
 end

@@ -72,6 +72,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>9789EAE3-F701-4172-80ED-DF2E14456B16</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>D6C96E2B-8524-4DD4-A648-74A2190852CD</key>
 		<array>
 			<dict>
@@ -98,7 +109,7 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>7CECE298-DB4C-41F7-9823-BFAD1A4A8AC1</string>
+				<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -173,23 +184,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>plusspaces</key>
-				<true/>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
@@ -211,6 +205,23 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>659A0890-0D79-4C7A-B8BC-2CECA2DE45B9</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<true/>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -246,23 +257,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>plusspaces</key>
-				<true/>
-				<key>url</key>
-				<string>http://www.last.fm/music/{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>7CECE298-DB4C-41F7-9823-BFAD1A4A8AC1</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
@@ -286,6 +280,35 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>F41B23CE-B218-4699-B891-670A90D4049F</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>loved</string>
+				<key>runningsubtext</key>
+				<string>Getting List of Loved Tracks</string>
+				<key>script</key>
+				<string>/usr/bin/ruby loved.rb</string>
+				<key>subtext</key>
+				<string>Get Loved Tracks</string>
+				<key>title</key>
+				<string>Loved Tracks</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>9789EAE3-F701-4172-80ED-DF2E14456B16</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -375,7 +398,7 @@
 				<key>argumenttype</key>
 				<integer>0</integer>
 				<key>keyword</key>
-				<string>setup</string>
+				<string>alfredfm</string>
 				<key>subtext</key>
 				<string>Initial Setup to Fully Interact with Last.fm Through Alfred!</string>
 				<key>text</key>
@@ -428,17 +451,17 @@
 		<key>691C93B3-E98C-40E5-8CBD-51D284B7354B</key>
 		<dict>
 			<key>ypos</key>
-			<real>180</real>
-		</dict>
-		<key>7CECE298-DB4C-41F7-9823-BFAD1A4A8AC1</key>
-		<dict>
-			<key>ypos</key>
-			<real>450</real>
+			<real>280</real>
 		</dict>
 		<key>7F6B3D85-4180-4352-865D-2B4C89DA04EB</key>
 		<dict>
 			<key>ypos</key>
 			<real>120</real>
+		</dict>
+		<key>9789EAE3-F701-4172-80ED-DF2E14456B16</key>
+		<dict>
+			<key>ypos</key>
+			<real>560</real>
 		</dict>
 		<key>D6C96E2B-8524-4DD4-A648-74A2190852CD</key>
 		<dict>

@@ -10,18 +10,18 @@ Alfred.with_friendly_error do |alfred|
   AlfredfmHelper.load_user_information
 
   fb = alfred.feedback
+  loved_tracks = alfredfm.get_loved_tracks
+  loved_tracks.each { |track|
+    icon_path = if track['image']
+      image = track['image'][1]['content'].split('/')[-1]
+      AlfredfmHelper.generate_feedback_icon track['image'][1]['content'], :volatile_storage_path, image
+    end
 
-  similar = alfredfm.get_similar_artists
-  similar.each { |artist|
-    image = artist['image'][1]['content'].split('/')[-1]
-    icon_path = AlfredfmHelper.generate_feedback_icon artist['image'][1]['content'], :volatile_storage_path, image
-
-    puts artist
     fb.add_item({
       :uid        => '',
-      :title      => artist['name'],
-      :subtitle   => "#{artist['match'].to_f * 100}% Match",
-      :arg        => artist['url'],
+      :title      => track['name'],
+      :subtitle   => track['artist']['name'],
+      :arg        => track['url'],
       :icon       => icon_path,
       :valid      => 'yes'
     })
