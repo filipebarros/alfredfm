@@ -18,7 +18,7 @@ Alfred.with_friendly_error do |alfred|
     end
 
     fb.add_item({
-      :uid        => '',
+      :uid        => AlfredfmHelper.generate_uuid,
       :title      => track['name'],
       :subtitle   => track['artist']['name'],
       :arg        => track['url'],

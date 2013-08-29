@@ -17,10 +17,10 @@ Alfred.with_friendly_error do |alfred|
     icon_path = AlfredfmHelper.generate_feedback_icon friend['image'][1]['content'], :volatile_storage_path, "#{friend['name']}.png"
 
     fb.add_item({
-      :uid        => '',
+      :uid        => AlfredfmHelper.generate_uuid,
       :title      => string_name,
       :subtitle   => "#{AlfredfmHelper.separate_comma(friend['playcount'])} scrobbles",
-      :arg        => friend['url'],
+      :arg        => friend['name'],
       :icon       => icon_path,
       :valid      => 'yes'
     })

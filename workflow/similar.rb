@@ -16,12 +16,13 @@ Alfred.with_friendly_error do |alfred|
     image = artist['image'][1]['content'].split('/')[-1]
     icon_path = AlfredfmHelper.generate_feedback_icon artist['image'][1]['content'], :volatile_storage_path, image
 
-    puts artist
+    rounded = sprintf('%.2f', artist['match']).to_f
+
     fb.add_item({
-      :uid        => '',
+      :uid        => AlfredfmHelper.generate_uuid,
       :title      => artist['name'],
-      :subtitle   => "#{artist['match'].to_f * 100}% Match",
-      :arg        => artist['url'],
+      :subtitle   => "#{rounded * 100}% Match",
+      :arg        => artist['name'],
       :icon       => icon_path,
       :valid      => 'yes'
     })

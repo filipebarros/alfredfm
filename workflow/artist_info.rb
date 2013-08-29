@@ -13,7 +13,7 @@ Alfred.with_friendly_error do |alfred|
 
   artist_info = alfredfm.get_artist_information
 
-  band_members = AlfredfmHelper.map_information artist_info['bandmembers']['member'], 'name', 'No Band Members!'
+  band_members = AlfredfmHelper.map_information artist_info['bandmembers']['member'], 'name', 'No Band Members!' unless !artist_info['bandmembers']
   artist_tags = AlfredfmHelper.map_information artist_info['tags']['tag'], 'name', 'No Tags!'
 
   image = artist_info['image'][1]['content'].split('/')[-1]
@@ -21,43 +21,38 @@ Alfred.with_friendly_error do |alfred|
 
   band_time_information = AlfredfmHelper.get_timestamp_string artist_info['bio']['formationlist']['formation']
 
-  begin
   fb.add_item({
-    :uid        => '',
+    :uid        => AlfredfmHelper.generate_uuid,
     :title      => artist_info['name'],
     :subtitle   => band_members,
-    :arg        => artist_info['url'],
+    :arg        => artist_info['name'],
     :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
-    :uid        => '',
+    :uid        => AlfredfmHelper.generate_uuid,
     :title      => artist_info['bio']['placeformed'],
     :subtitle   => band_time_information,
-    :arg        => artist_info['url'],
+    :arg        => artist_info['name'],
     :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
-    :uid        => '',
+    :uid        => AlfredfmHelper.generate_uuid,
     :title      => "User Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['userplaycount'])}",
     :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['playcount'])}",
-    :arg        => artist_info['url'],
+    :arg        => artist_info['name'],
     :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
-    :uid        => '',
+    :uid        => AlfredfmHelper.generate_uuid,
     :title      => "Tags",
     :subtitle   => artist_tags,
-    :arg        => artist_info['url'],
+    :arg        => artist_info['name'],
     :icon       => icon_path,
     :valid      => 'yes'
   })
-
-  rescue Exception => e
-    puts e
-  end
 
   puts fb.to_xml
 end

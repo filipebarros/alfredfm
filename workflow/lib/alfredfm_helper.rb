@@ -4,6 +4,7 @@
 require 'yaml'
 require 'appscript'
 require 'lastfm'
+require 'securerandom'
 
 class AlfredfmHelper
   def initialize
@@ -32,6 +33,10 @@ class AlfredfmHelper
     File.write(File.join(@paths[path], filename), hash.to_yaml)
   end
 
+  def self.generate_uuid
+    return SecureRandom.uuid
+  end
+
   def self.separate_comma number
     number.to_s.chars.to_a.reverse.each_slice(3).map(&:join).join(",").reverse
   end
@@ -47,12 +52,18 @@ class AlfredfmHelper
   end
 
   def self.get_timestamp_string information
-    string = if information['yearto'].empty?
-      "#{information['yearfrom']} to Present"
-    else
-      "#{information['yearfrom']} to #{information['yearto']}"
+    if !information.kind_of? Array
+      information = [information]
     end
-    return string
+    times = []
+    information.each { |timestamp|
+      times << if timestamp['yearto'].empty?
+        "#{timestamp['yearfrom']} to Present"
+      else
+        "#{timestamp['yearfrom']} to #{timestamp['yearto']}"
+      end
+    }
+    return times.join ', '
   end
 
   def self.get_friend_name_string friend_info
