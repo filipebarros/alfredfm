@@ -303,23 +303,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>plusspaces</key>
-				<false/>
-				<key>url</key>
-				<string>http://www.last.fm/user/{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>CED2969E-B8EB-401F-8D50-57CCF5D3E7BB</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>escaping</key>
@@ -343,6 +326,23 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<false/>
+				<key>url</key>
+				<string>http://www.last.fm/user/{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>CED2969E-B8EB-401F-8D50-57CCF5D3E7BB</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -505,7 +505,7 @@
 		<key>CED2969E-B8EB-401F-8D50-57CCF5D3E7BB</key>
 		<dict>
 			<key>ypos</key>
-			<real>550</real>
+			<real>560</real>
 		</dict>
 		<key>D6C96E2B-8524-4DD4-A648-74A2190852CD</key>
 		<dict>
