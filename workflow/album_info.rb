@@ -11,7 +11,7 @@ Alfred.with_friendly_error do |alfred|
 
   fb = alfred.feedback
 
-  album_info = alfredfm.get_album_information
+  album_info = alfredfm.get_album_information ARGV
   album_tags = AlfredfmHelper.map_information album_info['toptags']['tag'], 'name', 'No Tags!'
 
   image = album_info['image'][1]['content'].split('/')[-1]

@@ -11,7 +11,7 @@ Alfred.with_friendly_error do |alfred|
 
   fb = alfred.feedback
 
-  artist_info = alfredfm.get_artist_information
+  artist_info = alfredfm.get_artist_information ARGV
 
   band_members = AlfredfmHelper.map_information artist_info['bandmembers']['member'], 'name', 'No Band Members!' unless !artist_info['bandmembers']
   artist_tags = AlfredfmHelper.map_information artist_info['tags']['tag'], 'name', 'No Tags!'

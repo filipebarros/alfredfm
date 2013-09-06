@@ -125,7 +125,7 @@ class AlfredfmHelper
     )
   end
 
-  def get_album_information
+  def get_album_information album = nil
     return @lastfm.album.get_info(
       :artist => @itunes.current_track.artist.get,
       :album => @itunes.current_track.album.get,
@@ -133,16 +133,25 @@ class AlfredfmHelper
     )
   end
 
-  def get_artist_information
+  def get_artist_information artist = nil
     return @lastfm.artist.get_info(
-      :artist => @itunes.current_track.artist.get,
+      :artist => if artist.empty?
+        @itunes.current_track.artist.get
+      else
+        artist.join(' ')
+      end,
       :username => @@username
     )
   end
 
-  def get_similar_artists
+  def get_similar_artists artist = nil
     head, *tail = @lastfm.artist.get_similar(
-      :artist => @itunes.current_track.artist.get
+      :artist => if artist.empty?
+        @itunes.current_track.artist.get
+      else
+        artist.join(' ')
+      end,
+      :limit => 10
     )
     return tail
   end
