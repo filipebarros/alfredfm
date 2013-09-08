@@ -17,14 +17,29 @@ Alfred.with_friendly_error do |alfred|
       AlfredfmHelper.generate_feedback_icon track['image'][1]['content'], :volatile_storage_path, image
     end
 
+    add = if ARGV.empty? || track['artist']['name'].match(/#{ARGV.join(' ')}/i)
+      true
+    else
+      false
+    end
+
+    if add
+      fb.add_item({
+        :uid        => AlfredfmHelper.generate_uuid,
+        :title      => track['name'],
+        :subtitle   => track['artist']['name'],
+        :arg        => track['url'],
+        :icon       => icon_path,
+        :valid      => 'yes'
+      })
+    end
+  }
+  if fb.items.empty?
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
-      :title      => track['name'],
-      :subtitle   => track['artist']['name'],
-      :arg        => track['url'],
-      :icon       => icon_path,
-      :valid      => 'yes'
+      :title      => "No artist named #{ARGV.join(' ')} found in the loved tracks!",
+      :valid      => 'no'
     })
-  }
-  puts fb.to_xml
+  end
+  puts fb.to_alfred
 end

@@ -275,7 +275,7 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>2</integer>
+				<integer>1</integer>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>keyword</key>
@@ -283,7 +283,7 @@
 				<key>runningsubtext</key>
 				<string>Getting List of Loved Tracks</string>
 				<key>script</key>
-				<string>/usr/bin/ruby loved.rb</string>
+				<string>/usr/bin/ruby loved.rb {query}</string>
 				<key>subtext</key>
 				<string>Get Loved Tracks</string>
 				<key>title</key>
@@ -291,7 +291,7 @@
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<false/>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
