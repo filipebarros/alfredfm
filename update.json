@@ -1,5 +1,5 @@
 {
-    "version": 0.1.0,
+    "version": 0.1,
     "download_uri": "https://github.com/filipebarros/alfredfm/raw/master/AlfredFM.alfredworkflow",
     "description": "Last.fm + Alfred = Alfred.fm"
 }
