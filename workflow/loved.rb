@@ -19,8 +19,6 @@ Alfred.with_friendly_error do |alfred|
 
     add = if ARGV.empty? || track['artist']['name'].match(/#{ARGV.join(' ')}/i)
       true
-    else
-      false
     end
 
     if add

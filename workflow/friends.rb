@@ -18,8 +18,6 @@ Alfred.with_friendly_error do |alfred|
 
     add = if ARGV.empty? || friend['name'].match(ARGV[0])
       true
-    else
-      false
     end
 
     if add
