@@ -16,14 +16,29 @@ Alfred.with_friendly_error do |alfred|
     string_name = AlfredfmHelper.get_friend_name_string friend
     icon_path = AlfredfmHelper.generate_feedback_icon friend['image'][1]['content'], :volatile_storage_path, "#{friend['name']}.png"
 
-    fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => string_name,
-      :subtitle   => "#{AlfredfmHelper.separate_comma(friend['playcount'])} scrobbles",
-      :arg        => friend['name'],
-      :icon       => icon_path,
-      :valid      => 'yes'
-    })
+    add = if ARGV.empty? || friend['name'].match(ARGV[0])
+      true
+    else
+      false
+    end
+
+    if add
+      fb.add_item({
+        :uid        => AlfredfmHelper.generate_uuid,
+        :title      => string_name,
+        :subtitle   => "#{AlfredfmHelper.separate_comma(friend['playcount'])} scrobbles",
+        :arg        => friend['name'],
+        :icon       => icon_path,
+        :valid      => 'yes'
+      })
+    end
   }
-  puts fb.to_xml
+  if fb.items.empty?
+    fb.add_item({
+      :uid => AlfredfmHelper.generate_uuid,
+      :title => "No friend name matches '#{ARGV[0]}'",
+      :valid => 'no'
+    })
+  end
+  puts fb.to_alfred
 end
