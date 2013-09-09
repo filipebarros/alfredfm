@@ -51,6 +51,14 @@ class AlfredfmHelper
     end
   end
 
+  def self.get_list array
+    if array.kind_of? Array
+      array.join ', '
+    else
+      array
+    end
+  end
+
   def self.get_timestamp_string information
     if !information.kind_of? Array
       information = [information]
@@ -117,7 +125,7 @@ class AlfredfmHelper
     end
   end
 
-  def get_track_information
+  def get_track_information track = nil
     return @lastfm.track.get_info(
       :artist => @itunes.current_track.artist.get,
       :track => @itunes.current_track.name.get,
@@ -135,22 +143,21 @@ class AlfredfmHelper
 
   def get_artist_information artist = nil
     return @lastfm.artist.get_info(
-      :artist => if artist.empty?
-        @itunes.current_track.artist.get
-      else
-        artist.join(' ')
-      end,
+      :artist => get_artist(artist),
       :username => @@username
+    )
+  end
+
+  def get_artist_events artist = nil
+    return @lastfm.artist.get_events(
+      :artist => get_artist(artist),
+      :limit => 10
     )
   end
 
   def get_similar_artists artist = nil
     head, *tail = @lastfm.artist.get_similar(
-      :artist => if artist.empty?
-        @itunes.current_track.artist.get
-      else
-        artist.join(' ')
-      end,
+      :artist => get_artist(artist),
       :limit => 10
     )
     return tail
@@ -167,4 +174,13 @@ class AlfredfmHelper
       :user => @@username,
     )
   end
+
+  private
+    def get_artist artist
+      if artist.empty?
+        @itunes.current_track.artist.get
+      else
+        artist.join(' ')
+      end
+    end
 end

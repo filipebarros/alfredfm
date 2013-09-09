@@ -55,5 +55,5 @@ Alfred.with_friendly_error do |alfred|
     :icon       => icon_path,
     :valid      => 'yes'
   })
-  puts fb.to_xml
+  puts fb.to_alfred
 end

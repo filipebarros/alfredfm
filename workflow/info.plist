@@ -17,6 +17,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>140174EE-8B53-49E4-9D58-9AB4ADD9832D</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>9DEF9DD2-42BA-4BAC-AB60-3AF668BCD39A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>1F93FD0B-FDA7-4071-977F-2785C331188D</key>
 		<array>
 			<dict>
@@ -197,6 +208,52 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>F41B23CE-B218-4699-B891-670A90D4049F</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>events</string>
+				<key>runningsubtext</key>
+				<string>Getting Artist Events</string>
+				<key>script</key>
+				<string>/usr/bin/ruby events.rb {query}</string>
+				<key>subtext</key>
+				<string>Get Artist Events</string>
+				<key>title</key>
+				<string>Artist Events</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>140174EE-8B53-49E4-9D58-9AB4ADD9832D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<true/>
+				<key>url</key>
+				<string>http://www.last.fm/event/{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>9DEF9DD2-42BA-4BAC-AB60-3AF668BCD39A</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -457,6 +514,11 @@
 			<key>ypos</key>
 			<real>1050</real>
 		</dict>
+		<key>140174EE-8B53-49E4-9D58-9AB4ADD9832D</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
+		</dict>
 		<key>1F93FD0B-FDA7-4071-977F-2785C331188D</key>
 		<dict>
 			<key>ypos</key>
@@ -475,7 +537,7 @@
 		<key>42D4C908-6810-487C-B076-DD61BA89DD23</key>
 		<dict>
 			<key>ypos</key>
-			<real>120</real>
+			<real>60</real>
 		</dict>
 		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
 		<dict>
@@ -501,6 +563,11 @@
 		<dict>
 			<key>ypos</key>
 			<real>560</real>
+		</dict>
+		<key>9DEF9DD2-42BA-4BAC-AB60-3AF668BCD39A</key>
+		<dict>
+			<key>ypos</key>
+			<real>230</real>
 		</dict>
 		<key>CED2969E-B8EB-401F-8D50-57CCF5D3E7BB</key>
 		<dict>
