@@ -51,6 +51,14 @@ class AlfredfmHelper
     end
   end
 
+  def self.convert_array_to_string array
+    string = if array.kind_of? Array
+      array.join(', ')
+    else
+      array
+    end
+  end
+
   def self.get_list array
     if array.kind_of? Array
       array.join ', '
@@ -161,6 +169,20 @@ class AlfredfmHelper
       :limit => 10
     )
     return tail
+  end
+
+  def get_recommended_artists
+    @lastfm.session = @@session
+    return @lastfm.user.get_recommended_artists(
+      :limit => 10
+    )
+  end
+
+  def get_recommended_events
+    @lastfm.session = @@session
+    return @lastfm.user.get_recommended_events(
+      :limit => 10
+    )
   end
 
   def get_all_friends

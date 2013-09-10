@@ -9,7 +9,6 @@ Alfred.with_friendly_error do |alfred|
   AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
   AlfredfmHelper.load_user_information
 
-  fb = alfred.feedback
   track_info = alfredfm.love_track
   puts track_info
 end
