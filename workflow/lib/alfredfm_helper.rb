@@ -52,7 +52,7 @@ class AlfredfmHelper
   end
 
   def self.convert_array_to_string array
-    string = if array.kind_of? Array
+    if array.kind_of? Array
       array.join(', ')
     else
       array
