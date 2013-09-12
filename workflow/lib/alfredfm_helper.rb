@@ -103,8 +103,15 @@ class AlfredfmHelper
     else
       { :type => "default", :name => File.join(@paths[path], filename) }
     end
-
     return icon
+  end
+
+  def self.get_artist artist
+    if artist.empty?
+      @itunes.current_track.artist.get
+    else
+      artist.join(' ')
+    end
   end
 
   def get_token
@@ -122,14 +129,59 @@ class AlfredfmHelper
 
   def love_track
     @lastfm.session = @@session
+    track = @itunes.current_track
     begin
       @lastfm.track.love(
-        :artist => @itunes.current_track.artist.get,
-        :track => @itunes.current_track.name.get
+        :artist => track.artist.get,
+        :track => track.name.get
       )
-      return "Successfully Loved #{@itunes.current_track.artist.get} by #{@itunes.current_track.name.get}"
+      return "Successfully Loved #{track.artist.get} by #{track.name.get}"
     rescue Exception => e
       return "Unsuccessful!"
+    end
+  end
+
+  def ban_track
+    @lastfm.session = @@session
+    track = @itunes.current_track
+    begin
+      @lastfm.track.ban(
+        :artist => track.artist.get,
+        :track => track.name.get
+      )
+      return "Successfully Banned #{track.artist.get} by #{track.name.get}"
+    rescue Exception => e
+      return "Unsuccessful"
+    end
+  end
+
+  def tag_track tags
+    @lastfm.session = @@session
+    track = @itunes.current_track
+    begin
+      @lastfm.track.add_tags(
+        :artist => track.artist.get,
+        :track => track.name.get,
+        :tags => tags.join(' ')
+      )
+      return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
+    rescue Exception => e
+      return "Unsuccessful"
+    end
+  end
+
+  def untag_track tag
+    @lastfm.session = @@session
+    track = @itunes.current_track
+    begin
+      @lastfm.track.remove_tag(
+        :artist => track.artist.get,
+        :track => track.name.get,
+        :tags => tag.join(' ').split(',')[0]
+      )
+      return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
+    rescue Exception => e
+      return "Unsuccessful"
     end
   end
 
@@ -193,16 +245,7 @@ class AlfredfmHelper
 
   def get_loved_tracks
     return @lastfm.user.get_loved_tracks(
-      :user => @@username,
+      :user => @@username
     )
   end
-
-  private
-    def get_artist artist
-      if artist.empty?
-        @itunes.current_track.artist.get
-      else
-        artist.join(' ')
-      end
-    end
 end

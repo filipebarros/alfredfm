@@ -6,6 +6,17 @@
 	<string>com.filipebarros.alfredfm</string>
 	<key>connections</key>
 	<dict>
+		<key>0BCB1B3D-9DAB-4A62-8B18-5CBEC8838EC7</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>42D05639-3F0F-4760-8214-317167E4173D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>110CBA6F-F5EC-4559-8972-97209CE1A5FE</key>
 		<array>
 			<dict>
@@ -39,6 +50,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>2B9D4CD8-3F02-4F65-83F7-016CC971CD96</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>42D05639-3F0F-4760-8214-317167E4173D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</key>
 		<array>
 			<dict>
@@ -55,6 +77,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>110CBA6F-F5EC-4559-8972-97209CE1A5FE</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>5537C5F6-8D21-425D-9E4E-644827B977AF</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>F63F858A-8A65-4EAF-B2F3-1738A5920F55</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -94,6 +127,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>848D30DC-4899-4762-9D61-88461258771F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>2B9D4CD8-3F02-4F65-83F7-016CC971CD96</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>9789EAE3-F701-4172-80ED-DF2E14456B16</key>
 		<array>
 			<dict>
@@ -105,11 +149,33 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>A6AFA5A9-BB75-4E08-B8E8-227DE3559677</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>0BCB1B3D-9DAB-4A62-8B18-5CBEC8838EC7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>D6C96E2B-8524-4DD4-A648-74A2190852CD</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
 				<string>1F93FD0B-FDA7-4071-977F-2785C331188D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>DC4C01FB-270E-4B50-A0CB-B4182400E37C</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -132,6 +198,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>42D4C908-6810-487C-B076-DD61BA89DD23</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>F63F858A-8A65-4EAF-B2F3-1738A5920F55</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>42D05639-3F0F-4760-8214-317167E4173D</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -169,10 +246,12 @@
 				<integer>127</integer>
 				<key>keyword</key>
 				<string>artistinfo</string>
+				<key>runningsubtext</key>
+				<string>Getting Artist Information</string>
 				<key>script</key>
 				<string>/usr/bin/ruby artist_info.rb {query}</string>
 				<key>subtext</key>
-				<string>Get Currently Playing Artist Information</string>
+				<string>Get Artist Information</string>
 				<key>title</key>
 				<string>Artist Info</string>
 				<key>type</key>
@@ -237,7 +316,7 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>1</integer>
+				<integer>2</integer>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>keyword</key>
@@ -245,7 +324,7 @@
 				<key>runningsubtext</key>
 				<string>Getting Recommended Artists</string>
 				<key>script</key>
-				<string>/usr/bin/ruby recommended_artists.rb</string>
+				<string>/usr/bin/ruby user_recommended_artists.rb</string>
 				<key>subtext</key>
 				<string>Get Recommended Artists</string>
 				<key>title</key>
@@ -253,7 +332,7 @@
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<true/>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
@@ -266,28 +345,28 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>2</integer>
+				<integer>1</integer>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>keyword</key>
-				<string>revents</string>
+				<string>events</string>
 				<key>runningsubtext</key>
-				<string>Getting Recommended Events</string>
+				<string>Getting Artist Events</string>
 				<key>script</key>
-				<string>/usr/bin/ruby recommended_events.rb</string>
+				<string>/usr/bin/ruby artist_events.rb {query}</string>
 				<key>subtext</key>
-				<string>Get Recommended Events</string>
+				<string>Get Artist Events</string>
 				<key>title</key>
-				<string>Recommended Events</string>
+				<string>Artist Events</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<false/>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>64A65BB0-1C59-4981-9209-A5EF0AC93DCB</string>
+			<string>140174EE-8B53-49E4-9D58-9AB4ADD9832D</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -312,28 +391,28 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>1</integer>
+				<integer>2</integer>
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>keyword</key>
-				<string>events</string>
+				<string>revents</string>
 				<key>runningsubtext</key>
-				<string>Getting Artist Events</string>
+				<string>Getting Recommended Events</string>
 				<key>script</key>
-				<string>/usr/bin/ruby events.rb {query}</string>
+				<string>/usr/bin/ruby user_recommended_events.rb</string>
 				<key>subtext</key>
-				<string>Get Artist Events</string>
+				<string>Get Recommended Events</string>
 				<key>title</key>
-				<string>Artist Events</string>
+				<string>Recommended Events</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<true/>
+				<false/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>140174EE-8B53-49E4-9D58-9AB4ADD9832D</string>
+			<string>64A65BB0-1C59-4981-9209-A5EF0AC93DCB</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -346,6 +425,8 @@
 				<integer>127</integer>
 				<key>keyword</key>
 				<string>trackinfo</string>
+				<key>runningsubtext</key>
+				<string>Getting Currently Playing Track Information</string>
 				<key>script</key>
 				<string>/usr/bin/ruby track_info.rb</string>
 				<key>subtext</key>
@@ -373,6 +454,8 @@
 				<integer>127</integer>
 				<key>keyword</key>
 				<string>albuminfo</string>
+				<key>runningsubtext</key>
+				<string>Getting Currently Playing Album Information</string>
 				<key>script</key>
 				<string>/usr/bin/ruby album_info.rb</string>
 				<key>subtext</key>
@@ -418,9 +501,9 @@
 				<key>keyword</key>
 				<string>loved</string>
 				<key>runningsubtext</key>
-				<string>Getting List of Loved Tracks</string>
+				<string>Getting Loved Tracks</string>
 				<key>script</key>
-				<string>/usr/bin/ruby loved.rb {query}</string>
+				<string>/usr/bin/ruby track_loved.rb {query}</string>
 				<key>subtext</key>
 				<string>Get Loved Tracks</string>
 				<key>title</key>
@@ -434,6 +517,35 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>9789EAE3-F701-4172-80ED-DF2E14456B16</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>banned</string>
+				<key>runningsubtext</key>
+				<string>Getting Banned Tracks</string>
+				<key>script</key>
+				<string>/usr/bin/ruby track_banned.rb {query}</string>
+				<key>subtext</key>
+				<string>Get Banned Tracks</string>
+				<key>title</key>
+				<string>Banned Tracks</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>DC4C01FB-270E-4B50-A0CB-B4182400E37C</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -466,7 +578,7 @@
 				<key>runningsubtext</key>
 				<string>Fetching Friends Information...</string>
 				<key>script</key>
-				<string>/usr/bin/ruby friends.rb {query}</string>
+				<string>/usr/bin/ruby user_friends.rb {query}</string>
 				<key>subtext</key>
 				<string>Get Friend Information</string>
 				<key>title</key>
@@ -480,6 +592,82 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>/usr/bin/ruby track_love.rb</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>1F93FD0B-FDA7-4071-977F-2785C331188D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>love</string>
+				<key>subtext</key>
+				<string>Love the Currently Playing Track</string>
+				<key>text</key>
+				<string>Love Track</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>D6C96E2B-8524-4DD4-A648-74A2190852CD</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>ban</string>
+				<key>subtext</key>
+				<string>Ban Currently Playing Track</string>
+				<key>text</key>
+				<string>Ban Track</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>A6AFA5A9-BB75-4E08-B8E8-227DE3559677</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>/usr/bin/ruby track_ban.rb</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>0BCB1B3D-9DAB-4A62-8B18-5CBEC8838EC7</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -514,14 +702,14 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>/usr/bin/ruby love.rb</string>
+				<string>/usr/bin/ruby track_tag.rb {query}</string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>1F93FD0B-FDA7-4071-977F-2785C331188D</string>
+			<string>2B9D4CD8-3F02-4F65-83F7-016CC971CD96</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -529,20 +717,58 @@
 			<key>config</key>
 			<dict>
 				<key>argumenttype</key>
-				<integer>2</integer>
+				<integer>0</integer>
 				<key>keyword</key>
-				<string>love</string>
+				<string>tag</string>
 				<key>subtext</key>
-				<string>Love the Song That is Currently Playing</string>
+				<string>Tag Currently Playing Track</string>
 				<key>text</key>
-				<string>Love Song</string>
+				<string>Tag Track</string>
 				<key>withspace</key>
-				<false/>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.keyword</string>
 			<key>uid</key>
-			<string>D6C96E2B-8524-4DD4-A648-74A2190852CD</string>
+			<string>848D30DC-4899-4762-9D61-88461258771F</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>untag</string>
+				<key>subtext</key>
+				<string>Untag Currently Playing Track</string>
+				<key>text</key>
+				<string>Untag Track</string>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>5537C5F6-8D21-425D-9E4E-644827B977AF</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>/usr/bin/ruby track_untag.rb {query}</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>F63F858A-8A65-4EAF-B2F3-1738A5920F55</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -589,80 +815,110 @@
 	<string></string>
 	<key>uidata</key>
 	<dict>
+		<key>0BCB1B3D-9DAB-4A62-8B18-5CBEC8838EC7</key>
+		<dict>
+			<key>ypos</key>
+			<real>1330</real>
+		</dict>
 		<key>110CBA6F-F5EC-4559-8972-97209CE1A5FE</key>
 		<dict>
 			<key>ypos</key>
-			<real>1110</real>
+			<real>1690</real>
 		</dict>
 		<key>140174EE-8B53-49E4-9D58-9AB4ADD9832D</key>
 		<dict>
 			<key>ypos</key>
-			<real>450</real>
+			<real>370</real>
 		</dict>
 		<key>1F93FD0B-FDA7-4071-977F-2785C331188D</key>
 		<dict>
 			<key>ypos</key>
-			<real>1000</real>
+			<real>1210</real>
+		</dict>
+		<key>2B9D4CD8-3F02-4F65-83F7-016CC971CD96</key>
+		<dict>
+			<key>ypos</key>
+			<real>1450</real>
 		</dict>
 		<key>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</key>
 		<dict>
 			<key>ypos</key>
-			<real>890</real>
+			<real>1090</real>
 		</dict>
 		<key>42D05639-3F0F-4760-8214-317167E4173D</key>
 		<dict>
 			<key>ypos</key>
-			<real>990</real>
+			<real>1450</real>
 		</dict>
 		<key>42D4C908-6810-487C-B076-DD61BA89DD23</key>
 		<dict>
 			<key>ypos</key>
-			<real>120</real>
+			<real>130</real>
 		</dict>
 		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
 		<dict>
 			<key>ypos</key>
-			<real>1110</real>
+			<real>1690</real>
+		</dict>
+		<key>5537C5F6-8D21-425D-9E4E-644827B977AF</key>
+		<dict>
+			<key>ypos</key>
+			<real>1570</real>
 		</dict>
 		<key>64A65BB0-1C59-4981-9209-A5EF0AC93DCB</key>
 		<dict>
 			<key>ypos</key>
-			<real>340</real>
+			<real>490</real>
 		</dict>
 		<key>659A0890-0D79-4C7A-B8BC-2CECA2DE45B9</key>
 		<dict>
 			<key>ypos</key>
-			<real>560</real>
+			<real>610</real>
 		</dict>
 		<key>691C93B3-E98C-40E5-8CBD-51D284B7354B</key>
 		<dict>
 			<key>ypos</key>
-			<real>670</real>
+			<real>790</real>
 		</dict>
 		<key>7F6B3D85-4180-4352-865D-2B4C89DA04EB</key>
 		<dict>
 			<key>ypos</key>
-			<real>670</real>
+			<real>730</real>
+		</dict>
+		<key>848D30DC-4899-4762-9D61-88461258771F</key>
+		<dict>
+			<key>ypos</key>
+			<real>1450</real>
 		</dict>
 		<key>9789EAE3-F701-4172-80ED-DF2E14456B16</key>
 		<dict>
 			<key>ypos</key>
-			<real>780</real>
+			<real>850</real>
 		</dict>
 		<key>9DEF9DD2-42BA-4BAC-AB60-3AF668BCD39A</key>
 		<dict>
 			<key>ypos</key>
-			<real>390</real>
+			<real>420</real>
+		</dict>
+		<key>A6AFA5A9-BB75-4E08-B8E8-227DE3559677</key>
+		<dict>
+			<key>ypos</key>
+			<real>1330</real>
 		</dict>
 		<key>CED2969E-B8EB-401F-8D50-57CCF5D3E7BB</key>
 		<dict>
 			<key>ypos</key>
-			<real>890</real>
+			<real>1090</real>
 		</dict>
 		<key>D6C96E2B-8524-4DD4-A648-74A2190852CD</key>
 		<dict>
 			<key>ypos</key>
-			<real>1000</real>
+			<real>1210</real>
+		</dict>
+		<key>DC4C01FB-270E-4B50-A0CB-B4182400E37C</key>
+		<dict>
+			<key>ypos</key>
+			<real>970</real>
 		</dict>
 		<key>DEB9FAC9-CFB4-4AC2-86A3-8FAAF7897074</key>
 		<dict>
@@ -672,12 +928,17 @@
 		<key>F41B23CE-B218-4699-B891-670A90D4049F</key>
 		<dict>
 			<key>ypos</key>
-			<real>120</real>
+			<real>130</real>
+		</dict>
+		<key>F63F858A-8A65-4EAF-B2F3-1738A5920F55</key>
+		<dict>
+			<key>ypos</key>
+			<real>1570</real>
 		</dict>
 		<key>F7685EC2-78FE-4A7E-B71F-EF53C3FB549F</key>
 		<dict>
 			<key>ypos</key>
-			<real>230</real>
+			<real>250</real>
 		</dict>
 	</dict>
 	<key>webaddress</key>
