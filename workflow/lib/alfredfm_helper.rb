@@ -29,14 +29,23 @@ class AlfredfmHelper
     @@session = information['session']
   end
 
+  # Save a hash to file
+  # @param path [Symbol] `:storage_path` or `:volatile_storage_path`
+  # @param filename [String] name of the file to save
+  # @param hash [Hash] hash to save onto file
   def self.save_hash_to_file path, filename, hash
     File.write(File.join(@paths[path], filename), hash.to_yaml)
   end
 
+  # Generate a Universally Uniqued IDentifier
+  # @return [String] uuid
   def self.generate_uuid
     return SecureRandom.uuid
   end
 
+  # Convert numbers in format xxxxxxxx to x,xxx,xxx
+  # @param number [String] number to split with commas
+  # @return [String] comma separated number
   def self.separate_comma number
     number.to_s.chars.to_a.reverse.each_slice(3).map(&:join).join(",").reverse
   end
