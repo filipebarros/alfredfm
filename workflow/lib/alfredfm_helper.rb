@@ -106,7 +106,7 @@ class AlfredfmHelper
     return icon
   end
 
-  def self.get_artist artist
+  def get_artist artist
     if artist.empty?
       @itunes.current_track.artist.get
     else
@@ -248,4 +248,6 @@ class AlfredfmHelper
       :user => @@username
     )
   end
+
+  private :get_artist
 end

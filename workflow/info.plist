@@ -295,7 +295,7 @@
 				<key>runningsubtext</key>
 				<string>Getting Similar Artists</string>
 				<key>script</key>
-				<string>/usr/bin/ruby similar.rb {query}</string>
+				<string>/usr/bin/ruby artist_similar.rb {query}</string>
 				<key>subtext</key>
 				<string>Get Similar Artists</string>
 				<key>title</key>
@@ -898,7 +898,7 @@
 		<key>9DEF9DD2-42BA-4BAC-AB60-3AF668BCD39A</key>
 		<dict>
 			<key>ypos</key>
-			<real>420</real>
+			<real>430</real>
 		</dict>
 		<key>A6AFA5A9-BB75-4E08-B8E8-227DE3559677</key>
 		<dict>
