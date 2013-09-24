@@ -60,11 +60,7 @@ class AlfredfmHelper
     end
   end
 
-  def self.get_list array
-    if array.kind_of? Array
-      array.join ', '
     else
-      array
     end
   end
 
