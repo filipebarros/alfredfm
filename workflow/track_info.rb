@@ -38,13 +38,13 @@ Alfred.with_friendly_error do |alfred|
       :subtitle   => '',
       :arg        => track_info['url'],
       :icon       => icon_path,
+      :title      => "User Playcount: #{LocalizationHelper.format_number(track_info['userplaycount'])}",
+      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(track_info['playcount'])}",
       :valid      => 'yes'
     })
   end
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(track_info['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(track_info['playcount'])}",
     :arg        => track_info['url'],
     :icon       => icon_path,
     :valid      => 'yes'

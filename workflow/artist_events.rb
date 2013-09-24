@@ -22,7 +22,6 @@ Alfred.with_friendly_error do |alfred|
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,
         :title      => "#{event['title']} - #{event['venue']['name']}, #{event['venue']['location']['city']}",
-        :subtitle   => event['startDate'],
         :arg        => "#{event['id']} #{event['title']}",
         :icon       => icon_path,
         :valid      => 'yes'
@@ -34,6 +33,7 @@ Alfred.with_friendly_error do |alfred|
       :title      => "No events found for artist #{ARGV.join(' ')}!",
       :valid      => 'no'
     })
+          :subtitle   => LocalizationHelper.format_date(event['startDate'], :full),
   end
   puts fb.to_alfred
 end

@@ -15,6 +15,9 @@ Alfred.with_friendly_error do |alfred|
 
   album_info = alfredfm.get_album_information ARGV
   album_tags = AlfredfmHelper.map_information album_info['toptags']['tag'], 'name', 'No Tags!'
+      :subtitle   => LocalizationHelper.format_date(album_info['releasedate'], :full),
+      :title      => "User Playcount: #{LocalizationHelper.format_number(album_info['userplaycount'])}",
+      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(album_info['playcount'])}",
 
   image = album_info['image'][1]['content'].split('/')[-1]
   icon_path = AlfredfmHelper.generate_feedback_icon album_info['image'][1]['content'], :volatile_storage_path, image
@@ -36,15 +39,12 @@ Alfred.with_friendly_error do |alfred|
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
     :title      => "Release Date",
-    :subtitle   => releasedate,
     :arg        => album_info['url'],
     :icon       => icon_path,
     :valid      => 'yes'
   })
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(album_info['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(album_info['playcount'])}",
     :arg        => album_info['url'],
     :icon       => icon_path,
     :valid      => 'yes'

@@ -12,11 +12,11 @@ Alfred.with_friendly_error do |alfred|
   AlfredfmHelper.load_user_information
 
   fb = alfred.feedback
+        :subtitle   => "#{LocalizationHelper.format_date(event['startDate'])} – #{Array(event['artists']['artist']).join(', ')}",
 
   recommended_events = alfredfm.get_recommended_events
   recommended_events.each { |event|
     image = event['image'][1]['content'].split('/')[-1]
-    icon_path = AlfredfmHelper.generate_feedback_icon event['image'][1]['content'], :volatile_storage_path, image
 
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,

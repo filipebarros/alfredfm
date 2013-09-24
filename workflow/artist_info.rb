@@ -24,6 +24,8 @@ Alfred.with_friendly_error do |alfred|
 
   image = artist_info['image'][1]['content'].split('/').last
   icon_path = AlfredfmHelper.generate_feedback_icon artist_info['image'][1]['content'], :volatile_storage_path, image
+      :title      => "User Playcount: #{LocalizationHelper.format_number(artist_info['stats']['userplaycount'])}",
+      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(artist_info['stats']['playcount'])}",
 
   fb = alfred.feedback
   fb.add_item({
@@ -46,8 +48,6 @@ Alfred.with_friendly_error do |alfred|
   })
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['playcount'])}",
     :arg        => artist_info['name'],
     :icon       => icon_path,
     :valid      => 'yes'
