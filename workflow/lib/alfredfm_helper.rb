@@ -52,21 +52,12 @@ class AlfredfmHelper
     end
   end
 
-
-    else
-    end
-  end
-
   def self.get_timestamp_string information
-    times = []
-    Array(information).each { |timestamp|
-      times << if timestamp['yearto'].empty?
-        "#{timestamp['yearfrom']} to Present"
-      else
-        "#{timestamp['yearfrom']} to #{timestamp['yearto']}"
-      end
-    }
-    return times.join ', '
+    if information['yearto'].empty?
+      "#{information['yearfrom']} to Present"
+    else
+      "#{information['yearfrom']} to #{information['yearto']}"
+    end
   end
 
   def self.get_friend_name_string friend_info
