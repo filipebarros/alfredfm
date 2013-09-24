@@ -42,13 +42,6 @@ class AlfredfmHelper
     UUIDTools::UUID.random_create.to_s
   end
 
-  # Convert numbers in format xxxxxxxx to x,xxx,xxx
-  # @param number [String] number to split with commas
-  # @return [String] comma separated number
-  def self.separate_comma number
-    number.to_s.chars.to_a.reverse.each_slice(3).map(&:join).join(",").reverse
-  end
-
   def self.map_information information_array, key, failed
     begin
       return information_array.map { |information|
