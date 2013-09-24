@@ -143,11 +143,10 @@ class AlfredfmHelper
   end
 
   def love_track
-    itunes_running? or return
-    @lastfm.session = @@session
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
+    artist = get_itunes_trackinfo(:artist) and
+    track  = get_itunes_trackinfo(:name) and
     begin
+      @lastfm.session = @@session
       @lastfm.track.love(:artist => artist, :track => track)
       return "Successfully Loved #{track} by #{artist}."
     rescue Exception => e
@@ -156,11 +155,10 @@ class AlfredfmHelper
   end
 
   def ban_track
-    itunes_running? or return
-    @lastfm.session = @@session
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
+    artist = get_itunes_trackinfo(:artist) and
+    track  = get_itunes_trackinfo(:name) and
     begin
+      @lastfm.session = @@session
       @lastfm.track.ban(:artist => artist, :track => track)
       return "Successfully Banned #{track} by #{artist}."
     rescue Exception => e
@@ -169,26 +167,24 @@ class AlfredfmHelper
   end
 
   def tag_track tags
-    itunes_running? or return
-    @lastfm.session = @@session
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
-    tags   = tags.join(' ')
+    artist = get_itunes_trackinfo(:artist) and
+    track  = get_itunes_trackinfo(:name) and
+    tags   = tags.join(' ')[/[^ ].+[^ ]/] and
     begin
+      @lastfm.session = @@session
       @lastfm.track.add_tags(:artist => artist, :track => track, :tags => tags)
-      return "Successfully Tagged #{track} by #{artist} with tags #{tags}l"
+      return "Successfully Tagged #{track} by #{artist} with tags #{tags}."
     rescue Exception => e
       return "Unsuccessful"
     end
   end
 
   def untag_track tag
-    itunes_running? or return
-    @lastfm.session = @@session
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
-    tag    = tag.join(' ').split(',')[0]
+    artist = get_itunes_trackinfo(:artist) and
+    track  = get_itunes_trackinfo(:name) and
+    tag    = tag.join(' ').split(',').first[/[^ ].+[^ ]/] and
     begin
+      @lastfm.session = @@session
       @lastfm.track.remove_tag(:artist => artist, :track => track, :tags => tag)
       return "Successfully removed Tag #{tag} from #{track} by #{artist}."
     rescue Exception => e
@@ -197,19 +193,21 @@ class AlfredfmHelper
   end
 
   def get_track_information
-    itunes_running? or return nil
+    artist = get_itunes_trackinfo(:artist) and
+    track  = get_itunes_trackinfo(:name) and
     @lastfm.track.get_info(
-      :artist   => get_itunes_trackinfo(:artist),
-      :track    => get_itunes_trackinfo(:name),
+      :artist   => artist,
+      :track    => track,
       :username => @@username
     )
   end
 
   def get_album_information
-    itunes_running? or return nil
-    return @lastfm.album.get_info(
-      :artist   => get_itunes_trackinfo(:artist),
-      :album    => get_itunes_trackinfo(:album),
+    artist = get_itunes_trackinfo(:artist) and
+    album  = get_itunes_trackinfo(:album) and
+    @lastfm.album.get_info(
+      :artist   => artist,
+      :album    => album,
       :username => @@username
     )
   end
