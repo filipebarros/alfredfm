@@ -15,11 +15,6 @@ Alfred.with_friendly_error do |alfred|
     string_name = AlfredfmHelper.get_friend_name_string friend
     icon_path = AlfredfmHelper.generate_feedback_icon friend['image'][1]['content'], :volatile_storage_path, "#{friend['name']}.png"
 
-    add = if ARGV.empty? || friend['name'].match(ARGV[0])
-      true
-    end
-
-    if add
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,
         :title      => string_name,
@@ -30,10 +25,15 @@ Alfred.with_friendly_error do |alfred|
       })
     end
   }
-  if fb.items.empty?
+
+    unless fb.items.empty?
+      puts fb.to_alfred(ARGV)
+      return
+    end
+
     fb.add_item({
       :uid => AlfredfmHelper.generate_uuid,
-      :title => "No friend name matches '#{ARGV[0]}'",
+      :title => 'No last.fm friends.',
       :valid => 'no'
     })
   end

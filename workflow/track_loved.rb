@@ -28,11 +28,7 @@ Alfred.with_friendly_error do |alfred|
       AlfredfmHelper.generate_feedback_icon track['image'][1]['content'], :volatile_storage_path, image
     end
 
-    add = if ARGV.empty? || track['artist']['name'].match(/#{ARGV.join(' ')}/i)
-      true
-    end
 
-    if add
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,
         :title      => track['name'],
@@ -43,11 +39,15 @@ Alfred.with_friendly_error do |alfred|
       })
     end
   }
-  if fb.items.empty?
+
+    unless fb.items.empty?
+      puts fb.to_alfred(ARGV)
+      return
+    end
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => "No artist named #{ARGV.join(' ')} found in the loved tracks!",
-      :valid      => 'no'
+      :uid   => AlfredfmHelper.generate_uuid,
+      :title => 'No loved tracks.',
+      :valid => 'no'
     })
   end
   puts fb.to_alfred

@@ -14,6 +14,10 @@ Alfred.with_friendly_error do |alfred|
   recommended_events = alfredfm.get_recommended_events
   recommended_events.each { |event|
     image = event['image'][1]['content'].split('/')[-1]
+    unless fb.empty?
+      puts fb.to_alfred(ARGV)
+      return
+    end
 
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,

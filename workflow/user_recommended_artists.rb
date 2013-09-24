@@ -28,6 +28,10 @@ Alfred.with_friendly_error do |alfred|
     icon_path = AlfredfmHelper.generate_feedback_icon recommendation['image'][1]['content'], :volatile_storage_path, image
 
     similar = AlfredfmHelper.map_information recommendation['context']['artist'], 'name', 'No Similar Artists!'
+    unless fb.empty?
+      puts fb.to_alfred(ARGV)
+      return
+    end
 
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
