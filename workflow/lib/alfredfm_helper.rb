@@ -4,6 +4,7 @@
 require 'yaml'
 require 'lastfm'
 require 'securerandom'
+require 'net/http'
 
 class AlfredfmHelper
   def initialize
@@ -38,7 +39,10 @@ class AlfredfmHelper
   # Generate a Universally Uniqued IDentifier
   # @return [String] uuid
   def self.generate_uuid
-    return SecureRandom.uuid
+    SecureRandom.uuid
+  rescue NoMethodError => e # SecureRandom.uuid is Ruby >= 1.9
+    require 'uuidtools'
+    UUIDTools::UUID.random_create.to_s
   end
 
   # Convert numbers in format xxxxxxxx to x,xxx,xxx
@@ -99,18 +103,13 @@ class AlfredfmHelper
   end
 
   def self.generate_feedback_icon url, path, filename
-    icon = unless File.exists?(File.join(@paths[path], filename))
-      if url
-        img = Net::HTTP.get(URI(url))
-        File.write(File.join(@paths[path], filename), img)
-        { :type => 'default', :name => File.join(@paths[path], filename) }
-      else
-        nil
+    filepath = File.join(@paths[path], filename)
+    unless File.exists?(filepath)
+      url and File.open(filepath, 'w') do |f|
+        f.write Net::HTTP.get(URI(url))
       end
-    else
-      { :type => "default", :name => File.join(@paths[path], filename) }
     end
-    return icon
+    { :type => 'default', :name => filepath }
   end
 
   def itunes_running?

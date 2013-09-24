@@ -3,3 +3,8 @@ source "https://rubygems.org"
 gem 'plist'
 gem 'alfred-workflow'
 gem 'lastfm'
+
+group :ruby_18 do  # for Ruby 1.8 compatibility
+  gem 'activesupport', '< 4.0'
+  gem 'uuidtools'
+end
