@@ -52,13 +52,6 @@ class AlfredfmHelper
     end
   end
 
-  def self.convert_array_to_string array
-    if array.kind_of? Array
-      array.join(', ')
-    else
-      array
-    end
-  end
 
     else
     end
@@ -112,7 +105,7 @@ class AlfredfmHelper
   end
 
   def get_artist artist
-    Array(artist).join(' ')[/[^ ].+[^ ]/] || get_itunes_trackinfo(:artist)
+    Array(artist).join(' ').trim || get_itunes_trackinfo(:artist)
   end
 
   def get_token

@@ -18,7 +18,6 @@ Alfred.with_friendly_error do |alfred|
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
       :title      => "#{event['title']} - #{event['venue']['name']}, #{event['venue']['location']['city']}",
-      :subtitle   => AlfredfmHelper.convert_array_to_string(event['artists']['artist']),
       :arg        => "#{event['id']} #{event['title']}",
       :icon       => icon_path,
       :valid      => 'yes'
