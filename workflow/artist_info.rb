@@ -4,7 +4,7 @@
 require 'rubygems' unless defined? Gem
 require File.join(File.dirname(__FILE__), 'bundle', 'gem_setup.rb')
 require 'alfred'
-require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
+Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
 
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
