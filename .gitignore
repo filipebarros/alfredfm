@@ -1,3 +1,5 @@
 workflow/info.yml
 workflow/.bundle
 workflow/bundle/gems/*
+workflow/bundle/gems-versioned/*
+
