@@ -117,7 +117,15 @@ class AlfredfmHelper
   end
 
   def get_itunes_trackinfo trackinfo
-    itunes_running? ? %x{osascript -e 'tell application id "com.apple.itunes" to get #{trackinfo.to_s} of current track'}.chomp : nil
+    itunes_running? or return nil
+    itunes_command = [
+      'tell application id "com.apple.itunes"',
+      'try',
+      "get #{trackinfo.to_s} of current track",
+      'end try',
+      'end tell'
+    ]
+     %x{osascript -e '#{itunes_command.join("' -e '")}'}.chomp[/[^ ].+[^ ]/]
   end
 
   def get_artist artist
