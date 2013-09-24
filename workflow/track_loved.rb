@@ -6,11 +6,9 @@ require File.join(File.dirname(__FILE__), 'bundle', 'gem_setup.rb')
 require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
 
-Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new
-  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
-  AlfredfmHelper.load_user_information
 
+Alfred.with_friendly_error do |alfred|
+  alfredfm = AlfredfmHelper.new alfred
   fb = alfred.feedback
   loved_tracks = alfredfm.get_loved_tracks
   loved_tracks.each { |track|

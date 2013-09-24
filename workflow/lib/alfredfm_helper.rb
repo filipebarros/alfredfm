@@ -7,25 +7,22 @@ require 'securerandom'
 require 'net/http'
 
 class AlfredfmHelper
-  def initialize
-    app_info = YAML.load_file("info.yml")
-    @api_key = app_info['api_key']
+  def initialize alfred
+    app_info   = YAML.load_file("info.yml")
+    @api_key   = app_info['api_key']
     api_secret = app_info['api_secret']
 
     @lastfm = Lastfm.new(@api_key, api_secret)
-  end
 
-  def self.set_paths storage_path, volatile_storage_path
-    @paths = Hash.new
-    @paths[:storage_path] = storage_path
-    @paths[:volatile_storage_path] = volatile_storage_path
-  end
+    @@paths = {
+      :storage_path          => alfred.storage_path,
+      :volatile_storage_path => alfred.volatile_storage_path
+    }
 
-  def self.load_user_information
-    information = YAML.load_file(File.join(@paths[:storage_path], 'user_info.yml'))
-    @token = information['token']
-    @@username = information['username']
-    @@session = information['session']
+    user_info  = YAML.load_file(File.join(@@paths[:storage_path], 'user_info.yml'))
+    @token     = user_info['token']
+    @@username = user_info['username']
+    @@session  = user_info['session']
   end
 
   # Save a hash to file
@@ -100,7 +97,7 @@ class AlfredfmHelper
   end
 
   def self.generate_feedback_icon url, path, filename
-    filepath = File.join(@paths[path], filename)
+    filepath = File.join(@@paths[path], filename)
     unless File.exists?(filepath)
       url and File.open(filepath, 'w') do |f|
         f.write Net::HTTP.get(URI(url))
