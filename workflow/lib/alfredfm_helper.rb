@@ -79,11 +79,8 @@ class AlfredfmHelper
   end
 
   def self.get_timestamp_string information
-    if !information.kind_of? Array
-      information = [information]
-    end
     times = []
-    information.each { |timestamp|
+    Array(information).each { |timestamp|
       times << if timestamp['yearto'].empty?
         "#{timestamp['yearfrom']} to Present"
       else
@@ -129,7 +126,7 @@ class AlfredfmHelper
   end
 
   def get_artist artist
-    artist.join(' ')[/[^ ].+[^ ]/] || get_itunes_trackinfo(:artist)
+    Array(artist).join(' ')[/[^ ].+[^ ]/] || get_itunes_trackinfo(:artist)
   end
 
   def get_token
