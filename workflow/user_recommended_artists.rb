@@ -6,6 +6,17 @@ require File.join(File.dirname(__FILE__), 'bundle', 'gem_setup.rb')
 require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
 
+# custom matcher for alfred-workflow: look for track and artist names
+module Alfred
+ class Feedback
+   class Item
+     alias_method :default_match?, :match?
+     def match? query
+       title_and_subtitle_match?(query)
+     end
+   end
+ end
+end
 
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
