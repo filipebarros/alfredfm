@@ -103,7 +103,9 @@ class AlfredfmHelper
   end
 
   def self.generate_feedback_icon url, path, filename
-    icon = unless File.exists?(File.join(@paths[path], filename))
+    icon = if File.exists?(File.join(@paths[path], filename))
+      { :type => "default", :name => File.join(@paths[path], filename) }
+    else
       if url
         img = Net::HTTP.get(URI(url))
         File.write(File.join(@paths[path], filename), img)
@@ -111,8 +113,6 @@ class AlfredfmHelper
       else
         nil
       end
-    else
-      { :type => "default", :name => File.join(@paths[path], filename) }
     end
     return icon
   end

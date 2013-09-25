@@ -15,7 +15,13 @@ Alfred.with_friendly_error do |alfred|
   begin
     similar = alfredfm.get_similar_artists ARGV
 
-    unless similar.empty?
+    if similar.empty?
+      fb.add_item({
+        :uid        => AlfredfmHelper.generate_uuid,
+        :title      => "No artist named #{ARGV.join(' ')} found!",
+        :valid      => 'no'
+      })
+    else
       similar.each { |artist|
         image = artist['image'][1]['content'].split('/')[-1]
         icon_path = AlfredfmHelper.generate_feedback_icon artist['image'][1]['content'], :volatile_storage_path, image
@@ -31,12 +37,6 @@ Alfred.with_friendly_error do |alfred|
           :valid      => 'yes'
         })
       }
-    else
-      fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
-        :title      => "No artist named #{ARGV.join(' ')} found!",
-        :valid      => 'no'
-      })
     end
   rescue Appscript::CommandError
     fb.add_item({
