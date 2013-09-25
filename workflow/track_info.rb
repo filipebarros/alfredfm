@@ -50,7 +50,7 @@ Alfred.with_friendly_error do |alfred|
   })
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "Tags",
+    :title      => 'Tags',
     :subtitle   => tags,
     :arg        => track_info['url'],
     :icon       => icon_path,
