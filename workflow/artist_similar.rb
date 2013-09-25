@@ -9,7 +9,6 @@ Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
   fb = alfred.feedback
-
   begin
     similar = alfredfm.get_similar_artists(ARGV)
     similar.each do |artist|
@@ -37,5 +36,6 @@ Alfred.with_friendly_error do |alfred|
   rescue Lastfm::ApiError => e
     AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
+
   puts fb.to_alfred
 end

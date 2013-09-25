@@ -7,7 +7,7 @@ require 'alfred'
 Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
 
 Alfred.with_friendly_error do |alfred|
-    alfredfm = AlfredfmHelper.new alfred
+  alfredfm = AlfredfmHelper.new alfred
   begin
     track_info = alfredfm.ban_track
     puts track_info

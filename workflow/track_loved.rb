@@ -44,6 +44,7 @@ Alfred.with_friendly_error do |alfred|
       puts fb.to_alfred(ARGV)
       return
     end
+
     fb.add_item({
       :uid   => AlfredfmHelper.generate_uuid,
       :title => 'No loved tracks.',
@@ -53,5 +54,6 @@ Alfred.with_friendly_error do |alfred|
   rescue Lastfm::ApiError => e
     AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
+
   puts fb.to_alfred
 end
