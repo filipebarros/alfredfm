@@ -234,5 +234,5 @@ class AlfredfmHelper
     @lastfm.user.get_loved_tracks(:user => @@username)
   end
 
-  private :get_artist
+  private :get_artist, :get_itunes_trackinfo
 end
