@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require 'alfred'
 require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
@@ -19,7 +19,7 @@ Alfred.with_friendly_error do |alfred|
   icon_path = AlfredfmHelper.generate_feedback_icon album_info['image'][1]['content'], :volatile_storage_path, image
 
   releasedate = if !album_info['releasedate'].empty?
-    Time.parse(album_info['releasedate']).strftime("%d of %B, %Y")
+    Time.parse(album_info['releasedate']).strftime('%d of %B, %Y')
   else
     'Unknown'
   end

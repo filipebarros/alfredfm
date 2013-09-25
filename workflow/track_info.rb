@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require 'alfred'
 require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|

@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require 'alfred'
 require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
@@ -14,7 +14,7 @@ Alfred.with_friendly_error do |alfred|
 
   artist_info = alfredfm.get_artist_information ARGV
 
-  band_members = AlfredfmHelper.map_information artist_info['bandmembers']['member'], 'name', 'No Band Members!' unless !artist_info['bandmembers']
+  band_members = AlfredfmHelper.map_information artist_info['bandmembers']['member'], 'name', 'No Band Members!' if artist_info['bandmembers']
   artist_tags = AlfredfmHelper.map_information artist_info['tags']['tag'], 'name', 'No Tags!'
 
   image = artist_info['image'][1]['content'].split('/')[-1]

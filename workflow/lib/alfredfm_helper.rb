@@ -51,9 +51,7 @@ class AlfredfmHelper
 
   def self.map_information information_array, key, failed
     begin
-      return information_array.map { |information|
-        information[key].strip
-      }.join(', ')
+      return information_array.map { |information| information[key].strip }.join(', ')
     rescue Exception => e
       return failed
     end
@@ -79,17 +77,17 @@ class AlfredfmHelper
     if information.nil? || information.empty?
       return 'No Information Available!'
     end
-    if !information.kind_of? Array
+    unless information.kind_of? Array
       information = [information]
     end
     times = []
-    information.each { |timestamp|
+    information.each do |timestamp|
       times << if timestamp['yearto'].empty?
         "#{timestamp['yearfrom']} to Present"
       else
         "#{timestamp['yearfrom']} to #{timestamp['yearto']}"
       end
-    }
+    end
     return times.join ', '
   end
 

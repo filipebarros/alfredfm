@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require 'alfred'
 require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
@@ -22,7 +22,7 @@ Alfred.with_friendly_error do |alfred|
         :valid      => 'no'
       })
     else
-      similar.each { |artist|
+      similar.each do |artist|
         image = artist['image'][1]['content'].split('/')[-1]
         icon_path = AlfredfmHelper.generate_feedback_icon artist['image'][1]['content'], :volatile_storage_path, image
 
@@ -36,7 +36,7 @@ Alfred.with_friendly_error do |alfred|
           :icon       => icon_path,
           :valid      => 'yes'
         })
-      }
+      end
     end
   rescue Appscript::CommandError
     fb.add_item({

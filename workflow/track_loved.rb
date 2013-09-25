@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require 'alfred'
 require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
@@ -12,7 +12,7 @@ Alfred.with_friendly_error do |alfred|
 
   fb = alfred.feedback
   loved_tracks = alfredfm.get_loved_tracks
-  loved_tracks.each { |track|
+  loved_tracks.each do |track|
     icon_path = if track['image']
       image = track['image'][1]['content'].split('/')[-1]
       AlfredfmHelper.generate_feedback_icon track['image'][1]['content'], :volatile_storage_path, image
@@ -32,7 +32,7 @@ Alfred.with_friendly_error do |alfred|
         :valid      => 'yes'
       })
     end
-  }
+  end
   if fb.items.empty?
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
