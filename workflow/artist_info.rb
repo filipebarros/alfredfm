@@ -1,10 +1,9 @@
-#!/usr/bin/env ruby
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup.rb')
 require 'alfred'
-require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
+require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new
@@ -21,8 +20,6 @@ Alfred.with_friendly_error do |alfred|
   image = artist_info['image'][1]['content'].split('/')[-1]
   icon_path = AlfredfmHelper.generate_feedback_icon artist_info['image'][1]['content'], :volatile_storage_path, image
 
-  band_time_information = AlfredfmHelper.get_timestamp_string artist_info['bio']['formationlist']['formation']
-
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
     :title      => artist_info['name'],
@@ -31,14 +28,21 @@ Alfred.with_friendly_error do |alfred|
     :icon       => icon_path,
     :valid      => 'yes'
   })
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => artist_info['bio']['placeformed'],
-    :subtitle   => band_time_information,
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
+
+  if artist_info['bio']['formationlist']
+    AlfredfmHelper.get_timestamp_string artist_info['bio']['formationlist']['formation']
+    fb.add_item({
+      :uid        => AlfredfmHelper.generate_uuid,
+      :title      => artist_info['bio']['placeformed'],
+      :subtitle   => band_time_information,
+      :arg        => artist_info['name'],
+      :icon       => icon_path,
+      :valid      => 'yes'
+    })
+  else
+    'No Information Available!'
+  end
+
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
     :title      => "User Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['userplaycount'])}",

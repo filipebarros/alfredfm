@@ -812,7 +812,10 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string></string>
+	<string>alfredfm
+========
+
+Last.fm Alfred Workflow</string>
 	<key>uidata</key>
 	<dict>
 		<key>0BCB1B3D-9DAB-4A62-8B18-5CBEC8838EC7</key>
@@ -942,6 +945,6 @@
 		</dict>
 	</dict>
 	<key>webaddress</key>
-	<string>http://github.com/zhaocai/alfred2-ruby-template</string>
+	<string>https://github.com/filipebarros/alfredfm</string>
 </dict>
 </plist>

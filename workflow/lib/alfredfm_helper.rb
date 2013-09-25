@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # encoding: utf-8
 
 require 'yaml'
@@ -77,6 +76,9 @@ class AlfredfmHelper
   end
 
   def self.get_timestamp_string information
+    if information.nil? || information.empty?
+      return "No Information Available!"
+    end
     if !information.kind_of? Array
       information = [information]
     end

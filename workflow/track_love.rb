@@ -1,10 +1,9 @@
-#!/usr/bin/env ruby
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup.rb')
 require 'alfred'
-require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
+require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new
