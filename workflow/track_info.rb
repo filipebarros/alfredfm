@@ -61,5 +61,5 @@ Alfred.with_friendly_error do |alfred|
     AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
 
-  puts fb.to_xml(ARGV)
+  puts fb.to_alfred
 end
