@@ -15,7 +15,7 @@ Alfred.with_friendly_error do |alfred|
       event['image'] and
       event['image'][1] and
       event['image'][1]['content'] and
-      image = event['image'][1]['content'].split('/').last
+      image = event['image'][1]['content'].split(File::SEPARATOR).last
       icon = image && AlfredfmHelper.generate_feedback_icon(event['image'][1]['content'], :volatile_storage_path, image)
 
       fb.add_item({
