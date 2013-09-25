@@ -24,6 +24,10 @@ Alfred.with_friendly_error do |alfred|
   begin
     loved_tracks = alfredfm.get_loved_tracks
     loved_tracks.each do |track|
+      track['image'] and
+      track['image'][1] and
+      track['image'][1]['content'] and
+      image = track['image'][1]['content'].split('/').last
       icon = image && AlfredfmHelper.generate_feedback_icon(track['image'][1]['content'], :volatile_storage_path, image)
 
       fb.add_item({

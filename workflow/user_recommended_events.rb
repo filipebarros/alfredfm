@@ -11,6 +11,11 @@ Alfred.with_friendly_error do |alfred|
   fb = alfred.feedback
   begin
     recommended_events = alfredfm.get_recommended_events
+    recommended_events.each do |event|
+      event['image'] and
+      event['image'][1] and
+      event['image'][1]['content'] and
+      image = event['image'][1]['content'].split('/').last
       icon = image && AlfredfmHelper.generate_feedback_icon(event['image'][1]['content'], :volatile_storage_path, image)
 
       fb.add_item({
@@ -23,7 +28,6 @@ Alfred.with_friendly_error do |alfred|
       })
     end
 
-    image = event['image'][1]['content'].split('/')[-1]
     unless fb.empty?
       puts fb.to_alfred(ARGV)
       return

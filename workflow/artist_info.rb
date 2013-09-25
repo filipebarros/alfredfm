@@ -21,9 +21,12 @@ Alfred.with_friendly_error do |alfred|
       AlfredfmHelper.get_timestamp_string(artist_info['bio']['formationlist']['formation']) ||
       'No dates known.'
 
+    artist_info['image'] and
+    artist_info['image'][1] and
+    artist_info['image'][1]['content'] and
+    image = artist_info['image'][1]['content'].split('/').last
     icon  = image && AlfredfmHelper.generate_feedback_icon(artist_info['image'][1]['content'], :volatile_storage_path, image)
 
-  image = artist_info['image'][1]['content'].split('/').last
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
       :title      => artist_info['name'],

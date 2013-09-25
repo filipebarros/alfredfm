@@ -12,6 +12,10 @@ Alfred.with_friendly_error do |alfred|
   begin
     album_info = alfredfm.get_album_information
 
+    album_info['image'] and
+    album_info['image'][1] and
+    album_info['image'][1]['content'] and
+    image = album_info['image'][1]['content'].split('/').last
     icon  = image && AlfredfmHelper.generate_feedback_icon(album_info['image'][1]['content'], :volatile_storage_path, image)
 
     fb.add_item({
@@ -48,7 +52,6 @@ Alfred.with_friendly_error do |alfred|
       :valid      => 'yes'
     })
 
-  image = album_info['image'][1]['content'].split('/')[-1]
   rescue OSXMediaPlayer::NoTrackPlayingError => e
     AlfredfmHelper.add_error_item(fb, "#{e.to_s}!", 'Album information lookup only works for the current iTunes track.')
 
