@@ -21,26 +21,36 @@ end
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
   fb = alfred.feedback
+  begin
+    recommended_artists = alfredfm.get_recommended_artists
+    recommended_artists.each do |recommendation|
+      icon = image && AlfredfmHelper.generate_feedback_icon(recommendation['image'][1]['content'], :volatile_storage_path, image)
 
-  recommended_artists = alfredfm.get_recommended_artists
-  recommended_artists.each { |recommendation|
     image = recommendation['image'][1]['content'].split('/')[-1]
-    icon_path = AlfredfmHelper.generate_feedback_icon recommendation['image'][1]['content'], :volatile_storage_path, image
+      fb.add_item({
+        :uid        => AlfredfmHelper.generate_uuid,
+        :title      => recommendation['name'],
+        :subtitle   => "Similar to: #{AlfredfmHelper.map_information(recommendation['context']['artist'], 'name', 'no similar artists found.')}",
+        :arg        => recommendation['name'],
+        :icon       => icon,
+        :valid      => 'yes'
+      })
+    end
 
-    similar = AlfredfmHelper.map_information recommendation['context']['artist'], 'name', 'No Similar Artists!'
     unless fb.empty?
       puts fb.to_alfred(ARGV)
       return
     end
 
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => recommendation['name'],
-      :subtitle   => similar,
-      :arg        => recommendation['name'],
-      :icon       => icon_path,
-      :valid      => 'yes'
+      :uid   => AlfredfmHelper.generate_uuid,
+      :title => 'No recommended artists.',
+      :valid => 'no'
     })
-  }
+
+  rescue Lastfm::ApiError => e
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
+  end
+
   puts fb.to_alfred
 end

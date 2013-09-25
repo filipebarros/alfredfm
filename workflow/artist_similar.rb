@@ -11,37 +11,27 @@ Alfred.with_friendly_error do |alfred|
   fb = alfred.feedback
 
   begin
-    similar = alfredfm.get_similar_artists ARGV
+    similar = alfredfm.get_similar_artists(ARGV)
+    similar.each do |artist|
+      icon = image && AlfredfmHelper.generate_feedback_icon(artist['image'][1]['content'], :volatile_storage_path, image)
 
-    unless similar.empty?
-      similar.each { |artist|
-        image = artist['image'][1]['content'].split('/')[-1]
-        icon_path = AlfredfmHelper.generate_feedback_icon artist['image'][1]['content'], :volatile_storage_path, image
+      rounded = sprintf('%.2f', artist['match']).to_f
 
-        rounded = sprintf('%.2f', artist['match']).to_f
-
-        fb.add_item({
-          :uid        => AlfredfmHelper.generate_uuid,
-          :title      => artist['name'],
-          :subtitle   => "#{rounded * 100}% Match",
-          :arg        => artist['name'],
-          :icon       => icon_path,
-          :valid      => 'yes'
-        })
-      }
-    else
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,
-        :title      => "No artist named #{ARGV.join(' ')} found!",
-        :valid      => 'no'
+        :title      => artist['name'],
+        :subtitle   => "#{rounded * 100} % Match",
+        :arg        => artist['name'],
+        :icon       => icon,
+        :valid      => 'yes'
       })
     end
-  rescue Appscript::CommandError
-    fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => "iTunes currently not playing any song!",
-      :valid      => 'no'
-    })
+
+  rescue OSXMediaPlayer::NoTrackPlayingError => e
+    AlfredfmHelper.add_error_item(fb, "#{e.to_s}.", 'Type an artist name to look it up on last.fm.')
+
+  rescue Lastfm::ApiError => e
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
   puts fb.to_alfred
 end

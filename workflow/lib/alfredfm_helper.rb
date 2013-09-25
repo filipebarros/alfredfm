@@ -79,12 +79,21 @@ class AlfredfmHelper
     { :type => 'default', :name => filepath }
   end
 
+  def self.add_error_item feedback, title, subtitle = nil
+    feedback.add_item({
+      :uid        => AlfredfmHelper.generate_uuid,
+      :title      => title,
+      :subtitle   => subtitle,
+      :valid      => 'no'
+    })
+  end
+
   def itunes_running?
     %x{osascript -e 'get running of application id "com.apple.itunes"'}.chomp == 'true'
   end
 
   def get_itunes_trackinfo trackinfo
-    itunes_running? or return nil
+    itunes_running? or raise OSXMediaPlayer::NoTrackPlayingError, 'iTunes is not running'
     itunes_command = [
       'tell application id "com.apple.itunes"',
       'try',
@@ -92,7 +101,8 @@ class AlfredfmHelper
       'end try',
       'end tell'
     ]
-     %x{osascript -e '#{itunes_command.join("' -e '")}'}.chomp[/[^ ].+[^ ]/]
+     %x{osascript -e '#{itunes_command.join("' -e '")}'}.chomp.trim or
+       raise OSXMediaPlayer::NoTrackPlayingError, 'No track playing in iTunes'
   end
 
   def get_artist artist
@@ -113,8 +123,8 @@ class AlfredfmHelper
   end
 
   def love_track
-    artist = get_itunes_trackinfo(:artist) and
-    track  = get_itunes_trackinfo(:name) and
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
     begin
       @lastfm.session = @@session
       @lastfm.track.love(:artist => artist, :track => track)
@@ -125,8 +135,8 @@ class AlfredfmHelper
   end
 
   def ban_track
-    artist = get_itunes_trackinfo(:artist) and
-    track  = get_itunes_trackinfo(:name) and
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
     begin
       @lastfm.session = @@session
       @lastfm.track.ban(:artist => artist, :track => track)
@@ -137,9 +147,9 @@ class AlfredfmHelper
   end
 
   def tag_track tags
-    artist = get_itunes_trackinfo(:artist) and
-    track  = get_itunes_trackinfo(:name) and
-    tags   = tags.join(' ')[/[^ ].+[^ ]/] and
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
+    tags   = tags.join(' ').trim and
     begin
       @lastfm.session = @@session
       @lastfm.track.add_tags(:artist => artist, :track => track, :tags => tags)
@@ -150,9 +160,9 @@ class AlfredfmHelper
   end
 
   def untag_track tag
-    artist = get_itunes_trackinfo(:artist) and
-    track  = get_itunes_trackinfo(:name) and
-    tag    = tag.join(' ').split(',').first[/[^ ].+[^ ]/] and
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
+    tag    = tag.join(' ').split(',').first.trim and
     begin
       @lastfm.session = @@session
       @lastfm.track.remove_tag(:artist => artist, :track => track, :tags => tag)
@@ -163,8 +173,8 @@ class AlfredfmHelper
   end
 
   def get_track_information
-    artist = get_itunes_trackinfo(:artist) and
-    track  = get_itunes_trackinfo(:name) and
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
     @lastfm.track.get_info(
       :artist   => artist,
       :track    => track,
@@ -173,8 +183,8 @@ class AlfredfmHelper
   end
 
   def get_album_information
-    artist = get_itunes_trackinfo(:artist) and
-    album  = get_itunes_trackinfo(:album) and
+    artist = get_itunes_trackinfo(:artist)
+    album  = get_itunes_trackinfo(:album)
     @lastfm.album.get_info(
       :artist   => artist,
       :album    => album,
@@ -183,21 +193,24 @@ class AlfredfmHelper
   end
 
   def get_artist_information artist = nil
-    artist = get_artist(artist) and @lastfm.artist.get_info(
+    artist = get_artist(artist)
+    artist_info = @lastfm.artist.get_info(
       :artist   => artist,
       :username => @@username
     )
   end
 
   def get_artist_events artist = nil
-    artist = get_artist(artist) and @lastfm.artist.get_events(
+    artist = get_artist(artist)
+    @lastfm.artist.get_events(
       :artist => artist,
       :limit  => 10
     )
   end
 
   def get_similar_artists artist = nil
-    artist = get_artist(artist) and @lastfm.artist.get_similar(
+    artist = get_artist(artist)
+    @lastfm.artist.get_similar(
       :artist => artist,
       :limit  => 10
     )[1..-1]

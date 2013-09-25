@@ -8,57 +8,64 @@ Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
 
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
+  fb = alfred.feedback
+  begin
+    artist_info = alfredfm.get_artist_information(ARGV)
 
-  artist_info = alfredfm.get_artist_information(ARGV) or return nil
+    band_members = artist_info['bandmembers'] &&
+      AlfredfmHelper.map_information(artist_info['bandmembers']['member'], 'name', nil) ||
+      'No known Band members.'
 
-  band_members = artist_info['bandmembers'] &&
-    AlfredfmHelper.map_information(artist_info['bandmembers']['member'], 'name', nil) ||
-    'No known Band members.'
+    formation_dates = artist_info['bio']['formationlist'] &&
+      artist_info['bio']['formationlist']['formation'] &&
+      AlfredfmHelper.get_timestamp_string(artist_info['bio']['formationlist']['formation']) ||
+      'No dates known.'
 
-  formation_dates = artist_info['bio']['formationlist'] &&
-    artist_info['bio']['formationlist']['formation'] &&
-    "#{artist_info['bio']['formationlist']['formation']['yearfrom']}" ||
-    'No dates known.'
+    icon  = image && AlfredfmHelper.generate_feedback_icon(artist_info['image'][1]['content'], :volatile_storage_path, image)
 
   image = artist_info['image'][1]['content'].split('/').last
-  icon_path = AlfredfmHelper.generate_feedback_icon artist_info['image'][1]['content'], :volatile_storage_path, image
+    fb.add_item({
+      :uid        => AlfredfmHelper.generate_uuid,
+      :title      => artist_info['name'],
+      :subtitle   => band_members,
+      :arg        => artist_info['name'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
+    artist_info['bio'] and
+    artist_info['bio']['placeformed'] and
+    fb.add_item({
+      :uid        => AlfredfmHelper.generate_uuid,
+      :title      => artist_info['bio']['placeformed'],
+      :subtitle   => formation_dates,
+      :arg        => artist_info['name'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
+    fb.add_item({
+      :uid        => AlfredfmHelper.generate_uuid,
       :title      => "User Playcount: #{LocalizationHelper.format_number(artist_info['stats']['userplaycount'])}",
       :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(artist_info['stats']['playcount'])}",
+      :arg        => artist_info['name'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
+    artist_tags = AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', nil) and
+    fb.add_item({
+      :uid        => AlfredfmHelper.generate_uuid,
+      :title      => "Tags",
+      :subtitle   => artist_tags,
+      :arg        => artist_info['name'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
 
-  fb = alfred.feedback
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => artist_info['name'],
-    :subtitle   => band_members,
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
-  artist_info['bio'] and
-  artist_info['bio']['placeformed'] and
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => artist_info['bio']['placeformed'],
-    :subtitle   => formation_dates,
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
-  artist_tags = AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', nil) and
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "Tags",
-    :subtitle   => artist_tags,
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
+  rescue OSXMediaPlayer::NoTrackPlayingError => e
+    AlfredfmHelper.add_error_item(fb, "#{e.to_s}.", 'Type an artist name to look it up on last.fm.')
+
+  rescue Lastfm::ApiError => e
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
+  end
 
   puts fb.to_alfred
 end

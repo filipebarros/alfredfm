@@ -10,21 +10,19 @@ Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
   fb = alfred.feedback
 
-  user_friends = alfredfm.get_all_friends
-  user_friends.each { |friend|
-    string_name = AlfredfmHelper.get_friend_name_string friend
-    icon_path = AlfredfmHelper.generate_feedback_icon friend['image'][1]['content'], :volatile_storage_path, "#{friend['name']}.png"
-
+  begin
+    user_friends = alfredfm.get_all_friends
+    user_friends.each do |friend|
+      name_string = AlfredfmHelper.get_friend_name_string friend
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,
-        :title      => string_name,
+        :title      => name_string,
         :subtitle   => "#{LocalizationHelper.format_number(friend['playcount'])} scrobbles",
         :arg        => friend['name'],
-        :icon       => icon_path,
+        :icon       => AlfredfmHelper.generate_feedback_icon(friend['image'][1]['content'], :volatile_storage_path, "#{friend['name']}.png"),
         :valid      => 'yes'
       })
     end
-  }
 
     unless fb.items.empty?
       puts fb.to_alfred(ARGV)
@@ -36,6 +34,9 @@ Alfred.with_friendly_error do |alfred|
       :title => 'No last.fm friends.',
       :valid => 'no'
     })
+
+  rescue Lastfm::ApiError => e
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
   puts fb.to_alfred
 end

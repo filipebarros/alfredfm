@@ -21,24 +21,20 @@ end
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
   fb = alfred.feedback
-  loved_tracks = alfredfm.get_loved_tracks
-  loved_tracks.each { |track|
-    icon_path = if track['image']
-      image = track['image'][1]['content'].split('/')[-1]
-      AlfredfmHelper.generate_feedback_icon track['image'][1]['content'], :volatile_storage_path, image
-    end
-
+  begin
+    loved_tracks = alfredfm.get_loved_tracks
+    loved_tracks.each do |track|
+      icon = image && AlfredfmHelper.generate_feedback_icon(track['image'][1]['content'], :volatile_storage_path, image)
 
       fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
-        :title      => track['name'],
-        :subtitle   => track['artist']['name'],
-        :arg        => track['url'],
-        :icon       => icon_path,
-        :valid      => 'yes'
+        :uid      => AlfredfmHelper.generate_uuid,
+        :title    => track['name'],
+        :subtitle => track['artist']['name'],
+        :arg      => track['url'],
+        :icon     => icon,
+        :valid    => 'yes'
       })
     end
-  }
 
     unless fb.items.empty?
       puts fb.to_alfred(ARGV)
@@ -49,6 +45,9 @@ Alfred.with_friendly_error do |alfred|
       :title => 'No loved tracks.',
       :valid => 'no'
     })
+
+  rescue Lastfm::ApiError => e
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
   puts fb.to_alfred
 end
