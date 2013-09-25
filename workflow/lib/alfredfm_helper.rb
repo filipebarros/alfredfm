@@ -7,7 +7,7 @@ require 'securerandom'
 
 class AlfredfmHelper
   def initialize
-    app_info = YAML.load_file("info.yml")
+    app_info = YAML.load_file('info.yml')
     @api_key = app_info['api_key']
     api_secret = app_info['api_secret']
 
@@ -46,7 +46,7 @@ class AlfredfmHelper
   # @param number [String] number to split with commas
   # @return [String] comma separated number
   def self.separate_comma number
-    number.to_s.chars.to_a.reverse.each_slice(3).map(&:join).join(",").reverse
+    number.to_s.chars.to_a.reverse.each_slice(3).map(&:join).join(',').reverse
   end
 
   def self.map_information information_array, key, failed
@@ -77,7 +77,7 @@ class AlfredfmHelper
 
   def self.get_timestamp_string information
     if information.nil? || information.empty?
-      return "No Information Available!"
+      return 'No Information Available!'
     end
     if !information.kind_of? Array
       information = [information]
@@ -104,7 +104,7 @@ class AlfredfmHelper
 
   def self.generate_feedback_icon url, path, filename
     icon = if File.exists?(File.join(@paths[path], filename))
-      { :type => "default", :name => File.join(@paths[path], filename) }
+      { :type => 'default', :name => File.join(@paths[path], filename) }
     else
       if url
         img = Net::HTTP.get(URI(url))
@@ -147,8 +147,8 @@ class AlfredfmHelper
         :track => track.name.get
       )
       return "Successfully Loved #{track.artist.get} by #{track.name.get}"
-    rescue Exception => e
-      return "Unsuccessful!"
+    rescue Exception
+      return 'Unsuccessful!'
     end
   end
 
@@ -161,8 +161,8 @@ class AlfredfmHelper
         :track => track.name.get
       )
       return "Successfully Banned #{track.artist.get} by #{track.name.get}"
-    rescue Exception => e
-      return "Unsuccessful"
+    rescue Exception
+      return 'Unsuccessful!'
     end
   end
 
@@ -176,8 +176,8 @@ class AlfredfmHelper
         :tags => tags.join(' ')
       )
       return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
-    rescue Exception => e
-      return "Unsuccessful"
+    rescue Exception
+      return 'Unsuccessful!'
     end
   end
 
@@ -191,8 +191,8 @@ class AlfredfmHelper
         :tags => tag.join(' ').split(',')[0]
       )
       return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
-    rescue Exception => e
-      return "Unsuccessful"
+    rescue Exception
+      return 'Unsuccessful!'
     end
   end
 

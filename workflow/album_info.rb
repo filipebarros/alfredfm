@@ -34,7 +34,7 @@ Alfred.with_friendly_error do |alfred|
   })
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "Release Date",
+    :title      => 'Release Date',
     :subtitle   => releasedate,
     :arg        => album_info['url'],
     :icon       => icon_path,
@@ -50,7 +50,7 @@ Alfred.with_friendly_error do |alfred|
   })
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "Tags",
+    :title      => 'Tags',
     :subtitle   => album_tags,
     :arg        => album_info['url'],
     :icon       => icon_path,

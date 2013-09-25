@@ -41,7 +41,7 @@ Alfred.with_friendly_error do |alfred|
   rescue Appscript::CommandError
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
-      :title      => "iTunes currently not playing any song!",
+      :title      => 'iTunes currently not playing any song!',
       :valid      => 'no'
     })
   end
