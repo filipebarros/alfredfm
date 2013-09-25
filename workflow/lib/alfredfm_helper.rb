@@ -37,7 +37,7 @@ class AlfredfmHelper
   # @return [String] uuid
   def self.generate_uuid
     SecureRandom.uuid
-  rescue NoMethodError => e # SecureRandom.uuid is Ruby >= 1.9
+  rescue NoMethodError # SecureRandom.uuid is Ruby >= 1.9
     require 'uuidtools'
     UUIDTools::UUID.random_create.to_s
   end
