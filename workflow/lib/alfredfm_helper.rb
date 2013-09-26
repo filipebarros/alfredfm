@@ -22,9 +22,9 @@ class AlfredfmHelper
     user_info_file = File.join(@@paths[:storage_path], 'user_info.yml')
     if File.exist?(user_info_file)
       user_info  = YAML.load_file(user_info_file)
-      @token     = user_info[:token]
-      @@username = user_info[:username]
-      @@session  = user_info[:session]
+      @token     = user_info[:token]    || user_info['token']
+      @@username = user_info[:username] || user_info['username']
+      @@session  = user_info[:session]  || user_info['session']
     end
   end
 
