@@ -129,7 +129,7 @@ class AlfredfmHelper
   end
 
   def open_in_browser token
-    `open "http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}"`
+    exec("open http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}")
     sleep 15
   end
 
