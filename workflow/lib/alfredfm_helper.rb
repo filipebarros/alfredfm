@@ -108,8 +108,16 @@ class AlfredfmHelper
        raise OSXMediaPlayer::NoTrackPlayingError, 'No track playing in iTunes'
   end
 
-  def get_artist artist
+  def get_artist artist = nil
     Array(artist).join(' ').trim || get_itunes_trackinfo(:artist)
+  end
+
+  def get_track
+    get_itunes_trackinfo(:name)
+  end
+
+  def get_album
+    get_itunes_trackinfo(:album)
   end
 
   def get_token
@@ -235,5 +243,5 @@ class AlfredfmHelper
     @lastfm.user.get_loved_tracks(:user => @@username)
   end
 
-  private :get_artist, :get_itunes_trackinfo
+  private :get_itunes_trackinfo
 end

@@ -12,11 +12,7 @@ Alfred.with_friendly_error do |alfred|
   begin
     events = alfredfm.get_artist_events(ARGV)
     if events.nil?
-      fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
-        :title      => "No events found for artist #{ARGV.join(' ').trim}!",
-        :valid      => 'no'
-      })
+      AlfredfmHelper.add_error_item(fb, "No events found for artist #{alfredfm.get_artist}!")
     else
       events.each do |event|
         image = event.get(['image', 1, 'content'])
@@ -37,7 +33,7 @@ Alfred.with_friendly_error do |alfred|
     AlfredfmHelper.add_error_item(fb, "#{e.to_s}.", 'Type an artist name to look it up on last.fm.')
 
   rescue Lastfm::ApiError => e
-    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{alfredfm.get_artist}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
 
   puts fb.to_alfred

@@ -54,7 +54,7 @@ Alfred.with_friendly_error do |alfred|
     AlfredfmHelper.add_error_item(fb, "#{e.to_s}!", 'Track information lookup only works for the current iTunes track.')
 
   rescue Lastfm::ApiError => e
-    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{alfredfm.get_track}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
 
   puts fb.to_alfred
