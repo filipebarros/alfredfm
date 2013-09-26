@@ -8,8 +8,10 @@ include R18n::Helpers
 
 class LocalizationHelper
   def self.format_number number
-    numeric = Integer(number) rescue Float(number)
-    l numeric
+    if number.is_a?(String)
+      number = Integer(number) rescue Float(number)
+    end
+    l number
   end
 
   def self.format_date datetime, format = nil
