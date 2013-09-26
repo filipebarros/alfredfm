@@ -37,7 +37,7 @@ Alfred.with_friendly_error do |alfred|
       })
     end
 
-    unless fb.empty?
+    unless fb.items.empty?
       puts fb.to_alfred(ARGV)
       return
     end
