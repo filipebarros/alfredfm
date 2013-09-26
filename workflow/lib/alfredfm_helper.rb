@@ -113,16 +113,16 @@ class AlfredfmHelper
   end
 
   def get_token
-    return @lastfm.auth.get_token
+    @lastfm.auth.get_token
   end
 
   def open_in_browser token
-    `open "http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}"`
+    %x{open "http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}"}
     sleep 15
   end
 
   def get_session token
-    return @lastfm.auth.get_session(:token => token)['key']
+    @lastfm.auth.get_session(:token => token)['key']
   end
 
   def love_track
@@ -131,7 +131,7 @@ class AlfredfmHelper
     begin
       @lastfm.session = @@session
       @lastfm.track.love(:artist => artist, :track => track)
-      return "Successfully Loved #{track} by #{artist}."
+      "Successfully Loved #{track} by #{artist}."
     rescue Exception => e
       return "Unsuccessful!"
     end
@@ -143,7 +143,7 @@ class AlfredfmHelper
     begin
       @lastfm.session = @@session
       @lastfm.track.ban(:artist => artist, :track => track)
-      return "Successfully Banned #{track} by #{artist}."
+      "Successfully Banned #{track} by #{artist}."
     rescue Exception => e
       return "Unsuccessful"
     end
@@ -152,11 +152,10 @@ class AlfredfmHelper
   def tag_track tags
     artist = get_itunes_trackinfo(:artist)
     track  = get_itunes_trackinfo(:name)
-    tags   = tags.join(' ').trim and
-    begin
+    tags   = tags.join(' ').trim and begin
       @lastfm.session = @@session
       @lastfm.track.add_tags(:artist => artist, :track => track, :tags => tags)
-      return "Successfully Tagged #{track} by #{artist} with tags #{tags}."
+      "Successfully Tagged #{track} by #{artist} with tags #{tags}."
     rescue Exception => e
       return "Unsuccessful"
     end
@@ -165,11 +164,10 @@ class AlfredfmHelper
   def untag_track tag
     artist = get_itunes_trackinfo(:artist)
     track  = get_itunes_trackinfo(:name)
-    tag    = tag.join(' ').split(',').first.trim and
-    begin
+    tag    = tag.join(' ').split(',').first.trim and begin
       @lastfm.session = @@session
       @lastfm.track.remove_tag(:artist => artist, :track => track, :tags => tag)
-      return "Successfully removed Tag #{tag} from #{track} by #{artist}."
+      "Successfully removed Tag #{tag} from #{track} by #{artist}."
     rescue Exception => e
       return "Unsuccessful"
     end
