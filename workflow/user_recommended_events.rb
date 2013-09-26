@@ -30,11 +30,7 @@ Alfred.with_friendly_error do |alfred|
       return
     end
 
-    fb.add_item({
-      :uid   => AlfredfmHelper.generate_uuid,
-      :title => 'No recommended events.',
-      :valid => 'no'
-    })
+    AlfredfmHelper.add_error_item(fb, 'No recommended events.')
 
   rescue Lastfm::ApiError => e
     AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
