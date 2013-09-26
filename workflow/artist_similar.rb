@@ -12,12 +12,8 @@ Alfred.with_friendly_error do |alfred|
   begin
     similar = alfredfm.get_similar_artists(ARGV)
     similar.each do |artist|
-      artist['image'] and
-      artist['image'][1] and
-      artist['image'][1]['content'] and
-      image = artist['image'][1]['content'].split('/').last
-      icon = image && AlfredfmHelper.generate_feedback_icon(artist['image'][1]['content'], :volatile_storage_path, image)
-
+      image   = artist.get(['image', 1, 'content'])
+      icon    = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
       rounded = sprintf('%.2f', artist['match']).to_f
 
       fb.add_item({

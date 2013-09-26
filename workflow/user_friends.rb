@@ -12,13 +12,16 @@ Alfred.with_friendly_error do |alfred|
   begin
     user_friends = alfredfm.get_all_friends
     user_friends.each do |friend|
-      name_string = AlfredfmHelper.get_friend_name_string friend
+      name  = AlfredfmHelper.get_friend_name_string friend
+      image = friend.get(['image', 1, 'content'])
+      icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, "#{friend['name']}.png")
+
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,
-        :title      => name_string,
+        :title      => name,
         :subtitle   => "#{LocalizationHelper.format_number(friend['playcount'])} scrobbles",
         :arg        => friend['name'],
-        :icon       => AlfredfmHelper.generate_feedback_icon(friend['image'][1]['content'], :volatile_storage_path, "#{friend['name']}.png"),
+        :icon       => icon,
         :valid      => 'yes'
       })
     end

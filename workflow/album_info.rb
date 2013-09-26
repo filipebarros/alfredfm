@@ -11,12 +11,8 @@ Alfred.with_friendly_error do |alfred|
   fb = alfred.feedback
   begin
     album_info = alfredfm.get_album_information
-
-    album_info['image'] and
-    album_info['image'][1] and
-    album_info['image'][1]['content'] and
-    image = album_info['image'][1]['content'].split(File::SEPARATOR).last
-    icon  = image && AlfredfmHelper.generate_feedback_icon(album_info['image'][1]['content'], :volatile_storage_path, image)
+    image = album_info.get(['image', 1, 'content'])
+    icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
 
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
@@ -42,11 +38,11 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    album_tags = AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', nil) and
+    album_info.get(['toptags', 'tag']) and
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
       :title      => "Tags",
-      :subtitle   => album_tags,
+      :subtitle   => AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', 'No tags found.'),
       :arg        => album_info['url'],
       :icon       => icon,
       :valid      => 'yes'

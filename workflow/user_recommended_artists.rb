@@ -24,11 +24,8 @@ Alfred.with_friendly_error do |alfred|
   begin
     recommended_artists = alfredfm.get_recommended_artists
     recommended_artists.each do |recommendation|
-      recommendation['image'] and
-      recommendation['image'][1] and
-      recommendation['image'][1]['content'] and
-      image = recommendation['image'][1]['content'].split(File::SEPARATOR).last
-      icon = image && AlfredfmHelper.generate_feedback_icon(recommendation['image'][1]['content'], :volatile_storage_path, image)
+      image = recommendation.get(['image', 1, 'content'])
+      icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last);
 
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,

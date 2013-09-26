@@ -12,20 +12,16 @@ Alfred.with_friendly_error do |alfred|
   begin
     artist_info = alfredfm.get_artist_information(ARGV)
 
-    band_members = artist_info['bandmembers'] &&
+    band_members = artist_info.get(['bandmembers', 'member']) &&
       AlfredfmHelper.map_information(artist_info['bandmembers']['member'], 'name', nil) ||
-      'No known Band members.'
+      'No known band members.'
 
-    formation_dates = artist_info['bio']['formationlist'] &&
-      artist_info['bio']['formationlist']['formation'] &&
+    formation_dates = artist_info.get(['bio', 'formationlist', 'formation']) &&
       AlfredfmHelper.get_timestamp_string(artist_info['bio']['formationlist']['formation']) ||
-      'No dates known.'
+      'No formation dates known.'
 
-    artist_info['image'] and
-    artist_info['image'][1] and
-    artist_info['image'][1]['content'] and
-    image = artist_info['image'][1]['content'].split(File::SEPARATOR).last
-    icon  = image && AlfredfmHelper.generate_feedback_icon(artist_info['image'][1]['content'], :volatile_storage_path, image)
+    image = artist_info.get(['image', 1, 'content'])
+    icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
 
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
@@ -35,8 +31,7 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    artist_info['bio'] and
-    artist_info['bio']['placeformed'] and
+    artist_info.get(['bio', 'placeformed']) and
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
       :title      => artist_info['bio']['placeformed'],
@@ -53,11 +48,11 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    artist_tags = AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', nil) and
+    artist_info.get(['tags', 'tag']) and
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
       :title      => "Tags",
-      :subtitle   => artist_tags,
+      :subtitle   => AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', 'No tags found.'),
       :arg        => artist_info['name'],
       :icon       => icon,
       :valid      => 'yes'
