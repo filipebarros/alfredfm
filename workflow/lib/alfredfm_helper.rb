@@ -133,7 +133,7 @@ class AlfredfmHelper
       @lastfm.track.love(:artist => artist, :track => track)
       "Successfully Loved #{track} by #{artist}."
     rescue Exception => e
-      return "Unsuccessful!"
+      "Could not Love #{track}: e.to_s."
     end
   end
 
@@ -145,7 +145,7 @@ class AlfredfmHelper
       @lastfm.track.ban(:artist => artist, :track => track)
       "Successfully Banned #{track} by #{artist}."
     rescue Exception => e
-      return "Unsuccessful"
+      "Could not Ban #{track}: e.to_s."
     end
   end
 
@@ -157,7 +157,7 @@ class AlfredfmHelper
       @lastfm.track.add_tags(:artist => artist, :track => track, :tags => tags)
       "Successfully Tagged #{track} by #{artist} with tags #{tags}."
     rescue Exception => e
-      return "Unsuccessful"
+      "Could not Tag #{track}: e.to_s."
     end
   end
 
@@ -169,7 +169,7 @@ class AlfredfmHelper
       @lastfm.track.remove_tag(:artist => artist, :track => track, :tags => tag)
       "Successfully removed Tag #{tag} from #{track} by #{artist}."
     rescue Exception => e
-      return "Unsuccessful"
+      "Could not Untag #{track}: e.to_s."
     end
   end
 
