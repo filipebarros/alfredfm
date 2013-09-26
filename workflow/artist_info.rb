@@ -24,7 +24,7 @@ Alfred.with_friendly_error do |alfred|
     icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
 
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => artist_info['mbid'],
       :title      => artist_info['name'],
       :subtitle   => band_members,
       :arg        => artist_info['name'],
@@ -33,7 +33,7 @@ Alfred.with_friendly_error do |alfred|
     })
     artist_info.get(['bio', 'placeformed']) and
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => artist_info['mbid'],
       :title      => artist_info['bio']['placeformed'],
       :subtitle   => formation_dates,
       :arg        => artist_info['name'],
@@ -41,7 +41,7 @@ Alfred.with_friendly_error do |alfred|
       :valid      => 'yes'
     })
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => artist_info['mbid'],
       :title      => "User Playcount: #{LocalizationHelper.format_number(artist_info['stats']['userplaycount'])}",
       :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(artist_info['stats']['playcount'])}",
       :arg        => artist_info['name'],
@@ -50,7 +50,7 @@ Alfred.with_friendly_error do |alfred|
     })
     artist_info.get(['tags', 'tag']) and
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => artist_info['mbid'],
       :title      => "Tags",
       :subtitle   => AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', 'No tags found.'),
       :arg        => artist_info['name'],

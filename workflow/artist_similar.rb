@@ -17,7 +17,7 @@ Alfred.with_friendly_error do |alfred|
       rounded = sprintf('%.2f', artist['match']).to_f
 
       fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
+        :uid        => artist['mbid'],
         :title      => artist['name'],
         :subtitle   => "#{rounded * 100} % match.",
         :arg        => artist['name'],
