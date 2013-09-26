@@ -6,17 +6,14 @@ require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new
-  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
-  AlfredfmHelper.load_user_information
-
+  alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
   fb = alfred.feedback
 
   album_info = alfredfm.get_album_information ARGV
   album_tags = AlfredfmHelper.map_information album_info['toptags']['tag'], 'name', 'No Tags!'
 
   image = album_info['image'][1]['content'].split('/')[-1]
-  icon_path = AlfredfmHelper.generate_feedback_icon album_info['image'][1]['content'], :volatile_storage_path, image
+  icon_path = alfredfm.generate_feedback_icon album_info['image'][1]['content'], :volatile_storage_path, image
 
   releasedate = if !album_info['releasedate'].empty?
     Time.parse(album_info['releasedate']).strftime('%d of %B, %Y')

@@ -6,16 +6,13 @@ require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new
-  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
-  AlfredfmHelper.load_user_information
-
+  alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
   fb = alfred.feedback
 
   recommended_artists = alfredfm.get_recommended_artists
   recommended_artists.each do |recommendation|
     image = recommendation['image'][1]['content'].split('/')[-1]
-    icon_path = AlfredfmHelper.generate_feedback_icon recommendation['image'][1]['content'], :volatile_storage_path, image
+    icon_path = alfredfm.generate_feedback_icon recommendation['image'][1]['content'], :volatile_storage_path, image
 
     similar = AlfredfmHelper.map_information recommendation['context']['artist'], 'name', 'No Similar Artists!'
 

@@ -6,26 +6,22 @@ require 'lastfm'
 require 'securerandom'
 
 class AlfredfmHelper
-  def initialize
+  def initialize(storage_path, volatile_storage_path)
     app_info = YAML.load_file('info.yml')
     @api_key = app_info['api_key']
     api_secret = app_info['api_secret']
 
     @itunes = Appscript.app('iTunes')
     @lastfm = Lastfm.new(@api_key, api_secret)
-  end
 
-  def self.set_paths storage_path, volatile_storage_path
     @paths = Hash.new
     @paths[:storage_path] = storage_path
     @paths[:volatile_storage_path] = volatile_storage_path
-  end
 
-  def self.load_user_information
     information = YAML.load_file(File.join(@paths[:storage_path], 'user_info.yml'))
     @token = information['token']
-    @@username = information['username']
-    @@session = information['session']
+    @username = information['username']
+    @session = information['session']
   end
 
   # Save a hash to file
@@ -100,7 +96,7 @@ class AlfredfmHelper
     return string_name
   end
 
-  def self.generate_feedback_icon url, path, filename
+  def generate_feedback_icon(url, path, filename)
     icon = if File.exists?(File.join(@paths[path], filename))
       { :type => 'default', :name => File.join(@paths[path], filename) }
     else
@@ -137,7 +133,7 @@ class AlfredfmHelper
   end
 
   def love_track
-    @lastfm.session = @@session
+    @lastfm.session = @session
     track = @itunes.current_track
     begin
       @lastfm.track.love(
@@ -151,7 +147,7 @@ class AlfredfmHelper
   end
 
   def ban_track
-    @lastfm.session = @@session
+    @lastfm.session = @session
     track = @itunes.current_track
     begin
       @lastfm.track.ban(
@@ -165,7 +161,7 @@ class AlfredfmHelper
   end
 
   def tag_track tags
-    @lastfm.session = @@session
+    @lastfm.session = @session
     track = @itunes.current_track
     begin
       @lastfm.track.add_tags(
@@ -180,7 +176,7 @@ class AlfredfmHelper
   end
 
   def untag_track tag
-    @lastfm.session = @@session
+    @lastfm.session = @session
     track = @itunes.current_track
     begin
       @lastfm.track.remove_tag(
@@ -198,7 +194,7 @@ class AlfredfmHelper
     return @lastfm.track.get_info(
       :artist => @itunes.current_track.artist.get,
       :track => @itunes.current_track.name.get,
-      :username => @@username
+      :username => @username
     )
   end
 
@@ -206,14 +202,14 @@ class AlfredfmHelper
     return @lastfm.album.get_info(
       :artist => @itunes.current_track.artist.get,
       :album => @itunes.current_track.album.get,
-      :username => @@username
+      :username => @username
     )
   end
 
   def get_artist_information artist = nil
     return @lastfm.artist.get_info(
       :artist => get_artist(artist),
-      :username => @@username
+      :username => @username
     )
   end
 
@@ -233,14 +229,14 @@ class AlfredfmHelper
   end
 
   def get_recommended_artists
-    @lastfm.session = @@session
+    @lastfm.session = @session
     return @lastfm.user.get_recommended_artists(
       :limit => 10
     )
   end
 
   def get_recommended_events
-    @lastfm.session = @@session
+    @lastfm.session = @session
     return @lastfm.user.get_recommended_events(
       :limit => 10
     )
@@ -248,13 +244,13 @@ class AlfredfmHelper
 
   def get_all_friends
     return @lastfm.user.get_friends(
-      :user => @@username
+      :user => @username
     )
   end
 
   def get_loved_tracks
     return @lastfm.user.get_loved_tracks(
-      :user => @@username
+      :user => @username
     )
   end
 

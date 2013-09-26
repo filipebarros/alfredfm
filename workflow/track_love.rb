@@ -6,9 +6,7 @@ require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new
-  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
-  AlfredfmHelper.load_user_information
+  alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
 
   track_info = alfredfm.love_track
   puts track_info

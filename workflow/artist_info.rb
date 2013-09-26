@@ -6,10 +6,7 @@ require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new
-  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
-  AlfredfmHelper.load_user_information
-
+  alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
   fb = alfred.feedback
 
   artist_info = alfredfm.get_artist_information ARGV
@@ -18,7 +15,7 @@ Alfred.with_friendly_error do |alfred|
   artist_tags = AlfredfmHelper.map_information artist_info['tags']['tag'], 'name', 'No Tags!'
 
   image = artist_info['image'][1]['content'].split('/')[-1]
-  icon_path = AlfredfmHelper.generate_feedback_icon artist_info['image'][1]['content'], :volatile_storage_path, image
+  icon_path = alfredfm.generate_feedback_icon artist_info['image'][1]['content'], :volatile_storage_path, image
 
   fb.add_item({
     :uid        => AlfredfmHelper.generate_uuid,
@@ -30,7 +27,7 @@ Alfred.with_friendly_error do |alfred|
   })
 
   if artist_info['bio']['formationlist']
-    AlfredfmHelper.get_timestamp_string artist_info['bio']['formationlist']['formation']
+    band_time_information = AlfredfmHelper.get_timestamp_string artist_info['bio']['formationlist']['formation']
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
       :title      => artist_info['bio']['placeformed'],

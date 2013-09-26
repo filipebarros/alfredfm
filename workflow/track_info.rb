@@ -6,10 +6,7 @@ require 'alfred'
 require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new
-  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
-  AlfredfmHelper.load_user_information
-
+  alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
   fb = alfred.feedback
 
   track_info = alfredfm.get_track_information
@@ -17,7 +14,7 @@ Alfred.with_friendly_error do |alfred|
 
   icon_path = if track_info['album']
     image = track_info['album']['image'][1]['content'].split('/')[-1]
-    AlfredfmHelper.generate_feedback_icon track_info['album']['image'][1]['content'], :volatile_storage_path, image
+    alfredfm.generate_feedback_icon track_info['album']['image'][1]['content'], :volatile_storage_path, image
   else
     nil
   end
