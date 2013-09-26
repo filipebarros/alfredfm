@@ -32,8 +32,8 @@ Alfred.with_friendly_error do |alfred|
     })
     fb.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
-      :title      => "User Playcount: #{LocalizationHelper.format_number(album_info['userplaycount'])}",
-      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(album_info['playcount'])}",
+      :title      => "User Playcount: #{LocalizationHelper.format_number(album_info['userplaycount'] || 0)}",
+      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(album_info['playcount'] || 0)}",
       :arg        => album_info['url'],
       :icon       => icon,
       :valid      => 'yes'
