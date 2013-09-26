@@ -8,9 +8,9 @@ require 'net/http'
 
 class AlfredfmHelper
   def initialize alfred
-    app_info   = YAML.load_file("info.yml")
-    @api_key   = app_info['api_key']
-    api_secret = app_info['api_secret']
+    app_info   = YAML.load_file('info.yml')
+    @api_key   = app_info[:api_key]
+    api_secret = app_info[:api_secret]
 
     @lastfm = Lastfm.new(@api_key, api_secret)
 
@@ -19,10 +19,13 @@ class AlfredfmHelper
       :volatile_storage_path => alfred.volatile_storage_path
     }
 
-    user_info  = YAML.load_file(File.join(@@paths[:storage_path], 'user_info.yml'))
-    @token     = user_info['token']
-    @@username = user_info['username']
-    @@session  = user_info['session']
+    user_info_file = File.join(@@paths[:storage_path], 'user_info.yml')
+    if File.exist?(user_info_file)
+      user_info  = YAML.load_file(user_info_file)
+      @token     = user_info[:token]
+      @@username = user_info[:username]
+      @@session  = user_info[:session]
+    end
   end
 
   # Save a hash to file
@@ -30,7 +33,7 @@ class AlfredfmHelper
   # @param filename [String] name of the file to save
   # @param hash [Hash] hash to save onto file
   def self.save_hash_to_file path, filename, hash
-    File.write(File.join(@paths[path], filename), hash.to_yaml)
+    File.write(File.join(@@paths[path], filename), hash.to_yaml)
   end
 
   # Generate a Universally Uniqued IDentifier
