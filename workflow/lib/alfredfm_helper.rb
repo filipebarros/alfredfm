@@ -6,6 +6,8 @@ require 'lastfm'
 require 'securerandom'
 
 class AlfredfmHelper
+  ACTIONS = {love: 'Loved', add_tags: 'Tagged', ban: 'Banned', remove_tag: 'Untagged'}
+
   def initialize(storage_path, volatile_storage_path)
     app_info = YAML.load_file('info.yml')
     @api_key = app_info['api_key']
@@ -48,7 +50,7 @@ class AlfredfmHelper
   def self.map_information information_array, key, failed
     begin
       return information_array.map { |information| information[key].strip }.join(', ')
-    rescue Exception => e
+    rescue Exception
       return failed
     end
   end
@@ -111,12 +113,15 @@ class AlfredfmHelper
     return icon
   end
 
-  def get_artist artist
-    if artist.empty?
-      @itunes.current_track.artist.get
-    else
-      artist.join(' ')
-    end
+  def self.add_event(event, icon, feedback)
+    feedback.add_item({
+      uid: self.generate_uuid,
+      title: "#{event['title']} - #{event['venue']['name']}, #{event['venue']['location']['city']}",
+      subtitle: self.convert_array_to_string(event['artists']['artist']),
+      arg: "#{event['id']} #{event['title']}",
+      icon: icon,
+      valid: 'yes'
+    })
   end
 
   def get_token
@@ -129,62 +134,21 @@ class AlfredfmHelper
   end
 
   def get_session token
-    return @lastfm.auth.get_session(:token => token)['key']
+    return @lastfm.auth.get_session(token: token)['key']
   end
 
-  def love_track
-    @lastfm.session = @session
+  def track_action action, arguments
+    set_session
     track = @itunes.current_track
     begin
-      @lastfm.track.love(
-        :artist => track.artist.get,
-        :track => track.name.get
+      @lastfm.track.send(action,
+        { artist: track.artist.get,
+          track:  track.name.get,
+          tags:   (arguments if action.eql?(:add_tags)),
+          tag:    (arguments.split(',')[0] if action.eql?(:remove_tag))
+        }.reject { |key, value| value.nil? }
       )
-      return "Successfully Loved #{track.artist.get} by #{track.name.get}"
-    rescue Exception
-      return 'Unsuccessful!'
-    end
-  end
-
-  def ban_track
-    @lastfm.session = @session
-    track = @itunes.current_track
-    begin
-      @lastfm.track.ban(
-        :artist => track.artist.get,
-        :track => track.name.get
-      )
-      return "Successfully Banned #{track.artist.get} by #{track.name.get}"
-    rescue Exception
-      return 'Unsuccessful!'
-    end
-  end
-
-  def tag_track tags
-    @lastfm.session = @session
-    track = @itunes.current_track
-    begin
-      @lastfm.track.add_tags(
-        :artist => track.artist.get,
-        :track => track.name.get,
-        :tags => tags.join(' ')
-      )
-      return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
-    rescue Exception
-      return 'Unsuccessful!'
-    end
-  end
-
-  def untag_track tag
-    @lastfm.session = @session
-    track = @itunes.current_track
-    begin
-      @lastfm.track.remove_tag(
-        :artist => track.artist.get,
-        :track => track.name.get,
-        :tags => tag.join(' ').split(',')[0]
-      )
-      return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
+      return "Successfully #{ACTIONS[action]} #{track.artist.get} by #{track.name.get}"
     rescue Exception
       return 'Unsuccessful!'
     end
@@ -192,67 +156,77 @@ class AlfredfmHelper
 
   def get_track_information track = nil
     return @lastfm.track.get_info(
-      :artist => @itunes.current_track.artist.get,
-      :track => @itunes.current_track.name.get,
-      :username => @username
+      artist:   @itunes.current_track.artist.get,
+      track:    @itunes.current_track.name.get,
+      username: @username
     )
   end
 
   def get_album_information album = nil
     return @lastfm.album.get_info(
-      :artist => @itunes.current_track.artist.get,
-      :album => @itunes.current_track.album.get,
-      :username => @username
+      artist:   @itunes.current_track.artist.get,
+      album:    @itunes.current_track.album.get,
+      username: @username
     )
   end
 
   def get_artist_information artist = nil
     return @lastfm.artist.get_info(
-      :artist => get_artist(artist),
-      :username => @username
+      artist:   get_artist(artist),
+      username: @username
     )
   end
 
   def get_artist_events artist = nil
     return @lastfm.artist.get_events(
-      :artist => get_artist(artist),
-      :limit => 10
+      artist: get_artist(artist),
+      limit:  10
     )
   end
 
   def get_similar_artists artist = nil
-    head, *tail = @lastfm.artist.get_similar(
-      :artist => get_artist(artist),
-      :limit => 10
+    _, *tail = @lastfm.artist.get_similar(
+      artist: get_artist(artist),
+      limit:  10
     )
     return tail
   end
 
-  def get_recommended_artists
-    @lastfm.session = @session
-    return @lastfm.user.get_recommended_artists(
-      :limit => 10
-    )
-  end
-
-  def get_recommended_events
-    @lastfm.session = @session
-    return @lastfm.user.get_recommended_events(
-      :limit => 10
+  def get_recommendations recommendation
+    set_session
+    method = "get_recommended_#{recommendation}".to_sym
+    return @lastfm.user.send(method,
+      limit: 10
     )
   end
 
   def get_all_friends
     return @lastfm.user.get_friends(
-      :user => @username
+      user: @username
     )
   end
 
   def get_loved_tracks
     return @lastfm.user.get_loved_tracks(
-      :user => @username
+      user: @username
     )
   end
 
-  private :get_artist
+  private
+
+  def get_artist artist
+    if artist.empty?
+      @itunes.current_track.artist.get
+    else
+      artist.join(' ')
+    end
+  end
+
+  def set_session
+    @lastfm.session = @session
+  end
+
+  def generate_tags action, tags
+    return action.eql?(:add_tag) ? tags : tags.split(',')[0]
+  end
 end

@@ -8,6 +8,9 @@ require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
 
-  track_info = alfredfm.track_action ARGV[0].to_sym
+  action = ARGV.shift.to_sym
+  arguments = ARGV.join(' ')
+
+  track_info = alfredfm.track_action action, arguments
   puts track_info
 end

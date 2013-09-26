@@ -18,43 +18,41 @@ Alfred.with_friendly_error do |alfred|
   icon_path = alfredfm.generate_feedback_icon artist_info['image'][1]['content'], :volatile_storage_path, image
 
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => artist_info['name'],
-    :subtitle   => band_members,
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    artist_info['name'],
+    subtitle: band_members,
+    arg:      artist_info['name'],
+    icon:     icon_path,
+    valid:    'yes'
   })
 
   if artist_info['bio']['formationlist']
     band_time_information = AlfredfmHelper.get_timestamp_string artist_info['bio']['formationlist']['formation']
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => artist_info['bio']['placeformed'],
-      :subtitle   => band_time_information,
-      :arg        => artist_info['name'],
-      :icon       => icon_path,
-      :valid      => 'yes'
+      uid:      AlfredfmHelper.generate_uuid,
+      title:    artist_info['bio']['placeformed'],
+      subtitle: band_time_information,
+      arg:      artist_info['name'],
+      icon:     icon_path,
+      valid:    'yes'
     })
-  else
-    'No Information Available!'
   end
 
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['playcount'])}",
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    "User Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['userplaycount'])}",
+    subtitle: "Total Playcount: #{AlfredfmHelper.separate_comma(artist_info['stats']['playcount'])}",
+    arg:      artist_info['name'],
+    icon:     icon_path,
+    valid:    'yes'
   })
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => 'Tags',
-    :subtitle   => artist_tags,
-    :arg        => artist_info['name'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    'Tags',
+    subtitle: artist_tags,
+    arg:      artist_info['name'],
+    icon:     icon_path,
+    valid:    'yes'
   })
 
   puts fb.to_xml

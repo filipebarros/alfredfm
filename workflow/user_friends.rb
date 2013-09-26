@@ -20,20 +20,20 @@ Alfred.with_friendly_error do |alfred|
 
     if add
       fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
-        :title      => string_name,
-        :subtitle   => "#{AlfredfmHelper.separate_comma(friend['playcount'])} scrobbles",
-        :arg        => friend['name'],
-        :icon       => icon_path,
-        :valid      => 'yes'
+        uid:      AlfredfmHelper.generate_uuid,
+        title:    string_name,
+        subtitle: "#{AlfredfmHelper.separate_comma(friend['playcount'])} scrobbles",
+        arg:      friend['name'],
+        icon:     icon_path,
+        valid:    'yes'
       })
     end
   end
   if fb.items.empty?
     fb.add_item({
-      :uid => AlfredfmHelper.generate_uuid,
-      :title => "No friend name matches '#{ARGV[0]}'",
-      :valid => 'no'
+      uid:   AlfredfmHelper.generate_uuid,
+      title: "No friend name matches '#{ARGV[0]}'",
+      valid: 'no'
     })
   end
   puts fb.to_alfred

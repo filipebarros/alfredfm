@@ -12,23 +12,16 @@ Alfred.with_friendly_error do |alfred|
   events = alfredfm.get_artist_events ARGV
   if events.nil?
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => "No events found for artist #{ARGV.join(' ')}!",
-      :valid      => 'no'
+      uid:   AlfredfmHelper.generate_uuid,
+      title: "No events found for artist #{ARGV.join(' ')}!",
+      valid: 'no'
     })
   else
     events.each do |event|
       image = event['image'][1]['content'].split('/')[-1]
       icon_path = alfredfm.generate_feedback_icon event['image'][1]['content'], :volatile_storage_path, image
 
-      fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
-        :title      => "#{event['title']} - #{event['venue']['name']}, #{event['venue']['location']['city']}",
-        :subtitle   => event['startDate'],
-        :arg        => "#{event['id']} #{event['title']}",
-        :icon       => icon_path,
-        :valid      => 'yes'
-      })
+      AlfredfmHelper.add_event event, icon_path, fb
     end
   end
   puts fb.to_alfred

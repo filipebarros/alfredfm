@@ -14,9 +14,9 @@ Alfred.with_friendly_error do |alfred|
 
     if similar.empty?
       fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
-        :title      => "No artist named #{ARGV.join(' ')} found!",
-        :valid      => 'no'
+        uid:   AlfredfmHelper.generate_uuid,
+        title: "No artist named #{ARGV.join(' ')} found!",
+        valid: 'no'
       })
     else
       similar.each do |artist|
@@ -24,22 +24,21 @@ Alfred.with_friendly_error do |alfred|
         icon_path = alfredfm.generate_feedback_icon artist['image'][1]['content'], :volatile_storage_path, image
 
         rounded = sprintf('%.2f', artist['match']).to_f
-
         fb.add_item({
-          :uid        => AlfredfmHelper.generate_uuid,
-          :title      => artist['name'],
-          :subtitle   => "#{rounded * 100}% Match",
-          :arg        => artist['name'],
-          :icon       => icon_path,
-          :valid      => 'yes'
+          uid:      AlfredfmHelper.generate_uuid,
+          title:    artist['name'],
+          subtitle: "#{rounded * 100}% Match",
+          arg:      artist['name'],
+          icon:     icon_path,
+          valid:    'yes'
         })
       end
     end
   rescue Appscript::CommandError
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => 'iTunes currently not playing any song!',
-      :valid      => 'no'
+      uid:   AlfredfmHelper.generate_uuid,
+      title: 'iTunes currently not playing any song!',
+      valid: 'no'
     })
   end
   puts fb.to_alfred

@@ -601,7 +601,7 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>/usr/bin/ruby track_love.rb</string>
+				<string>/usr/bin/ruby track_action.rb love</string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -660,7 +660,7 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>/usr/bin/ruby track_ban.rb</string>
+				<string>/usr/bin/ruby track_action.rb ban</string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -702,7 +702,7 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>/usr/bin/ruby track_tag.rb {query}</string>
+				<string>/usr/bin/ruby track_action.rb add_tags {query}</string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>
@@ -761,7 +761,7 @@
 				<key>escaping</key>
 				<integer>127</integer>
 				<key>script</key>
-				<string>/usr/bin/ruby track_untag.rb {query}</string>
+				<string>/usr/bin/ruby track_action.rb remove_tag {query}</string>
 				<key>type</key>
 				<integer>0</integer>
 			</dict>

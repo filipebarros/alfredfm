@@ -22,20 +22,20 @@ Alfred.with_friendly_error do |alfred|
 
     if add
       fb.add_item({
-        :uid        => AlfredfmHelper.generate_uuid,
-        :title      => track['name'],
-        :subtitle   => track['artist']['name'],
-        :arg        => track['url'],
-        :icon       => icon_path,
-        :valid      => 'yes'
+        uid:      AlfredfmHelper.generate_uuid,
+        title:    track['name'],
+        subtitle: track['artist']['name'],
+        arg:      track['url'],
+        icon:     icon_path,
+        valid:    'yes'
       })
     end
   end
   if fb.items.empty?
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => "No artist named #{ARGV.join(' ')} found in the loved tracks!",
-      :valid      => 'no'
+      uid:   AlfredfmHelper.generate_uuid,
+      title: "No artist named #{ARGV.join(' ')} found in the loved tracks!",
+      valid: 'no'
     })
   end
   puts fb.to_alfred

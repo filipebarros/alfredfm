@@ -20,38 +20,38 @@ Alfred.with_friendly_error do |alfred|
   end
 
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => track_info['name'],
-    :subtitle   => track_info['artist']['name'],
-    :arg        => track_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    track_info['name'],
+    subtitle: track_info['artist']['name'],
+    arg:      track_info['url'],
+    icon:     icon_path,
+    valid:    'yes'
   })
   if track_info['userloved'].eql? '1'
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => 'Loved',
-      :subtitle   => '',
-      :arg        => track_info['url'],
-      :icon       => icon_path,
-      :valid      => 'yes'
+      uid:      AlfredfmHelper.generate_uuid,
+      title:    'Loved',
+      subtitle: '',
+      arg:      track_info['url'],
+      icon:     icon_path,
+      valid:    'yes'
     })
   end
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(track_info['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(track_info['playcount'])}",
-    :arg        => track_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    "User Playcount: #{AlfredfmHelper.separate_comma(track_info['userplaycount'])}",
+    subtitle: "Total Playcount: #{AlfredfmHelper.separate_comma(track_info['playcount'])}",
+    arg:      track_info['url'],
+    icon:     icon_path,
+    valid:    'yes'
   })
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => 'Tags',
-    :subtitle   => tags,
-    :arg        => track_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    'Tags',
+    subtitle: tags,
+    arg:      track_info['url'],
+    icon:     icon_path,
+    valid:    'yes'
   })
 
   puts fb.to_xml(ARGV)

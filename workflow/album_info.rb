@@ -22,36 +22,36 @@ Alfred.with_friendly_error do |alfred|
   end
 
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => album_info['name'],
-    :subtitle   => album_info['artist'],
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    album_info['name'],
+    subtitle: album_info['artist'],
+    arg:      album_info['url'],
+    icon:     icon_path,
+    valid:    'yes'
   })
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => 'Release Date',
-    :subtitle   => releasedate,
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    'Release Date',
+    subtitle: releasedate,
+    arg:      album_info['url'],
+    icon:     icon_path,
+    valid:    'yes'
   })
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(album_info['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(album_info['playcount'])}",
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid:      AlfredfmHelper.generate_uuid,
+    title:    "User Playcount: #{AlfredfmHelper.separate_comma(album_info['userplaycount'])}",
+    subtitle: "Total Playcount: #{AlfredfmHelper.separate_comma(album_info['playcount'])}",
+    arg:      album_info['url'],
+    icon:     icon_path,
+    valid:    'yes'
   })
   fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => 'Tags',
-    :subtitle   => album_tags,
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
+    uid: AlfredfmHelper.generate_uuid,
+    title:    'Tags',
+    subtitle: album_tags,
+    arg:      album_info['url'],
+    icon:     icon_path,
+    valid:    'yes'
   })
   puts fb.to_alfred
 end
