@@ -13,7 +13,7 @@ class Hash
   # Return a value from a nested Hash / Array structure by passing it an array of keys.
   # Returns nil if a key anywhere in the chain is not found.
   # Based on http://stackoverflow.com/questions/8479476/iterating-through-a-ruby-nested-hash-with-nils
-  def get(keys, default = nil)
+  def get keys, default = nil
     Array(keys).reduce(self) do |memo, key|
       memo[key] if memo.is_a?(Hash) || (memo.is_a?(Array) && key.is_a?(Integer))
     end or default
