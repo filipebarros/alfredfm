@@ -14,12 +14,12 @@ Alfred.with_friendly_error do |alfred|
     similar.each do |artist|
       image   = artist.get(['image', 1, 'content'])
       icon    = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
-      rounded = sprintf('%.2f', artist['match']).to_f
+      matches = (artist['match'].to_f * 100).precision(2)
 
       fb.add_item({
         :uid        => artist['mbid'],
         :title      => artist['name'],
-        :subtitle   => "#{rounded * 100} % match.",
+        :subtitle   => "#{LocalizationHelper.format_number(matches)} % match.",
         :arg        => artist['name'],
         :icon       => icon,
         :valid      => 'yes'

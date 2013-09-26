@@ -17,3 +17,17 @@ class Hash
   end
 end
 
+class Float
+  if RUBY_VERSION.to_f < 1.9
+    # Emulate `round` behaviour of Ruby 1.9 and above.
+    # Based on http://code.goingasplannedby.us/2013/06/05/ruby-rounding-floats/
+    def precision(p)
+      p = p.to_i if p.is_a?(Float)
+      p <  0 and return (self / 10 ** p.abs).round * 10 ** p.abs
+      p == 0 ? self.round : (self * 10 ** p).round.to_f / 10 ** p
+    end
+  else
+    def precision(p); round(p); end
+  end
+end
+
