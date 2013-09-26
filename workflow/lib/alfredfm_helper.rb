@@ -36,7 +36,7 @@ class AlfredfmHelper
     File.write(File.join(@@paths[path], filename), hash.to_yaml)
   end
 
-  # Generate a Universally Uniqued IDentifier
+  # Generate a Universally Uniqued Identifier
   # @return [String] uuid
   def self.generate_uuid
     SecureRandom.uuid
@@ -67,7 +67,7 @@ class AlfredfmHelper
     string_name = if friend_info['realname'].empty?
       friend_info['name']
     else
-      "#{friend_info['realname']} - #{friend_info['name']}"
+      "#{friend_info['realname']} – #{friend_info['name']}"
     end
     return string_name
   end

@@ -19,7 +19,7 @@ Alfred.with_friendly_error do |alfred|
       fb.add_item({
         :uid        => AlfredfmHelper.generate_uuid,
         :title      => artist['name'],
-        :subtitle   => "#{rounded * 100} % Match",
+        :subtitle   => "#{rounded * 100} % match.",
         :arg        => artist['name'],
         :icon       => icon,
         :valid      => 'yes'
