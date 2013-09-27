@@ -11,7 +11,7 @@ Alfred.with_friendly_error do |alfred|
   fb = alfred.feedback
   begin
     events = alfredfm.get_artist_events(ARGV)
-    if events.nil?
+    if events.empty?
       AlfredfmHelper.add_error_item(fb, "No events found for artist #{alfredfm.get_artist}!")
     else
       events.each do |event|

@@ -23,7 +23,7 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    fb.add_item({
+    album_info['releasedate'].empty? or fb.add_item({
       :uid        => uuid,
       :title      => "Release Date",
       :subtitle   => LocalizationHelper.format_date(album_info['releasedate'], :full),
@@ -39,11 +39,10 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    album_info.get(['toptags', 'tag']) and
-    fb.add_item({
+    album_info(['toptags', 'tag']).empty? or fb.add_item({
       :uid        => uuid,
       :title      => "Tags",
-      :subtitle   => AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', 'No tags found.'),
+      :subtitle   => AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', nil),
       :arg        => album_info['url'],
       :icon       => icon,
       :valid      => 'yes'

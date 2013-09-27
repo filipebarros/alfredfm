@@ -20,6 +20,11 @@ class Hash
   end
 end
 
+class NilClass
+  # Allow chained test like foo[bar].empty?
+  def empty?; true; end
+end
+
 class Float
   if RUBY_VERSION.to_f < 1.9
     # Emulate `round` behaviour of Ruby 1.9 and above.

@@ -32,8 +32,7 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    artist_info.get(['bio', 'placeformed']) and
-    fb.add_item({
+    artist_info.get(['bio', 'placeformed']).empty? or fb.add_item({
       :uid        => uuid,
       :title      => artist_info['bio']['placeformed'],
       :subtitle   => formation_dates,
@@ -49,11 +48,10 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    artist_info.get(['tags', 'tag']) and
-    fb.add_item({
+    artist_info.get(['tags', 'tag']).empty? or fb.add_item({
       :uid        => uuid,
       :title      => "Tags",
-      :subtitle   => AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', 'No tags found.'),
+      :subtitle   => AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', nil),
       :arg        => artist_info['name'],
       :icon       => icon,
       :valid      => 'yes'
