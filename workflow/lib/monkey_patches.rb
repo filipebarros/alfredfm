@@ -21,7 +21,7 @@ class Hash
 end
 
 class NilClass
-  # Allow chained test like foo[bar].empty?
+  # Allow tests like foo[bar].empty? for a non existent key 'bar'.
   def empty?; true; end
 end
 
