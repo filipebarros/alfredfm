@@ -26,9 +26,10 @@ Alfred.with_friendly_error do |alfred|
     recommended_artists.each do |recommendation|
       image = recommendation.get(['image', 1, 'content'])
       icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
+      uuid  = artist_info['mbid'].empty? ? artist_info['mbid'] : AlfredfmHelper.generate_uuid
 
       fb.add_item({
-        :uid        => recommendation['mbid'],
+        :uid        => uuid,
         :title      => recommendation['name'],
         :subtitle   => "Similar to: #{AlfredfmHelper.map_information(recommendation['context']['artist'], 'name', 'no similar artists found.')}",
         :arg        => recommendation['name'],

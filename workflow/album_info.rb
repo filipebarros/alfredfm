@@ -13,9 +13,10 @@ Alfred.with_friendly_error do |alfred|
     album_info = alfredfm.get_album_information
     image = album_info.get(['image', 1, 'content'])
     icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
+    uuid  = AlfredfmHelper.generate_uuid
 
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => uuid,
       :title      => album_info['name'],
       :subtitle   => album_info['artist'],
       :arg        => album_info['url'],
@@ -23,7 +24,7 @@ Alfred.with_friendly_error do |alfred|
       :valid      => 'yes'
     })
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => uuid,
       :title      => "Release Date",
       :subtitle   => LocalizationHelper.format_date(album_info['releasedate'], :full),
       :arg        => album_info['url'],
@@ -31,7 +32,7 @@ Alfred.with_friendly_error do |alfred|
       :valid      => 'yes'
     })
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => uuid,
       :title      => "User Playcount: #{LocalizationHelper.format_number(album_info['userplaycount'] || 0)}",
       :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(album_info['playcount'] || 0)}",
       :arg        => album_info['url'],
@@ -40,7 +41,7 @@ Alfred.with_friendly_error do |alfred|
     })
     album_info.get(['toptags', 'tag']) and
     fb.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
+      :uid        => uuid,
       :title      => "Tags",
       :subtitle   => AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', 'No tags found.'),
       :arg        => album_info['url'],
