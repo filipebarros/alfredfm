@@ -25,7 +25,7 @@ Alfred.with_friendly_error do |alfred|
         fb.add_item({
           :uid        => AlfredfmHelper.generate_uuid,
           :title      => name,
-          :subtitle   => "#{LocalizationHelper.format_number(friend['playcount'] || 0)} scrobbles",
+          :subtitle   => "#{LocalizationHelper.format_number(friend['playcount']) || 0} scrobbles",
           :arg        => friend['name'],
           :icon       => icon,
           :valid      => 'yes'
