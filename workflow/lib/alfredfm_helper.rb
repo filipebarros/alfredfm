@@ -4,6 +4,7 @@
 require 'yaml'
 require 'lastfm'
 require 'securerandom'
+require 'uri'
 require 'net/http'
 
 class AlfredfmHelper
@@ -72,8 +73,9 @@ class AlfredfmHelper
     return string_name
   end
 
-  def self.generate_feedback_icon url, path, filename
-    filepath = File.join(@@paths[path], filename)
+  def self.generate_feedback_icon url, path, filename = nil
+    filename ||= URI.split(url)[5].split('/').last
+    filepath   = File.join(@@paths[path], filename)
     unless File.exists?(filepath)
       url and File.open(filepath, 'w') do |f|
         f.write Net::HTTP.get(URI(url))

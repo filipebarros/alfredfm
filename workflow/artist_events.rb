@@ -16,7 +16,7 @@ Alfred.with_friendly_error do |alfred|
     else
       events.each do |event|
         image = event.get(['image', 1, 'content'])
-        icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
+        icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
 
         fb.add_item({
           :uid        => AlfredfmHelper.generate_uuid,

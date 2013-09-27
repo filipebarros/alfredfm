@@ -21,7 +21,7 @@ Alfred.with_friendly_error do |alfred|
       'No formation dates known.'
 
     image = artist_info.get(['image', 1, 'content'])
-    icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
+    icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
     uuid  = artist_info['mbid'].empty? ? artist_info['mbid'] : AlfredfmHelper.generate_uuid
 
     fb.add_item({
