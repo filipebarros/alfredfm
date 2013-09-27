@@ -20,35 +20,43 @@ end
 
 Alfred.with_friendly_error do |alfred|
   alfredfm = AlfredfmHelper.new alfred
-  fb = alfred.feedback
-  begin
-    loved_tracks = alfredfm.get_loved_tracks
-    loved_tracks.each do |track|
-      image = track.get(['image', 1, 'content'])
-      icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last);
-      uuid  = track['mbid'].empty? ? track['mbid'] : AlfredfmHelper.generate_uuid
-      info  = track['artist']['name']
-      info << " – #{LocalizationHelper.format_date(track['date']['content'], :full)}." unless track.get(['date', 'content']).empty?
 
-      fb.add_item({
-        :uid      => uuid,
-        :title    => track['name'],
-        :subtitle => info,
-        :arg      => track['url'],
-        :icon     => icon,
-        :valid    => 'yes'
-      })
+  alfred.with_cached_feedback do
+    use_cache_file :file => AlfredfmHelper.get_cache_file(File.basename(__FILE__, File.extname(__FILE__))), :expire => 300
+  end
+
+  unless fb = alfred.feedback.get_cached_feedback
+    fb = alfred.feedback
+    begin
+      loved_tracks = alfredfm.get_loved_tracks
+      loved_tracks.each do |track|
+        image = track.get(['image', 1, 'content'])
+        icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last);
+        uuid  = track['mbid'].empty? ? track['mbid'] : AlfredfmHelper.generate_uuid
+        info  = track['artist']['name']
+        info << " – #{LocalizationHelper.format_date(track['date']['content'], :full)}." unless track.get(['date', 'content']).empty?
+
+        fb.add_item({
+          :uid      => uuid,
+          :title    => track['name'],
+          :subtitle => info,
+          :arg      => track['url'],
+          :icon     => icon,
+          :valid    => 'yes'
+        })
+      end
+
+      unless fb.items.empty?
+        fb.put_cached_feedback
+        puts fb.to_alfred(ARGV)
+        return
+      end
+
+      AlfredfmHelper.add_error_item(fb, 'No loved tracks.')
+
+    rescue Lastfm::ApiError => e
+      AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
     end
-
-    unless fb.items.empty?
-      puts fb.to_alfred(ARGV)
-      return
-    end
-
-   AlfredfmHelper.add_error_item(fb, 'No loved tracks.')
-
-  rescue Lastfm::ApiError => e
-    AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
 
   puts fb.to_alfred

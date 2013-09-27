@@ -91,6 +91,10 @@ class AlfredfmHelper
     })
   end
 
+  def self.get_cache_file name = 'cached'
+    File.join(@@paths[:volatile_storage_path], "#{name}_feedback")
+  end
+
   def itunes_running?
     %x{osascript -e 'get running of application id "com.apple.itunes"'}.chomp == 'true'
   end
