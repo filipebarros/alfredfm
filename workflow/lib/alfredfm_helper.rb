@@ -13,6 +13,10 @@ class AlfredfmHelper
     api_secret = app_info[:api_secret]
 
     @lastfm = Lastfm.new(@api_key, api_secret)
+<<<<<<< HEAD
+=======
+
+>>>>>>> pr/1
     @@paths = {
       :storage_path          => alfred.storage_path,
       :volatile_storage_path => alfred.volatile_storage_path

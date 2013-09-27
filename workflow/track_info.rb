@@ -10,6 +10,7 @@ Alfred.with_friendly_error do |alfred|
   fb = alfred.feedback
   begin
     track_info = alfredfm.get_track_information
+
     image = track_info.get(['album,', 'image', 1, 'content'])
     icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
     uuid  = AlfredfmHelper.generate_uuid
