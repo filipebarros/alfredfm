@@ -38,7 +38,7 @@ Alfred.with_friendly_error do |alfred|
       :icon       => icon,
       :valid      => 'yes'
     })
-    album_info(['toptags', 'tag']).empty? or fb.add_item({
+    album_info.get(['toptags', 'tag']).empty? or fb.add_item({
       :uid        => uuid,
       :title      => "Tags",
       :subtitle   => AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', nil),
