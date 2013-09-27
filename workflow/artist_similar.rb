@@ -14,7 +14,7 @@ Alfred.with_friendly_error do |alfred|
     similar.each do |artist|
       image   = artist.get(['image', 1, 'content'])
       icon    = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
-      uuid    = similar['mbid'].empty? ? similar['mbid'] : AlfredfmHelper.generate_uuid
+      uuid    = similar['mbid'].empty? ? AlfredfmHelper.generate_uuid : similar['mbid']
       matches = (artist['match'].to_f * 100).precision(2)
 
       fb.add_item({

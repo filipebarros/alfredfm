@@ -32,7 +32,7 @@ Alfred.with_friendly_error do |alfred|
       loved_tracks.each do |track|
         image = track.get(['image', 1, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
-        uuid  = track['mbid'].empty? ? track['mbid'] : AlfredfmHelper.generate_uuid
+        uuid  = track['mbid'].empty? ? AlfredfmHelper.generate_uuid : track['mbid']
         info  = track['artist']['name']
         info << " – #{LocalizationHelper.format_date(track['date']['content'], :full)}." unless track.get(['date', 'content']).empty?
 
