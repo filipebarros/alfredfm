@@ -1,45 +1,37 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require File.join(File.dirname(__FILE__), 'bundle', 'gem_setup.rb')
 require 'alfred'
-require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
+Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
+  alfredfm = AlfredfmHelper.new alfred
   fb = alfred.feedback
-
   begin
-    similar = alfredfm.get_similar_artists ARGV
+    similar = alfredfm.get_similar_artists(ARGV)
+    similar.each do |artist|
+      image   = artist.get(['image', 1, 'content'])
+      icon    = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
+      uuid    = similar['mbid'].empty? ? AlfredfmHelper.generate_uuid : similar['mbid']
+      matches = (artist['match'].to_f * 100).precision(2)
 
-    if similar.empty?
       fb.add_item({
-        uid:   AlfredfmHelper.generate_uuid,
-        title: "No artist named #{ARGV.join(' ')} found!",
-        valid: 'no'
+        :uid        => uuid,
+        :title      => artist['name'],
+        :subtitle   => "#{LocalizationHelper.format_number(matches)} % match.",
+        :arg        => artist['name'],
+        :icon       => icon,
+        :valid      => 'yes'
       })
-    else
-      similar.each do |artist|
-        image = artist['image'][1]['content'].split('/')[-1]
-        icon_path = alfredfm.generate_feedback_icon artist['image'][1]['content'], :volatile_storage_path, image
-
-        rounded = sprintf('%.2f', artist['match']).to_f
-        fb.add_item({
-          uid:      AlfredfmHelper.generate_uuid,
-          title:    artist['name'],
-          subtitle: "#{rounded * 100}% Match",
-          arg:      artist['name'],
-          icon:     icon_path,
-          valid:    'yes'
-        })
-      end
     end
-  rescue Appscript::CommandError
-    fb.add_item({
-      uid:   AlfredfmHelper.generate_uuid,
-      title: 'iTunes currently not playing any song!',
-      valid: 'no'
-    })
+
+  rescue OSXMediaPlayer::NoTrackPlayingError => e
+    AlfredfmHelper.add_error_item(fb, "#{e.to_s}.", 'Type an artist name to look it up on last.fm.')
+
+  rescue Lastfm::ApiError => e
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{alfredfm.get_artist}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
+
   puts fb.to_alfred
 end

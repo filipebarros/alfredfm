@@ -1,42 +1,62 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup')
+require File.join(File.dirname(__FILE__), 'bundle', 'gem_setup.rb')
 require 'alfred'
-require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper')
+Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
+
+# custom matcher for alfred-workflow: look for track and artist names
+module Alfred
+ class Feedback
+   class Item
+     alias_method :default_match?, :match?
+     def match? query
+       title_and_subtitle_match?(query)
+     end
+   end
+ end
+end
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new(alfred.storage_path, alfred.volatile_storage_path)
-  fb = alfred.feedback
+  alfredfm = AlfredfmHelper.new alfred
 
-  loved_tracks = alfredfm.get_loved_tracks
-  loved_tracks.each do |track|
-    icon_path = if track['image']
-      image = track['image'][1]['content'].split('/')[-1]
-      alfredfm.generate_feedback_icon track['image'][1]['content'], :volatile_storage_path, image
-    end
+  alfred.with_cached_feedback do
+    use_cache_file :file => AlfredfmHelper.get_cache_file(File.basename(__FILE__, File.extname(__FILE__))), :expire => 300
+  end
 
-    add = if ARGV.empty? || track['artist']['name'].match(/#{ARGV.join(' ')}/i)
-      true
-    end
+  unless fb = alfred.feedback.get_cached_feedback
+    fb = alfred.feedback
+    begin
+      loved_tracks = alfredfm.get_loved_tracks
+      loved_tracks.each do |track|
+        image = track.get(['image', 1, 'content'])
+        icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
+        uuid  = track['mbid'].empty? ? AlfredfmHelper.generate_uuid : track['mbid']
+        info  = track['artist']['name']
+        info << " – #{LocalizationHelper.format_date(track['date']['content'], :full)}." unless track.get(['date', 'content']).empty?
 
-    if add
-      fb.add_item({
-        uid:      AlfredfmHelper.generate_uuid,
-        title:    track['name'],
-        subtitle: track['artist']['name'],
-        arg:      track['url'],
-        icon:     icon_path,
-        valid:    'yes'
-      })
+        fb.add_item({
+          :uid      => uuid,
+          :title    => track['name'],
+          :subtitle => info,
+          :arg      => track['url'],
+          :icon     => icon,
+          :valid    => 'yes'
+        })
+      end
+
+      unless fb.items.empty?
+        fb.put_cached_feedback
+        puts fb.to_alfred(ARGV)
+        return
+      end
+
+      AlfredfmHelper.add_error_item(fb, 'No loved tracks.')
+
+    rescue Lastfm::ApiError => e
+      AlfredfmHelper.add_error_item(fb, "No data found for '#{ARGV.join(' ')}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
     end
   end
-  if fb.items.empty?
-    fb.add_item({
-      uid:   AlfredfmHelper.generate_uuid,
-      title: "No artist named #{ARGV.join(' ')} found in the loved tracks!",
-      valid: 'no'
-    })
-  end
+
   puts fb.to_alfred
 end
