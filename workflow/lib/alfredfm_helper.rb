@@ -7,6 +7,15 @@ require 'uri'
 require 'net/http'
 
 class AlfredfmHelper
+
+  # Used to Map Actions to String
+  ACTIONS = {
+    :love       => 'Loved',
+    :ban        => 'Banned',
+    :add_tags   => 'Tagged',
+    :remove_tag => 'Untagged'
+  }
+
   def initialize alfred
     app_info   = YAML.load_file('info.yml')
     @api_key   = app_info[:api_key]
@@ -136,51 +145,26 @@ class AlfredfmHelper
     @lastfm.auth.get_session(:token => token)['key']
   end
 
-  def love_track
+  # Execute a action on a track
+  # The supported actions are: love, ban, add_tags and remove_tag
+  # @param action [Symbol] action to execute
+  # @param arguments [String] arguments to pass to the action (add_tags and remove_tag)
+  def track_action action, arguments
     artist = get_itunes_trackinfo(:artist)
     track  = get_itunes_trackinfo(:name)
     begin
       @lastfm.session = @@session
-      @lastfm.track.love(:artist => artist, :track => track)
-      "Successfully Loved #{track} by #{artist}."
+      @lastfm.track.send(action,
+        {
+          :artist => artist,
+          :track => track,
+          :tags => (arguments if action.eql?(:add_tags)),
+          :tag => (arguments.split(',')[0] if action.eql?(:remove_tag))
+        }.reject { |_, value| value.nil? }
+      )
+      "Successfully #{ACTIONS[action]} #{track} by #{artist}"
     rescue Exception => e
-      "Could not Love #{track}: e.to_s."
-    end
-  end
-
-  def ban_track
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
-    begin
-      @lastfm.session = @@session
-      @lastfm.track.ban(:artist => artist, :track => track)
-      "Successfully Banned #{track} by #{artist}."
-    rescue Exception => e
-      "Could not Ban #{track}: e.to_s."
-    end
-  end
-
-  def tag_track tags
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
-    tags   = tags.join(' ').trim and begin
-      @lastfm.session = @@session
-      @lastfm.track.add_tags(:artist => artist, :track => track, :tags => tags)
-      "Successfully Tagged #{track} by #{artist} with tags #{tags}."
-    rescue Exception => e
-      "Could not Tag #{track}: e.to_s."
-    end
-  end
-
-  def untag_track tag
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
-    tag    = tag.join(' ').split(',').first.trim and begin
-      @lastfm.session = @@session
-      @lastfm.track.remove_tag(:artist => artist, :track => track, :tags => tag)
-      "Successfully removed Tag #{tag} from #{track} by #{artist}."
-    rescue Exception => e
-      "Could not Untag #{track}: e.to_s."
+      "Could not #{action.titleize('_')} #{track}: e.to_s."
     end
   end
 

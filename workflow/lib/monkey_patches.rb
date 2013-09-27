@@ -39,3 +39,10 @@ class Float
   end
 end
 
+class Symbol
+  # Titleize Symbol And Return as a Space Splitted String
+  # @param split [String] char to split the symbol
+  def titleize split
+    self.to_s.split(split).map(&:capitalize).join(' ')
+  end
+end
