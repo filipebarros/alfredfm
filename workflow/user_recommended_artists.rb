@@ -31,7 +31,7 @@ Alfred.with_friendly_error do |alfred|
       recommended_artists.each do |recommendation|
         image = recommendation.get(['image', 1, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
-        uuid  = artist_info['mbid'].empty? ? AlfredfmHelper.generate_uuid : artist_info['mbid']
+        uuid  = recommendation['mbid'].empty? ? AlfredfmHelper.generate_uuid : recommendation['mbid']
 
         fb.add_item({
           :uid        => uuid,
