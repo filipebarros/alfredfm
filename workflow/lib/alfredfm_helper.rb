@@ -2,31 +2,31 @@
 # encoding: utf-8
 
 require 'yaml'
-require 'appscript'
 require 'lastfm'
 require 'securerandom'
+require 'uri'
+require 'net/http'
 
 class AlfredfmHelper
-  def initialize
-    app_info = YAML.load_file("info.yml")
-    @api_key = app_info['api_key']
-    api_secret = app_info['api_secret']
+  def initialize alfred
+    app_info   = YAML.load_file('info.yml')
+    @api_key   = app_info[:api_key]
+    api_secret = app_info[:api_secret]
 
-    @itunes = Appscript.app('iTunes')
     @lastfm = Lastfm.new(@api_key, api_secret)
-  end
 
-  def self.set_paths storage_path, volatile_storage_path
-    @paths = Hash.new
-    @paths[:storage_path] = storage_path
-    @paths[:volatile_storage_path] = volatile_storage_path
-  end
+    @@paths = {
+      :storage_path          => alfred.storage_path,
+      :volatile_storage_path => alfred.volatile_storage_path
+    }
 
-  def self.load_user_information
-    information = YAML.load_file(File.join(@paths[:storage_path], 'user_info.yml'))
-    @token = information['token']
-    @@username = information['username']
-    @@session = information['session']
+    user_info_file = File.join(@@paths[:storage_path], 'user_info.yml')
+    if File.exist?(user_info_file)
+      user_info  = YAML.load_file(user_info_file)
+      @token     = user_info[:token]    || user_info['token']
+      @@username = user_info[:username] || user_info['username']
+      @@session  = user_info[:session]  || user_info['session']
+    end
   end
 
   # Save a hash to file
@@ -34,20 +34,16 @@ class AlfredfmHelper
   # @param filename [String] name of the file to save
   # @param hash [Hash] hash to save onto file
   def self.save_hash_to_file path, filename, hash
-    File.write(File.join(@paths[path], filename), hash.to_yaml)
+    File.write(File.join(@@paths[path], filename), hash.to_yaml)
   end
 
-  # Generate a Universally Uniqued IDentifier
+  # Generate a Universally Uniqued Identifier
   # @return [String] uuid
   def self.generate_uuid
-    return SecureRandom.uuid
-  end
-
-  # Convert numbers in format xxxxxxxx to x,xxx,xxx
-  # @param number [String] number to split with commas
-  # @return [String] comma separated number
-  def self.separate_comma number
-    number.to_s.chars.to_a.reverse.each_slice(3).map(&:join).join(",").reverse
+    SecureRandom.uuid
+  rescue NoMethodError # SecureRandom.uuid is Ruby >= 1.9
+    require 'uuidtools'
+    UUIDTools::UUID.random_create.to_s
   end
 
   def self.map_information information_array, key, failed
@@ -60,203 +56,198 @@ class AlfredfmHelper
     end
   end
 
-  def self.convert_array_to_string array
-    if array.kind_of? Array
-      array.join(', ')
-    else
-      array
-    end
-  end
-
-  def self.get_list array
-    if array.kind_of? Array
-      array.join ', '
-    else
-      array
-    end
-  end
-
   def self.get_timestamp_string information
-    if !information.kind_of? Array
-      information = [information]
+    if information['yearto'].empty?
+      "#{information['yearfrom']} to Present"
+    else
+      "#{information['yearfrom']} to #{information['yearto']}"
     end
-    times = []
-    information.each { |timestamp|
-      times << if timestamp['yearto'].empty?
-        "#{timestamp['yearfrom']} to Present"
-      else
-        "#{timestamp['yearfrom']} to #{timestamp['yearto']}"
-      end
-    }
-    return times.join ', '
   end
 
   def self.get_friend_name_string friend_info
     string_name = if friend_info['realname'].empty?
       friend_info['name']
     else
-      "#{friend_info['realname']} - #{friend_info['name']}"
+      "#{friend_info['realname']} – #{friend_info['name']}"
     end
     return string_name
   end
 
-  def self.generate_feedback_icon url, path, filename
-    icon = unless File.exists?(File.join(@paths[path], filename))
-      if url
-        img = Net::HTTP.get(URI(url))
-        File.write(File.join(@paths[path], filename), img)
-        { :type => 'default', :name => File.join(@paths[path], filename) }
-      else
-        nil
+  def self.generate_feedback_icon url, path, filename = nil
+    filename ||= URI.split(url)[5].split('/').last
+    filepath   = File.join(@@paths[path], filename)
+    unless File.exists?(filepath)
+      url and File.open(filepath, 'w') do |f|
+        f.write Net::HTTP.get(URI(url))
       end
-    else
-      { :type => "default", :name => File.join(@paths[path], filename) }
     end
-    return icon
+    { :type => 'default', :name => filepath }
   end
 
-  def get_artist artist
-    if artist.empty?
-      @itunes.current_track.artist.get
-    else
-      artist.join(' ')
-    end
+  def self.add_error_item feedback, title, subtitle = nil
+    feedback.add_item({
+      :uid        => AlfredfmHelper.generate_uuid,
+      :title      => title,
+      :subtitle   => subtitle,
+      :valid      => 'no'
+    })
+  end
+
+  def self.get_cache_file name = 'cached'
+    File.join(@@paths[:volatile_storage_path], "#{name}_feedback")
+  end
+
+  def itunes_running?
+    %x{osascript -e 'get running of application id "com.apple.itunes"'}.chomp == 'true'
+  end
+
+  def get_itunes_trackinfo trackinfo
+    itunes_running? or raise OSXMediaPlayer::NoTrackPlayingError, 'iTunes is not running'
+    itunes_command = [
+      'tell application id "com.apple.itunes"',
+      'try',
+      "get #{trackinfo.to_s} of current track",
+      'end try',
+      'end tell'
+    ]
+     %x{osascript -e '#{itunes_command.join("' -e '")}'}.chomp.trim or
+       raise OSXMediaPlayer::NoTrackPlayingError, 'No track playing in iTunes'
+  end
+
+  def get_artist artist = nil
+    Array(artist).join(' ').trim || get_itunes_trackinfo(:artist)
+  end
+
+  def get_track
+    get_itunes_trackinfo(:name)
+  end
+
+  def get_album
+    get_itunes_trackinfo(:album)
   end
 
   def get_token
-    return @lastfm.auth.get_token
+    @lastfm.auth.get_token
   end
 
   def open_in_browser token
-    `open "http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}"`
+    %x{open "http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}"}
     sleep 15
   end
 
   def get_session token
-    return @lastfm.auth.get_session(:token => token)['key']
+    @lastfm.auth.get_session(:token => token)['key']
   end
 
   def love_track
-    @lastfm.session = @@session
-    track = @itunes.current_track
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
     begin
-      @lastfm.track.love(
-        :artist => track.artist.get,
-        :track => track.name.get
-      )
-      return "Successfully Loved #{track.artist.get} by #{track.name.get}"
+      @lastfm.session = @@session
+      @lastfm.track.love(:artist => artist, :track => track)
+      "Successfully Loved #{track} by #{artist}."
     rescue Exception => e
-      return "Unsuccessful!"
+      "Could not Love #{track}: e.to_s."
     end
   end
 
   def ban_track
-    @lastfm.session = @@session
-    track = @itunes.current_track
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
     begin
-      @lastfm.track.ban(
-        :artist => track.artist.get,
-        :track => track.name.get
-      )
-      return "Successfully Banned #{track.artist.get} by #{track.name.get}"
+      @lastfm.session = @@session
+      @lastfm.track.ban(:artist => artist, :track => track)
+      "Successfully Banned #{track} by #{artist}."
     rescue Exception => e
-      return "Unsuccessful"
+      "Could not Ban #{track}: e.to_s."
     end
   end
 
   def tag_track tags
-    @lastfm.session = @@session
-    track = @itunes.current_track
-    begin
-      @lastfm.track.add_tags(
-        :artist => track.artist.get,
-        :track => track.name.get,
-        :tags => tags.join(' ')
-      )
-      return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
+    tags   = tags.join(' ').trim and begin
+      @lastfm.session = @@session
+      @lastfm.track.add_tags(:artist => artist, :track => track, :tags => tags)
+      "Successfully Tagged #{track} by #{artist} with tags #{tags}."
     rescue Exception => e
-      return "Unsuccessful"
+      "Could not Tag #{track}: e.to_s."
     end
   end
 
   def untag_track tag
-    @lastfm.session = @@session
-    track = @itunes.current_track
-    begin
-      @lastfm.track.remove_tag(
-        :artist => track.artist.get,
-        :track => track.name.get,
-        :tags => tag.join(' ').split(',')[0]
-      )
-      return "Successfully Tagged #{track.artist.get} by #{track.name.get} with tags #{tags.join(' ')}"
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
+    tag    = tag.join(' ').split(',').first.trim and begin
+      @lastfm.session = @@session
+      @lastfm.track.remove_tag(:artist => artist, :track => track, :tags => tag)
+      "Successfully removed Tag #{tag} from #{track} by #{artist}."
     rescue Exception => e
-      return "Unsuccessful"
+      "Could not Untag #{track}: e.to_s."
     end
   end
 
-  def get_track_information track = nil
-    return @lastfm.track.get_info(
-      :artist => @itunes.current_track.artist.get,
-      :track => @itunes.current_track.name.get,
+  def get_track_information
+    artist = get_itunes_trackinfo(:artist)
+    track  = get_itunes_trackinfo(:name)
+    @lastfm.track.get_info(
+      :artist   => artist,
+      :track    => track,
       :username => @@username
     )
   end
 
-  def get_album_information album = nil
-    return @lastfm.album.get_info(
-      :artist => @itunes.current_track.artist.get,
-      :album => @itunes.current_track.album.get,
+  def get_album_information
+    artist = get_itunes_trackinfo(:artist)
+    album  = get_itunes_trackinfo(:album)
+    @lastfm.album.get_info(
+      :artist   => artist,
+      :album    => album,
       :username => @@username
     )
   end
 
   def get_artist_information artist = nil
-    return @lastfm.artist.get_info(
-      :artist => get_artist(artist),
+    artist = get_artist(artist)
+    artist_info = @lastfm.artist.get_info(
+      :artist   => artist,
       :username => @@username
     )
   end
 
   def get_artist_events artist = nil
-    return @lastfm.artist.get_events(
-      :artist => get_artist(artist),
-      :limit => 10
+    artist = get_artist(artist)
+    @lastfm.artist.get_events(
+      :artist => artist,
+      :limit  => 10
     )
   end
 
   def get_similar_artists artist = nil
-    head, *tail = @lastfm.artist.get_similar(
-      :artist => get_artist(artist),
-      :limit => 10
-    )
-    return tail
+    artist = get_artist(artist)
+    @lastfm.artist.get_similar(
+      :artist => artist,
+      :limit  => 10
+    )[1..-1]
   end
 
   def get_recommended_artists
     @lastfm.session = @@session
-    return @lastfm.user.get_recommended_artists(
-      :limit => 10
-    )
+    @lastfm.user.get_recommended_artists(:limit => 10)
   end
 
   def get_recommended_events
     @lastfm.session = @@session
-    return @lastfm.user.get_recommended_events(
-      :limit => 10
-    )
+    @lastfm.user.get_recommended_events(:limit => 10)
   end
 
   def get_all_friends
-    return @lastfm.user.get_friends(
-      :user => @@username
-    )
+    @lastfm.user.get_friends(:user => @@username)
   end
 
   def get_loved_tracks
-    return @lastfm.user.get_loved_tracks(
-      :user => @@username
-    )
+    @lastfm.user.get_loved_tracks(:user => @@username)
   end
 
-  private :get_artist
+  private :get_itunes_trackinfo
 end

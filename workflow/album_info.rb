@@ -2,60 +2,58 @@
 # encoding: utf-8
 
 require 'rubygems' unless defined? Gem
-require File.join(File.dirname(__FILE__), 'bundle', 'bundler', 'setup.rb')
+require File.join(File.dirname(__FILE__), 'bundle', 'gem_setup.rb')
 require 'alfred'
-require File.join(File.dirname(__FILE__), 'lib', 'alfredfm_helper.rb')
+Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
 
 Alfred.with_friendly_error do |alfred|
-  alfredfm = AlfredfmHelper.new
-  AlfredfmHelper.set_paths alfred.storage_path, alfred.volatile_storage_path
-  AlfredfmHelper.load_user_information
-
+  alfredfm = AlfredfmHelper.new alfred
   fb = alfred.feedback
+  begin
+    album_info = alfredfm.get_album_information
+    image = album_info.get(['image', 1, 'content'])
+    icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
+    uuid  = AlfredfmHelper.generate_uuid
 
-  album_info = alfredfm.get_album_information ARGV
-  album_tags = AlfredfmHelper.map_information album_info['toptags']['tag'], 'name', 'No Tags!'
+    fb.add_item({
+      :uid        => uuid,
+      :title      => album_info['name'],
+      :subtitle   => album_info['artist'],
+      :arg        => album_info['url'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
+    album_info['releasedate'].empty? or fb.add_item({
+      :uid        => uuid,
+      :title      => "Release Date",
+      :subtitle   => LocalizationHelper.format_date(album_info['releasedate'], :full),
+      :arg        => album_info['url'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
+    fb.add_item({
+      :uid        => uuid,
+      :title      => "User Playcount: #{LocalizationHelper.format_number(album_info['userplaycount']) || 0}",
+      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(album_info['playcount']) || 0}",
+      :arg        => album_info['url'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
+    album_info(['toptags', 'tag']).empty? or fb.add_item({
+      :uid        => uuid,
+      :title      => "Tags",
+      :subtitle   => AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', nil),
+      :arg        => album_info['url'],
+      :icon       => icon,
+      :valid      => 'yes'
+    })
 
-  image = album_info['image'][1]['content'].split('/')[-1]
-  icon_path = AlfredfmHelper.generate_feedback_icon album_info['image'][1]['content'], :volatile_storage_path, image
+  rescue OSXMediaPlayer::NoTrackPlayingError => e
+    AlfredfmHelper.add_error_item(fb, "#{e.to_s}!", 'Album information lookup only works for the current iTunes track.')
 
-  releasedate = if !album_info['releasedate'].empty?
-    Time.parse(album_info['releasedate']).strftime("%d of %B, %Y")
-  else
-    'Unknown'
+  rescue Lastfm::ApiError => e
+    AlfredfmHelper.add_error_item(fb, "No data found for '#{alfredfm.get_album}'.", "#{e.to_s.trim('[:cntrl:][:blank:]')}.")
   end
 
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => album_info['name'],
-    :subtitle   => album_info['artist'],
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "Release Date",
-    :subtitle   => releasedate,
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "User Playcount: #{AlfredfmHelper.separate_comma(album_info['userplaycount'])}",
-    :subtitle   => "Total Playcount: #{AlfredfmHelper.separate_comma(album_info['playcount'])}",
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
-  fb.add_item({
-    :uid        => AlfredfmHelper.generate_uuid,
-    :title      => "Tags",
-    :subtitle   => album_tags,
-    :arg        => album_info['url'],
-    :icon       => icon_path,
-    :valid      => 'yes'
-  })
   puts fb.to_alfred
 end
