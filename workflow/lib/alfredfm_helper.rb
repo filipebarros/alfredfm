@@ -207,7 +207,7 @@ class AlfredfmHelper
     artist = get_artist(artist)
     artist_info = @lastfm.artist.get_info(
       :artist   => artist,
-      :username => @@usernames
+      :username => @@username
     )
   end
 
