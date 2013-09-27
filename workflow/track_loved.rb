@@ -27,11 +27,13 @@ Alfred.with_friendly_error do |alfred|
       image = track.get(['image', 1, 'content'])
       icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, image.split(File::SEPARATOR).last)
       uuid  = track['mbid'].empty? ? track['mbid'] : AlfredfmHelper.generate_uuid
+      info  = track['artist']['name']
+      info << " – #{LocalizationHelper.format_date(track['date']['content'], :full)}." unless track.get(['date', 'content']).empty?
 
       fb.add_item({
         :uid      => uuid,
         :title    => track['name'],
-        :subtitle => track['artist']['name'],
+        :subtitle => info,
         :arg      => track['url'],
         :icon     => icon,
         :valid    => 'yes'
