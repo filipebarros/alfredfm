@@ -164,7 +164,7 @@ class AlfredfmHelper
       )
       "Successfully #{ACTIONS[action]} #{track} by #{artist}"
     rescue Exception => e
-      "Could not #{action.titleize('_')} #{track}: e.to_s."
+      "Could not #{action.titleize('_')} #{track}: #{e.to_s}."
     end
   end
 
@@ -190,7 +190,7 @@ class AlfredfmHelper
 
   def get_artist_information artist = nil
     artist = get_artist(artist)
-    artist_info = @lastfm.artist.get_info(
+    @lastfm.artist.get_info(
       :artist   => artist,
       :username => @@username
     )

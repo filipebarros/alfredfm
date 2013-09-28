@@ -3,7 +3,7 @@
 require 'rubygems' unless defined? Gem
 require File.join(File.dirname(__FILE__), 'bundle', 'gem_setup.rb')
 require 'alfred'
-Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each {|f| require f }
+Dir.glob(File.join(File.dirname(__FILE__), 'lib', '*.rb')).each { |f| require f }
 
 # custom matcher for alfred-workflow: look for track and artist names
 module Alfred
