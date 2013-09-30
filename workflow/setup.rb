@@ -15,7 +15,8 @@ Alfred.with_friendly_error do |alfred|
     user_info[:session] = alfredfm.get_session user_info[:token]
     AlfredfmHelper.save_hash_to_file :storage_path, 'user_info.yml', user_info
     puts 'Authentication Successful!'
-  rescue Exception
+  rescue Exception => e
+    alfred.ui.error(e)
     puts 'Authentication Failed!'
   end
 end
