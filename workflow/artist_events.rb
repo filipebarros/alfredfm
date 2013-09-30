@@ -17,14 +17,14 @@ Alfred.with_friendly_error do |alfred|
         image = event.get(['image', 1, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
 
-        fb.add_item({
+        fb.add_item(
           :uid        => AlfredfmHelper.generate_uuid,
           :title      => "#{event['title']} – #{event['venue']['name']}, #{event['venue']['location']['city']}",
           :subtitle   => LocalizationHelper.format_date(event['startDate'], :full),
           :arg        => "#{event['id']} #{event['title']}",
           :icon       => icon,
           :valid      => 'yes'
-        })
+        )
       end
     end
 

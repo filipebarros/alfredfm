@@ -23,38 +23,38 @@ Alfred.with_friendly_error do |alfred|
     icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
     uuid  = artist_info['mbid'].empty? ? AlfredfmHelper.generate_uuid : artist_info['mbid']
 
-    fb.add_item({
+    fb.add_item(
       :uid        => uuid,
       :title      => artist_info['name'],
       :subtitle   => band_members,
       :arg        => artist_info['name'],
       :icon       => icon,
       :valid      => 'yes'
-    })
-    artist_info.get(['bio', 'placeformed']).empty? or fb.add_item({
+    )
+    artist_info.get(['bio', 'placeformed']).empty? or fb.add_item(
       :uid        => uuid,
       :title      => artist_info['bio']['placeformed'],
       :subtitle   => formation_dates,
       :arg        => artist_info['name'],
       :icon       => icon,
       :valid      => 'yes'
-    })
-    fb.add_item({
+    )
+    fb.add_item(
       :uid        => uuid,
       :title      => "User Playcount: #{LocalizationHelper.format_number(artist_info['stats']['userplaycount']) || 0}",
       :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(artist_info['stats']['playcount']) || 0}",
       :arg        => artist_info['name'],
       :icon       => icon,
       :valid      => 'yes'
-    })
-    artist_info.get(['tags', 'tag']).empty? or fb.add_item({
+    )
+    artist_info.get(['tags', 'tag']).empty? or fb.add_item(
       :uid        => uuid,
       :title      => "Tags",
       :subtitle   => AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', nil),
       :arg        => artist_info['name'],
       :icon       => icon,
       :valid      => 'yes'
-    })
+    )
 
   rescue OSXMediaPlayer::NoTrackPlayingError => e
     AlfredfmHelper.add_error_item(fb, "#{e.to_s}.", 'Type an artist name to look it up on last.fm.')

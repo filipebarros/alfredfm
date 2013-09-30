@@ -21,14 +21,14 @@ Alfred.with_friendly_error do |alfred|
         image = friend.get(['image', 1, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, "#{friend['name']}.png")
 
-        fb.add_item({
+        fb.add_item(
           :uid        => AlfredfmHelper.generate_uuid,
           :title      => name,
           :subtitle   => "#{LocalizationHelper.format_number(friend['playcount']) || 0} scrobbles",
           :arg        => friend['name'],
           :icon       => icon,
           :valid      => 'yes'
-        })
+        )
       end
 
       unless fb.items.empty?

@@ -33,14 +33,14 @@ Alfred.with_friendly_error do |alfred|
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
         uuid  = recommendation['mbid'].empty? ? AlfredfmHelper.generate_uuid : recommendation['mbid']
 
-        fb.add_item({
+        fb.add_item(
           :uid        => uuid,
           :title      => recommendation['name'],
           :subtitle   => "Similar to: #{AlfredfmHelper.map_information(recommendation['context']['artist'], 'name', 'no similar artists found.')}",
           :arg        => recommendation['name'],
           :icon       => icon,
           :valid      => 'yes'
-        })
+        )
       end
 
       unless fb.items.empty?

@@ -16,14 +16,14 @@ Alfred.with_friendly_error do |alfred|
       uuid    = artist['mbid'].empty? ? AlfredfmHelper.generate_uuid : artist['mbid']
       matches = (artist['match'].to_f * 100).precision(2)
 
-      fb.add_item({
+      fb.add_item(
         :uid        => uuid,
         :title      => artist['name'],
         :subtitle   => "#{LocalizationHelper.format_number(matches)} % match.",
         :arg        => artist['name'],
         :icon       => icon,
         :valid      => 'yes'
-      })
+      )
     end
 
   rescue OSXMediaPlayer::NoTrackPlayingError => e
