@@ -1,6 +1,0 @@
-{
-    "version": 0.1,
-    "download_uri": "https://github.com/filipebarros/alfredfm/raw/master/AlfredFM.alfredworkflow",
-    "description": "Last.fm + Alfred = Alfred.fm",
-    "remote_json": "https://raw.github.com/filipebarros/alfredfm/master/update.json"
-}
