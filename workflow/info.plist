@@ -171,17 +171,6 @@
 				<string></string>
 			</dict>
 		</array>
-		<key>DC4C01FB-270E-4B50-A0CB-B4182400E37C</key>
-		<array>
-			<dict>
-				<key>destinationuid</key>
-				<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-			</dict>
-		</array>
 		<key>DEB9FAC9-CFB4-4AC2-86A3-8FAAF7897074</key>
 		<array>
 			<dict>
@@ -517,35 +506,6 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>9789EAE3-F701-4172-80ED-DF2E14456B16</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>argumenttype</key>
-				<integer>1</integer>
-				<key>escaping</key>
-				<integer>127</integer>
-				<key>keyword</key>
-				<string>banned</string>
-				<key>runningsubtext</key>
-				<string>Getting Banned Tracks</string>
-				<key>script</key>
-				<string>/usr/bin/ruby track_banned.rb {query}</string>
-				<key>subtext</key>
-				<string>Get Banned Tracks</string>
-				<key>title</key>
-				<string>Banned Tracks</string>
-				<key>type</key>
-				<integer>0</integer>
-				<key>withspace</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.input.scriptfilter</string>
-			<key>uid</key>
-			<string>DC4C01FB-270E-4B50-A0CB-B4182400E37C</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -917,11 +877,6 @@ Last.fm Alfred Workflow</string>
 		<dict>
 			<key>ypos</key>
 			<real>1210</real>
-		</dict>
-		<key>DC4C01FB-270E-4B50-A0CB-B4182400E37C</key>
-		<dict>
-			<key>ypos</key>
-			<real>970</real>
 		</dict>
 		<key>DEB9FAC9-CFB4-4AC2-86A3-8FAAF7897074</key>
 		<dict>
