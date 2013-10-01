@@ -7,14 +7,7 @@ require 'uri'
 require 'net/http'
 
 class AlfredfmHelper
-
-  # Used to Map Actions to String
-  ACTIONS = {
-    :love       => 'Loved',
-    :ban        => 'Banned',
-    :add_tags   => 'Tagged',
-    :remove_tag => 'Untagged'
-  }
+  ACTIONS = {:love => 'Loved', :add_tags => 'Tagged', :ban => 'Banned', :remove_tag => 'Untagged'}
 
   def initialize alfred
     app_info   = YAML.load_file('info.yml')
