@@ -7,14 +7,7 @@ require 'uri'
 require 'net/http'
 
 class AlfredfmHelper
-
-  # Used to Map Actions to String
-  ACTIONS = {
-    :love       => 'Loved',
-    :ban        => 'Banned',
-    :add_tags   => 'Tagged',
-    :remove_tag => 'Untagged'
-  }
+  ACTIONS = {:love => 'Loved', :add_tags => 'Tagged', :ban => 'Banned', :remove_tag => 'Untagged'}
 
   def initialize alfred
     app_info   = YAML.load_file('info.yml')
@@ -42,7 +35,9 @@ class AlfredfmHelper
   # @param filename [String] name of the file to save
   # @param hash [Hash] hash to save onto file
   def self.save_hash_to_file path, filename, hash
-    File.write(File.join(@@paths[path], filename), hash.to_yaml)
+    File.open(File.join(@@paths[path], filename), 'w') do |f|
+      f.write hash.to_yaml
+    end
   end
 
   # Generate a Universally Uniqued Identifier
