@@ -159,15 +159,22 @@ class AlfredfmHelper
       @lastfm.track.send(action,
         {
           :artist => artist,
-          :track => track,
-          :tags => (arguments if action.eql?(:add_tags)),
-          :tag => (arguments.split(',')[0] if action.eql?(:remove_tag))
+          :track  => track,
+          :tags   => (arguments if action.eql?(:add_tags)),
+          :tag    => (arguments.split(',')[0] if action.eql?(:remove_tag))
         }.reject { |_, value| value.nil? }
       )
       "Successfully #{ACTIONS[action]} #{track} by #{artist}"
     rescue Exception => e
       "Could not #{action.titleize('_')} #{track}: #{e.to_s}."
     end
+  end
+
+  def get_charts type
+    charts = @lastfm.library.send(type,
+      :user  => @@username,
+      :limit => 10
+    )
   end
 
   def get_track_information

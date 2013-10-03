@@ -15,10 +15,11 @@ Alfred.with_friendly_error do |alfred|
     image = option.get(['image', 1, 'content'])
     icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
     uuid  = option['mbid'].empty? ? AlfredfmHelper.generate_uuid : option['mbid']
+    title = action.eql?(:get_artists) ? option['name'] : "#{option['name']} by #{option['artist']['name']}"
 
     fb.add_item(
       :uid => uuid,
-      :title => option['name'],
+      :title => title,
       :subtitle => "#{option['playcount']} scrobbles",
       :arg => option['url'],
       :icon => icon,

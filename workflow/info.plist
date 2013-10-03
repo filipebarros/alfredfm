@@ -28,6 +28,17 @@
 				<string></string>
 			</dict>
 		</array>
+		<key>13254718-342D-4261-9691-FD9E61382B4A</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
 		<key>140174EE-8B53-49E4-9D58-9AB4ADD9832D</key>
 		<array>
 			<dict>
@@ -176,6 +187,17 @@
 			<dict>
 				<key>destinationuid</key>
 				<string>42D4C908-6810-487C-B076-DD61BA89DD23</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>E841AB3D-800E-47F3-A8E6-3FAA4265F2CB</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -466,23 +488,6 @@
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>plusspaces</key>
-				<true/>
-				<key>url</key>
-				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.openurl</string>
-			<key>uid</key>
-			<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
-			<key>version</key>
-			<integer>0</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>argumenttype</key>
 				<integer>1</integer>
 				<key>escaping</key>
@@ -506,6 +511,81 @@
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>9789EAE3-F701-4172-80ED-DF2E14456B16</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>plusspaces</key>
+				<true/>
+				<key>url</key>
+				<string>{query}</string>
+				<key>utf8</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.openurl</string>
+			<key>uid</key>
+			<string>691C93B3-E98C-40E5-8CBD-51D284B7354B</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>topartists</string>
+				<key>runningsubtext</key>
+				<string>Getting User Top Artists</string>
+				<key>script</key>
+				<string>/usr/bin/ruby user_charts.rb get_artists</string>
+				<key>subtext</key>
+				<string>Get User Top Artists</string>
+				<key>title</key>
+				<string>User Top Artists</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>E841AB3D-800E-47F3-A8E6-3FAA4265F2CB</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>keyword</key>
+				<string>toptracks</string>
+				<key>runningsubtext</key>
+				<string>Getting User Top Tracks</string>
+				<key>script</key>
+				<string>/usr/bin/ruby user_charts.rb get_tracks</string>
+				<key>subtext</key>
+				<string>Get User Top Tracks</string>
+				<key>title</key>
+				<string>User Top Tracks</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>13254718-342D-4261-9691-FD9E61382B4A</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
@@ -781,12 +861,17 @@ Last.fm Alfred Workflow</string>
 		<key>0BCB1B3D-9DAB-4A62-8B18-5CBEC8838EC7</key>
 		<dict>
 			<key>ypos</key>
-			<real>1330</real>
+			<real>1450</real>
 		</dict>
 		<key>110CBA6F-F5EC-4559-8972-97209CE1A5FE</key>
 		<dict>
 			<key>ypos</key>
-			<real>1690</real>
+			<real>1810</real>
+		</dict>
+		<key>13254718-342D-4261-9691-FD9E61382B4A</key>
+		<dict>
+			<key>ypos</key>
+			<real>1090</real>
 		</dict>
 		<key>140174EE-8B53-49E4-9D58-9AB4ADD9832D</key>
 		<dict>
@@ -796,22 +881,22 @@ Last.fm Alfred Workflow</string>
 		<key>1F93FD0B-FDA7-4071-977F-2785C331188D</key>
 		<dict>
 			<key>ypos</key>
-			<real>1210</real>
+			<real>1330</real>
 		</dict>
 		<key>2B9D4CD8-3F02-4F65-83F7-016CC971CD96</key>
 		<dict>
 			<key>ypos</key>
-			<real>1450</real>
+			<real>1570</real>
 		</dict>
 		<key>2C6BB7FF-59AF-4AB0-AE91-99E19C907162</key>
 		<dict>
 			<key>ypos</key>
-			<real>1090</real>
+			<real>1210</real>
 		</dict>
 		<key>42D05639-3F0F-4760-8214-317167E4173D</key>
 		<dict>
 			<key>ypos</key>
-			<real>1450</real>
+			<real>1560</real>
 		</dict>
 		<key>42D4C908-6810-487C-B076-DD61BA89DD23</key>
 		<dict>
@@ -821,12 +906,12 @@ Last.fm Alfred Workflow</string>
 		<key>4BE8F656-584D-4E0A-B8E6-A0142A51859E</key>
 		<dict>
 			<key>ypos</key>
-			<real>1690</real>
+			<real>1810</real>
 		</dict>
 		<key>5537C5F6-8D21-425D-9E4E-644827B977AF</key>
 		<dict>
 			<key>ypos</key>
-			<real>1570</real>
+			<real>1690</real>
 		</dict>
 		<key>64A65BB0-1C59-4981-9209-A5EF0AC93DCB</key>
 		<dict>
@@ -841,7 +926,7 @@ Last.fm Alfred Workflow</string>
 		<key>691C93B3-E98C-40E5-8CBD-51D284B7354B</key>
 		<dict>
 			<key>ypos</key>
-			<real>790</real>
+			<real>850</real>
 		</dict>
 		<key>7F6B3D85-4180-4352-865D-2B4C89DA04EB</key>
 		<dict>
@@ -851,7 +936,7 @@ Last.fm Alfred Workflow</string>
 		<key>848D30DC-4899-4762-9D61-88461258771F</key>
 		<dict>
 			<key>ypos</key>
-			<real>1450</real>
+			<real>1570</real>
 		</dict>
 		<key>9789EAE3-F701-4172-80ED-DF2E14456B16</key>
 		<dict>
@@ -866,22 +951,27 @@ Last.fm Alfred Workflow</string>
 		<key>A6AFA5A9-BB75-4E08-B8E8-227DE3559677</key>
 		<dict>
 			<key>ypos</key>
-			<real>1330</real>
+			<real>1450</real>
 		</dict>
 		<key>CED2969E-B8EB-401F-8D50-57CCF5D3E7BB</key>
 		<dict>
 			<key>ypos</key>
-			<real>1090</real>
+			<real>1210</real>
 		</dict>
 		<key>D6C96E2B-8524-4DD4-A648-74A2190852CD</key>
 		<dict>
 			<key>ypos</key>
-			<real>1210</real>
+			<real>1330</real>
 		</dict>
 		<key>DEB9FAC9-CFB4-4AC2-86A3-8FAAF7897074</key>
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
+		</dict>
+		<key>E841AB3D-800E-47F3-A8E6-3FAA4265F2CB</key>
+		<dict>
+			<key>ypos</key>
+			<real>970</real>
 		</dict>
 		<key>F41B23CE-B218-4699-B891-670A90D4049F</key>
 		<dict>
@@ -891,7 +981,7 @@ Last.fm Alfred Workflow</string>
 		<key>F63F858A-8A65-4EAF-B2F3-1738A5920F55</key>
 		<dict>
 			<key>ypos</key>
-			<real>1570</real>
+			<real>1690</real>
 		</dict>
 		<key>F7685EC2-78FE-4A7E-B71F-EF53C3FB549F</key>
 		<dict>
