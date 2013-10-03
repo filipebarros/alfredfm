@@ -41,3 +41,5 @@ All the arguments inside "" (double quotes) are **optional**. When not provided,
 * `ban` - Ban currently playing song
 * `tag <tags>` - Tag the currently playing track with tags. If you want to tag with more than one tag, separate the tags with a comma (',')
 * `untag <tag>` - Untag the currently playing track with one tag
+* `topartists` - Get the user top 10 artists
+* `toptracks` - Get the user top 10 tracks
