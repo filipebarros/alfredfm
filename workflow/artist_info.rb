@@ -49,7 +49,7 @@ Alfred.with_friendly_error do |alfred|
     )
     artist_info.get(['tags', 'tag']).empty? or fb.add_item(
       :uid        => uuid,
-      :title      => "Tags",
+      :title      => 'Tags',
       :subtitle   => AlfredfmHelper.map_information(artist_info['tags']['tag'], 'name', nil),
       :arg        => artist_info['name'],
       :icon       => icon,

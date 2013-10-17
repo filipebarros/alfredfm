@@ -43,7 +43,7 @@ Alfred.with_friendly_error do |alfred|
     track_tags = AlfredfmHelper.map_information(track_info['toptags']['tag'], 'name', nil) and
     fb.add_item(
       :uid        => uuid,
-      :title      => "Tags",
+      :title      => 'Tags',
       :subtitle   => track_tags,
       :arg        => track_info['url'],
       :icon       => icon,
