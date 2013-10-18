@@ -49,6 +49,11 @@ class AlfredfmHelper
     UUIDTools::UUID.random_create.to_s
   end
 
+  # Maps information into an array of values
+  # @param information_array [Array] array of hashes to map into an Array
+  # @param key [String] name of the key to map into Array. Used to get the values from the Hash
+  # @param failed [String] String message to be returned if it is not possible to map the information
+  # @return [Array] with all the mapped information
   def self.map_information(information_array, key, failed)
     begin
       return information_array.map { |information| information[key].strip }.join(', ')
@@ -57,6 +62,9 @@ class AlfredfmHelper
     end
   end
 
+  # Generate a Timestamp String from an Array of Hashes
+  # @param information [Array] array of hashes to extract the date
+  # @return [String] with a formatted date
   def self.get_timestamp_string(information)
     unless information.kind_of? Array
       information = [information]
@@ -72,6 +80,9 @@ class AlfredfmHelper
     return times.join ', '
   end
 
+  # Generate a String with the friend name and username
+  # @param friend_info [Array] Array with the last.fm friend information
+  # @return [String] formatted name with realname when available and username
   def self.get_friend_name_string(friend_info)
     string_name = if friend_info['realname'].empty?
       friend_info['name']
@@ -81,6 +92,11 @@ class AlfredfmHelper
     return string_name
   end
 
+  # Generate a feedback icon to be passed to alfred
+  # @param url [String] url of the image to use as the icon
+  # @param path [Symbol] path where to store the image
+  # @param filename [String] filename to save image, if needed. When not passed it will be nil
+  # @return [Hash] icon information to be passed to alfred. Formatted according with the alfred gem
   def self.generate_feedback_icon(url, path, filename = nil)
     filename ||= URI.split(url)[5].split('/').last
     filepath   = File.join(@@paths[path], filename)
@@ -92,6 +108,11 @@ class AlfredfmHelper
     { :type => 'default', :name => filepath }
   end
 
+  # Add a error item to be presented in alfred
+  # @param feedback [Alfred::Feedback] feedback item to be presented
+  # @param title [String] title of the feedback item
+  # @param subtitle [String] subtitle to of the feedback item
+  # @return [Alfred::Feedback] feedback item
   def self.add_error_item(feedback, title, subtitle = nil)
     feedback.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
@@ -101,14 +122,22 @@ class AlfredfmHelper
     })
   end
 
+  # Get cached feedback
+  # @param name [String] name of the cached feedback
+  # @return [File] file with the generated feedback
   def self.get_cache_file(name = 'cached')
     File.join(@@paths[:volatile_storage_path], "#{name}_feedback")
   end
 
+  # Check if iTunes is running
+  # @return [boolean]
   def itunes_running?
     %x{osascript -e 'get running of application id "com.apple.itunes"'}.chomp == 'true'
   end
 
+  # Get currently playing iTunes track information
+  # @param trackinfo [String] information wanted (artist, track name, album)
+  # @return information about the track
   def get_itunes_trackinfo(trackinfo)
     itunes_running? or raise OSXMediaPlayer::NoTrackPlayingError, 'iTunes is not running'
     itunes_command = [
@@ -122,27 +151,39 @@ class AlfredfmHelper
        raise OSXMediaPlayer::NoTrackPlayingError, 'No track playing in iTunes'
   end
 
+  # Gets artist name, depending if it was passed or not. If not passed, it will be fetched from iTunes
+  # @param artist [Array] artist, each name is a position of the array (ARGV)
+  # @return [String] artist name
   def get_artist(artist = nil)
     Array(artist).join(' ').trim || get_itunes_trackinfo(:artist)
   end
 
+  # Fetches currently playing track
+  # @return currently playing track name
   def get_track
     get_itunes_trackinfo(:name)
   end
 
+  # Fetches album of the currently playing track
+  # @return album of the currently playing track
   def get_album
     get_itunes_trackinfo(:album)
   end
 
+  # Get Last.fm Authentication Token
   def get_token
     @lastfm.auth.get_token
   end
 
+  # Open the authentication page in a browser
+  # @param token [String] Last.fm Authentication Token
   def open_in_browser(token)
     %x{open "http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}"}
     sleep 15
   end
 
+  # Get Last.fm Session
+  # @param token [String] Last.fm Authentication Token
   def get_session(token)
     @lastfm.auth.get_session(:token => token)['key']
   end
