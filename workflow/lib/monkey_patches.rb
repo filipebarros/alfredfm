@@ -1,9 +1,8 @@
-#!/usr/bin/env ruby
 # encoding: utf-8
 
 class String
   # `strip` any regex character class, return nil if the resulting String is empty.
-  def trim separator = '[:blank:]'
+  def trim(separator = '[:blank:]')
     trim_re = /[^#{separator}](.*[^#{separator}])?/
     self[trim_re]
   end
@@ -13,7 +12,7 @@ class Hash
   # Return a value from a nested Hash / Array structure by passing it an array of keys.
   # Returns nil if a key anywhere in the chain is not found.
   # Based on http://stackoverflow.com/questions/8479476/iterating-through-a-ruby-nested-hash-with-nils
-  def get keys, default = nil
+  def get(keys, default = nil)
     Array(keys).reduce(self) do |memo, key|
       memo[key] if memo.is_a?(Hash) || (memo.is_a?(Array) && key.is_a?(Integer))
     end or default
@@ -42,7 +41,7 @@ end
 class Symbol
   # Titleize Symbol And Return as a Space Splitted String
   # @param split [String] char to split the symbol
-  def titleize split
+  def titleize(split)
     self.to_s.split(split).map(&:capitalize).join(' ')
   end
 end

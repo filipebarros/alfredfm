@@ -10,7 +10,7 @@ module Alfred
  class Feedback
    class Item
      alias_method :default_match?, :match?
-     def match? query
+     def match?(query)
        title_and_subtitle_match?(query)
      end
    end

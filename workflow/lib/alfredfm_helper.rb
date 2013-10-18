@@ -9,7 +9,7 @@ require 'net/http'
 class AlfredfmHelper
   ACTIONS = {:love => 'Loved', :add_tags => 'Tagged', :ban => 'Banned', :remove_tag => 'Untagged'}
 
-  def initialize alfred
+  def initialize(alfred)
     app_info   = YAML.load_file('info.yml')
     @api_key   = app_info[:api_key]
     api_secret = app_info[:api_secret]
@@ -34,7 +34,7 @@ class AlfredfmHelper
   # @param path [Symbol] `:storage_path` or `:volatile_storage_path`
   # @param filename [String] name of the file to save
   # @param hash [Hash] hash to save onto file
-  def self.save_hash_to_file path, filename, hash
+  def self.save_hash_to_file(path, filename, hash)
     File.open(File.join(@@paths[path], filename), 'w') do |f|
       f.write hash.to_yaml
     end
@@ -49,7 +49,7 @@ class AlfredfmHelper
     UUIDTools::UUID.random_create.to_s
   end
 
-  def self.map_information information_array, key, failed
+  def self.map_information(information_array, key, failed)
     begin
       return information_array.map { |information| information[key].strip }.join(', ')
     rescue Exception
@@ -57,7 +57,7 @@ class AlfredfmHelper
     end
   end
 
-  def self.get_timestamp_string information
+  def self.get_timestamp_string(information)
     unless information.kind_of? Array
       information = [information]
     end
@@ -72,7 +72,7 @@ class AlfredfmHelper
     return times.join ', '
   end
 
-  def self.get_friend_name_string friend_info
+  def self.get_friend_name_string(friend_info)
     string_name = if friend_info['realname'].empty?
       friend_info['name']
     else
@@ -81,7 +81,7 @@ class AlfredfmHelper
     return string_name
   end
 
-  def self.generate_feedback_icon url, path, filename = nil
+  def self.generate_feedback_icon(url, path, filename = nil)
     filename ||= URI.split(url)[5].split('/').last
     filepath   = File.join(@@paths[path], filename)
     unless File.exists?(filepath)
@@ -92,7 +92,7 @@ class AlfredfmHelper
     { :type => 'default', :name => filepath }
   end
 
-  def self.add_error_item feedback, title, subtitle = nil
+  def self.add_error_item(feedback, title, subtitle = nil)
     feedback.add_item({
       :uid        => AlfredfmHelper.generate_uuid,
       :title      => title,
@@ -101,7 +101,7 @@ class AlfredfmHelper
     })
   end
 
-  def self.get_cache_file name = 'cached'
+  def self.get_cache_file(name = 'cached')
     File.join(@@paths[:volatile_storage_path], "#{name}_feedback")
   end
 
@@ -109,7 +109,7 @@ class AlfredfmHelper
     %x{osascript -e 'get running of application id "com.apple.itunes"'}.chomp == 'true'
   end
 
-  def get_itunes_trackinfo trackinfo
+  def get_itunes_trackinfo(trackinfo)
     itunes_running? or raise OSXMediaPlayer::NoTrackPlayingError, 'iTunes is not running'
     itunes_command = [
       'tell application id "com.apple.itunes"',
@@ -122,7 +122,7 @@ class AlfredfmHelper
        raise OSXMediaPlayer::NoTrackPlayingError, 'No track playing in iTunes'
   end
 
-  def get_artist artist = nil
+  def get_artist(artist = nil)
     Array(artist).join(' ').trim || get_itunes_trackinfo(:artist)
   end
 
@@ -138,12 +138,12 @@ class AlfredfmHelper
     @lastfm.auth.get_token
   end
 
-  def open_in_browser token
+  def open_in_browser(token)
     %x{open "http://www.last.fm/api/auth/?api_key=#{@api_key}&token=#{token}"}
     sleep 15
   end
 
-  def get_session token
+  def get_session(token)
     @lastfm.auth.get_session(:token => token)['key']
   end
 
@@ -151,7 +151,7 @@ class AlfredfmHelper
   # The supported actions are: love, ban, add_tags and remove_tag
   # @param action [Symbol] action to execute
   # @param arguments [String] arguments to pass to the action (add_tags and remove_tag)
-  def track_action action, arguments
+  def track_action(action, arguments)
     artist = get_itunes_trackinfo(:artist)
     track  = get_itunes_trackinfo(:name)
     begin
@@ -170,7 +170,7 @@ class AlfredfmHelper
     end
   end
 
-  def get_charts type
+  def get_charts(type)
     charts = @lastfm.library.send(type,
       :user  => @@username,
       :limit => 10
@@ -197,7 +197,7 @@ class AlfredfmHelper
     )
   end
 
-  def get_artist_information artist = nil
+  def get_artist_information(artist = nil)
     artist = get_artist(artist)
     @lastfm.artist.get_info(
       :artist   => artist,
@@ -205,7 +205,7 @@ class AlfredfmHelper
     )
   end
 
-  def get_artist_events artist = nil
+  def get_artist_events(artist = nil)
     artist = get_artist(artist)
     @lastfm.artist.get_events(
       :artist => artist,
@@ -213,7 +213,7 @@ class AlfredfmHelper
     )
   end
 
-  def get_similar_artists artist = nil
+  def get_similar_artists(artist = nil)
     artist = get_artist(artist)
     @lastfm.artist.get_similar(
       :artist => artist,
