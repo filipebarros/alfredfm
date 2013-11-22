@@ -29,7 +29,7 @@ Alfred.with_friendly_error do |alfred|
       :title      => 'Loved',
       :subtitle   => '',
       :arg        => track_info['url'],
-      :icon       => icon,
+      :icon       => { :type => 'default', :name => 'heart.png' },
       :valid      => 'yes'
     )
     fb.add_item(
