@@ -115,10 +115,10 @@ class AlfredfmHelper
   # @return [Alfred::Feedback] feedback item
   def self.add_error_item(feedback, title, subtitle = nil)
     feedback.add_item({
-      :uid        => AlfredfmHelper.generate_uuid,
-      :title      => title,
-      :subtitle   => subtitle,
-      :valid      => 'no'
+      uid: AlfredfmHelper.generate_uuid,
+      title: title,
+      subtitle: subtitle,
+      valid: 'no'
     })
   end
 
@@ -199,10 +199,10 @@ class AlfredfmHelper
       @lastfm.session = @@session
       @lastfm.track.send(action,
         {
-          :artist => artist,
-          :track  => track,
-          :tags   => (arguments if action.eql?(:add_tags)),
-          :tag    => (arguments.split(',')[0] if action.eql?(:remove_tag))
+          artist: artist,
+          track: track,
+          tags: (arguments if action.eql?(:add_tags)),
+          tag: (arguments.split(',')[0] if action.eql?(:remove_tag))
         }.reject { |_, value| value.nil? }
       )
       "Successfully #{ACTIONS[action]} #{track} by #{artist}"
@@ -213,8 +213,8 @@ class AlfredfmHelper
 
   def get_charts(type)
     charts = @lastfm.library.send(type,
-      :user  => @@username,
-      :limit => 10
+      user: @@username,
+      limit: 10
     )
   end
 
@@ -222,9 +222,9 @@ class AlfredfmHelper
     artist = get_itunes_trackinfo(:artist)
     track  = get_itunes_trackinfo(:name)
     @lastfm.track.get_info(
-      :artist   => artist,
-      :track    => track,
-      :username => @@username
+      artist: artist,
+      track: track,
+      username: @@username
     )
   end
 
@@ -232,33 +232,33 @@ class AlfredfmHelper
     artist = get_itunes_trackinfo(:artist)
     album  = get_itunes_trackinfo(:album)
     @lastfm.album.get_info(
-      :artist   => artist,
-      :album    => album,
-      :username => @@username
+      artist: artist,
+      album: album,
+      username: @@username
     )
   end
 
   def get_artist_information(artist = nil)
     artist = get_artist(artist)
     @lastfm.artist.get_info(
-      :artist   => artist,
-      :username => @@username
+      artist: artist,
+      username: @@username
     )
   end
 
   def get_artist_events(artist = nil)
     artist = get_artist(artist)
     @lastfm.artist.get_events(
-      :artist => artist,
-      :limit  => 10
+      artist: artist,
+      limit: 10
     )
   end
 
   def get_similar_artists(artist = nil)
     artist = get_artist(artist)
     @lastfm.artist.get_similar(
-      :artist => artist,
-      :limit  => 10
+      artist: artist,
+      limit: 10
     )[1..-1]
   end
 

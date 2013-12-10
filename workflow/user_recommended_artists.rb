@@ -34,12 +34,12 @@ Alfred.with_friendly_error do |alfred|
         uuid  = recommendation['mbid'].empty? ? AlfredfmHelper.generate_uuid : recommendation['mbid']
 
         fb.add_item(
-          :uid        => uuid,
-          :title      => recommendation['name'],
-          :subtitle   => "Similar to: #{AlfredfmHelper.map_information(recommendation['context']['artist'], 'name', 'no similar artists found.')}",
-          :arg        => recommendation['name'],
-          :icon       => icon,
-          :valid      => 'yes'
+          uid: uuid,
+          title: recommendation['name'],
+          subtitle: "Similar to: #{AlfredfmHelper.map_information(recommendation['context']['artist'], 'name', 'no similar artists found.')}",
+          arg: recommendation['name'],
+          icon: icon,
+          valid: 'yes'
         )
       end
 

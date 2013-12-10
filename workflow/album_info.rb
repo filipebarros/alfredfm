@@ -15,36 +15,36 @@ Alfred.with_friendly_error do |alfred|
     uuid  = AlfredfmHelper.generate_uuid
 
     fb.add_item(
-      :uid        => uuid,
-      :title      => album_info['name'],
-      :subtitle   => album_info['artist'],
-      :arg        => album_info['url'],
-      :icon       => icon,
-      :valid      => 'yes'
+      uid: uuid,
+      title: album_info['name'],
+      subtitle: album_info['artist'],
+      arg: album_info['url'],
+      icon: icon,
+      valid: 'yes'
     )
     album_info['releasedate'].empty? or fb.add_item(
-      :uid        => uuid,
-      :title      => 'Release Date',
-      :subtitle   => LocalizationHelper.format_date(album_info['releasedate'], :full),
-      :arg        => album_info['url'],
-      :icon       => icon,
-      :valid      => 'yes'
+      uid: uuid,
+      title: 'Release Date',
+      subtitle: LocalizationHelper.format_date(album_info['releasedate'], :full),
+      arg: album_info['url'],
+      icon: icon,
+      valid: 'yes'
     )
     fb.add_item(
-      :uid        => uuid,
-      :title      => "User Playcount: #{LocalizationHelper.format_number(album_info['userplaycount']) || 0}",
-      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(album_info['playcount']) || 0}",
-      :arg        => album_info['url'],
-      :icon       => icon,
-      :valid      => 'yes'
+      uid: uuid,
+      title: "User Playcount: #{LocalizationHelper.format_number(album_info['userplaycount']) || 0}",
+      subtitle: "Total Playcount: #{LocalizationHelper.format_number(album_info['playcount']) || 0}",
+      arg: album_info['url'],
+      icon: icon,
+      valid: 'yes'
     )
     album_info.get(['toptags', 'tag']).empty? or fb.add_item(
-      :uid        => uuid,
-      :title      => 'Tags',
-      :subtitle   => AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', nil),
-      :arg        => album_info['url'],
-      :icon       => icon,
-      :valid      => 'yes'
+      uid: uuid,
+      title: 'Tags',
+      subtitle: AlfredfmHelper.map_information(album_info['toptags']['tag'], 'name', nil),
+      arg: album_info['url'],
+      icon: icon,
+      valid: 'yes'
     )
 
   rescue OSXMediaPlayer::NoTrackPlayingError => e

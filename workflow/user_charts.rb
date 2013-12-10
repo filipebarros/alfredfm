@@ -18,12 +18,12 @@ Alfred.with_friendly_error do |alfred|
     title = action.eql?(:get_artists) ? option['name'] : "#{option['name']} by #{option['artist']['name']}"
 
     fb.add_item(
-      :uid => uuid,
-      :title => title,
-      :subtitle => "#{option['playcount']} scrobbles",
-      :arg => option['url'],
-      :icon => icon,
-      :valid => 'yes'
+      uid: uuid,
+      title: title,
+      subtitle: "#{option['playcount']} scrobbles",
+      arg: option['url'],
+      icon: icon,
+      valid: 'yes'
     )
   end
   puts fb.to_alfred

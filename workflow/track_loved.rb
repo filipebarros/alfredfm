@@ -36,12 +36,12 @@ Alfred.with_friendly_error do |alfred|
         info << " – #{LocalizationHelper.format_date(track['date']['content'], :full)}." unless track.get(['date', 'content']).empty?
 
         fb.add_item(
-          :uid      => uuid,
-          :title    => track['name'],
-          :subtitle => info,
-          :arg      => track['url'],
-          :icon     => icon,
-          :valid    => 'yes'
+          uid: uuid,
+          title: track['name'],
+          subtitle: info,
+          arg: track['url'],
+          icon: icon,
+          valid: 'yes'
         )
       end
 

@@ -16,38 +16,38 @@ Alfred.with_friendly_error do |alfred|
     uuid  = AlfredfmHelper.generate_uuid
 
     fb.add_item(
-      :uid        => uuid,
-      :title      => track_info['name'],
-      :subtitle   => track_info['artist']['name'],
-      :arg        => track_info['url'],
-      :icon       => icon,
-      :valid      => 'yes'
+      uid: uuid,
+      title: track_info['name'],
+      subtitle: track_info['artist']['name'],
+      arg: track_info['url'],
+      icon: icon,
+      valid: 'yes'
     )
     track_info['userloved'].eql? '1' and
     fb.add_item(
-      :uid        => uuid,
-      :title      => 'Loved',
-      :subtitle   => '',
-      :arg        => track_info['url'],
-      :icon       => { :type => 'default', :name => 'heart.png' },
-      :valid      => 'yes'
+      uid: uuid,
+      title: 'Loved',
+      subtitle: '',
+      arg: track_info['url'],
+      icon: { :type => 'default', :name => 'heart.png' },
+      valid: 'yes'
     )
     fb.add_item(
-      :uid        => uuid,
-      :title      => "User Playcount: #{LocalizationHelper.format_number(track_info['userplaycount']) || 0}",
-      :subtitle   => "Total Playcount: #{LocalizationHelper.format_number(track_info['playcount']) || 0}",
-      :arg        => track_info['url'],
-      :icon       => icon,
-      :valid      => 'yes'
+      uid: uuid,
+      title: "User Playcount: #{LocalizationHelper.format_number(track_info['userplaycount']) || 0}",
+      subtitle: "Total Playcount: #{LocalizationHelper.format_number(track_info['playcount']) || 0}",
+      arg: track_info['url'],
+      icon: icon,
+      valid: 'yes'
     )
     track_tags = AlfredfmHelper.map_information(track_info['toptags']['tag'], 'name', nil) and
     fb.add_item(
-      :uid        => uuid,
-      :title      => 'Tags',
-      :subtitle   => track_tags,
-      :arg        => track_info['url'],
-      :icon       => icon,
-      :valid      => 'yes'
+      uid: uuid,
+      title: 'Tags',
+      subtitle: track_tags,
+      arg: track_info['url'],
+      icon: icon,
+      valid: 'yes'
     )
 
   rescue OSXMediaPlayer::NoTrackPlayingError => e

@@ -21,12 +21,12 @@ Alfred.with_friendly_error do |alfred|
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
 
         fb.add_item(
-          :uid        => AlfredfmHelper.generate_uuid,
-          :title      => "#{event['title']} – #{event['venue']['name']}, #{event['venue']['location']['city']}",
-          :subtitle   => "#{LocalizationHelper.format_date(event['startDate'])} – #{Array(event['artists']['artist']).join(', ')}",
-          :arg        => "#{event['id']} #{event['title']}",
-          :icon       => icon,
-          :valid      => 'yes'
+          uid: AlfredfmHelper.generate_uuid,
+          title: "#{event['title']} – #{event['venue']['name']}, #{event['venue']['location']['city']}",
+          subtitle: "#{LocalizationHelper.format_date(event['startDate'])} – #{Array(event['artists']['artist']).join(', ')}",
+          arg: "#{event['id']} #{event['title']}",
+          icon: icon,
+          valid: 'yes'
         )
       end
 
