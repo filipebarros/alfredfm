@@ -44,9 +44,6 @@ class AlfredfmHelper
   # @return [String] uuid
   def self.generate_uuid
     SecureRandom.uuid
-  rescue NoMethodError # SecureRandom.uuid is Ruby >= 1.9
-    require 'uuidtools'
-    UUIDTools::UUID.random_create.to_s
   end
 
   # Maps information into an array of values
@@ -69,9 +66,9 @@ class AlfredfmHelper
     unless information.kind_of? Array
       information = [information]
     end
-    times = []
-    information.each do |timestamp|
-      times << if timestamp['yearto'].empty?
+
+    times = information.map do |timestamp|
+      if timestamp['yearto'].empty?
         "#{timestamp['yearfrom']} to Present"
       else
         "#{timestamp['yearfrom']} to #{timestamp['yearto']}"
