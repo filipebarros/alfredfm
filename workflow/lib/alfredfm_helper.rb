@@ -7,7 +7,7 @@ require 'uri'
 require 'net/http'
 
 class AlfredfmHelper
-  ACTIONS = {:love => 'Loved', :add_tags => 'Tagged', :ban => 'Banned', :remove_tag => 'Untagged'}
+  ACTIONS = { love: 'Loved', add_tags: 'Tagged', ban: 'Banned', remove_tag: 'Untagged' }
 
   def initialize(alfred)
     app_info   = YAML.load_file('info.yml')
@@ -17,8 +17,8 @@ class AlfredfmHelper
     @lastfm = Lastfm.new(@api_key, api_secret)
 
     @@paths = {
-      :storage_path          => alfred.storage_path,
-      :volatile_storage_path => alfred.volatile_storage_path
+      storage_path:          alfred.storage_path,
+      volatile_storage_path: alfred.volatile_storage_path
     }
 
     user_info_file = File.join(@@paths[:storage_path], 'user_info.yml')
@@ -63,18 +63,15 @@ class AlfredfmHelper
   # @param information [Array] array of hashes to extract the date
   # @return [String] with a formatted date
   def self.get_timestamp_string(information)
-    unless information.kind_of? Array
-      information = [information]
-    end
+    information = [information] unless information.kind_of? Array
 
-    times = information.map do |timestamp|
+    times = information.map { |timestamp|
       if timestamp['yearto'].empty?
         "#{timestamp['yearfrom']} to Present"
       else
         "#{timestamp['yearfrom']} to #{timestamp['yearto']}"
       end
-    end
-    return times.join ', '
+    }.join ', '
   end
 
   # Generate a String with the friend name and username
@@ -86,7 +83,6 @@ class AlfredfmHelper
     else
       "#{friend_info['realname']} – #{friend_info['name']}"
     end
-    return string_name
   end
 
   # Generate a feedback icon to be passed to alfred
@@ -190,8 +186,8 @@ class AlfredfmHelper
   # @param action [Symbol] action to execute
   # @param arguments [String] arguments to pass to the action (add_tags and remove_tag)
   def track_action(action, arguments)
-    artist = get_itunes_trackinfo(:artist)
     track  = get_itunes_trackinfo(:name)
+    artist = get_itunes_trackinfo(:artist)
     begin
       @lastfm.session = @@session
       @lastfm.track.send(action,
