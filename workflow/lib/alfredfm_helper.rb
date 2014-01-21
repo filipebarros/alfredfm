@@ -78,11 +78,7 @@ class AlfredfmHelper
   # @param friend_info [Array] Array with the last.fm friend information
   # @return [String] formatted name with realname when available and username
   def self.get_friend_name_string(friend_info)
-    string_name = if friend_info['realname'].empty?
-      friend_info['name']
-    else
-      "#{friend_info['realname']} – #{friend_info['name']}"
-    end
+    string_name = friend_info['realname'].empty? ? friend_info['name'] : "#{friend_info['realname']} – #{friend_info['name']}"
   end
 
   # Generate a feedback icon to be passed to alfred
@@ -122,45 +118,47 @@ class AlfredfmHelper
     File.join(@@paths[:volatile_storage_path], "#{name}_feedback")
   end
 
-  # Check if iTunes is running
+  # Check if iTunes/Swinsian is running
   # @return [boolean]
-  def itunes_running?
-    %x{osascript -e 'get running of application id "com.apple.itunes"'}.chomp == 'true'
+  def player_running?
+    %w{com.apple.itunes com.swinsian.swinsian}.each do |player|
+      return player if %x{osascript -e 'get running of application id "#{player}"'}.chomp == 'true'
+    end
   end
 
   # Get currently playing iTunes track information
   # @param trackinfo [String] information wanted (artist, track name, album)
   # @return information about the track
-  def get_itunes_trackinfo(trackinfo)
-    itunes_running? or raise OSXMediaPlayer::NoTrackPlayingError, 'iTunes is not running'
-    itunes_command = [
-      'tell application id "com.apple.itunes"',
+  def get_player_trackinfo(trackinfo)
+    player = player_running? or raise OSXMediaPlayer::NoTrackPlayingError, 'No Media Player Running!'
+    player_command = [
+      "tell application id \"#{player}\"",
       'try',
       "get #{trackinfo.to_s} of current track",
       'end try',
       'end tell'
     ]
-     %x{osascript -e '#{itunes_command.join("' -e '")}'}.chomp.trim or
-       raise OSXMediaPlayer::NoTrackPlayingError, 'No track playing in iTunes'
+    %x{osascript -e '#{player_command.join("' -e '")}'}.chomp.trim or
+      raise OSXMediaPlayer::NoTrackPlayingError, 'No track playing'
   end
 
   # Gets artist name, depending if it was passed or not. If not passed, it will be fetched from iTunes
   # @param artist [Array] artist, each name is a position of the array (ARGV)
   # @return [String] artist name
   def get_artist(artist = nil)
-    Array(artist).join(' ').trim || get_itunes_trackinfo(:artist)
+    Array(artist).join(' ').trim || get_player_trackinfo(:artist)
   end
 
   # Fetches currently playing track
   # @return currently playing track name
   def get_track
-    get_itunes_trackinfo(:name)
+    get_player_trackinfo(:name)
   end
 
   # Fetches album of the currently playing track
   # @return album of the currently playing track
   def get_album
-    get_itunes_trackinfo(:album)
+    get_player_trackinfo(:album)
   end
 
   # Get Last.fm Authentication Token
@@ -186,18 +184,18 @@ class AlfredfmHelper
   # @param action [Symbol] action to execute
   # @param arguments [String] arguments to pass to the action (add_tags and remove_tag)
   def track_action(action, arguments)
-    track  = get_itunes_trackinfo(:name)
-    artist = get_itunes_trackinfo(:artist)
+    track  = get_player_trackinfo(:name)
+    artist = get_player_trackinfo(:artist)
     begin
       @lastfm.session = @@session
       @lastfm.track.send(action,
-        {
-          artist: artist,
-          track: track,
-          tags: (arguments if action.eql?(:add_tags)),
-          tag: (arguments.split(',')[0] if action.eql?(:remove_tag))
-        }.reject { |_, value| value.nil? }
-      )
+      {
+        artist: artist,
+        track: track,
+        tags: (arguments if action.eql?(:add_tags)),
+        tag: (arguments.split(',')[0] if action.eql?(:remove_tag))
+      }.reject { |_, value| value.nil? }
+                        )
       "Successfully #{ACTIONS[action]} #{track} by #{artist}"
     rescue Exception => e
       "Could not #{action.titleize('_')} #{track}: #{e.to_s}."
@@ -206,14 +204,14 @@ class AlfredfmHelper
 
   def get_charts(type)
     charts = @lastfm.library.send(type,
-      user: @@username,
-      limit: 10
-    )
+                                  user: @@username,
+                                  limit: 10
+                                 )
   end
 
   def get_track_information
-    artist = get_itunes_trackinfo(:artist)
-    track  = get_itunes_trackinfo(:name)
+    artist = get_player_trackinfo(:artist)
+    track  = get_player_trackinfo(:name)
     @lastfm.track.get_info(
       artist: artist,
       track: track,
@@ -222,8 +220,8 @@ class AlfredfmHelper
   end
 
   def get_album_information
-    artist = get_itunes_trackinfo(:artist)
-    album  = get_itunes_trackinfo(:album)
+    artist = get_player_trackinfo(:artist)
+    album  = get_player_trackinfo(:album)
     @lastfm.album.get_info(
       artist: artist,
       album: album,
@@ -234,7 +232,7 @@ class AlfredfmHelper
   def get_artist_information(artist = nil)
     artist = get_artist(artist)
     @lastfm.artist.get_info(
-      artist: artist,
+      artist: artist.downcase,
       username: @@username
     )
   end
@@ -273,5 +271,5 @@ class AlfredfmHelper
     @lastfm.user.get_loved_tracks(:user => @@username)
   end
 
-  private :get_itunes_trackinfo
+  private :get_player_trackinfo
 end
