@@ -1,3 +1,4 @@
 workflow/info.yml
 workflow/.bundle
 workflow/bundle/ruby
+.DS_Store
