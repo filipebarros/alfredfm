@@ -28,7 +28,7 @@ Alfred.with_friendly_error do |alfred|
     begin
       recommended_artists = alfredfm.get_recommended_artists
       recommended_artists.each do |recommendation|
-        image = recommendation.get(['image', 1, 'content'])
+        image = recommendation.get(['image', 0, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
         uuid  = recommendation['mbid'].empty? ? AlfredfmHelper.generate_uuid : recommendation['mbid']
 

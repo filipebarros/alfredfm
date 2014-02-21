@@ -17,7 +17,7 @@ Alfred.with_friendly_error do |alfred|
       user_friends = alfredfm.get_all_friends
       user_friends.each do |friend|
         name  = AlfredfmHelper.get_friend_name_string friend
-        image = friend.get(['image', 1, 'content'])
+        image = friend.get(['image', 0, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path, "#{friend['name']}.png")
 
         fb.add_item(

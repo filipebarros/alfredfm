@@ -11,7 +11,7 @@ Alfred.with_friendly_error do |alfred|
 
   user_option_charts = alfredfm.get_charts action
   user_option_charts.each do |option|
-    image = option.get(['image', 1, 'content'])
+    image = option.get(['image', 0, 'content'])
     icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
     uuid  = option['mbid'].empty? ? AlfredfmHelper.generate_uuid : option['mbid']
     title = action.eql?(:get_artists) ? option['name'] : "#{option['name']} by #{option['artist']['name']}"

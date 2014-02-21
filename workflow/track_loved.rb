@@ -28,7 +28,7 @@ Alfred.with_friendly_error do |alfred|
     begin
       loved_tracks = alfredfm.get_loved_tracks
       loved_tracks.each do |track|
-        image = track.get(['image', 1, 'content'])
+        image = track.get(['image', 0, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
         uuid  = track['mbid'].empty? ? AlfredfmHelper.generate_uuid : track['mbid']
         info  = track['artist']['name']

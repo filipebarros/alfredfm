@@ -10,7 +10,7 @@ Alfred.with_friendly_error do |alfred|
   begin
     similar = alfredfm.get_similar_artists(ARGV)
     similar.each do |artist|
-      image   = artist.get(['image', 1, 'content'])
+      image   = artist.get(['image', 0, 'content'])
       icon    = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
       uuid    = artist['mbid'].empty? ? AlfredfmHelper.generate_uuid : artist['mbid']
       matches = (artist['match'].to_f * 100).precision(2)

@@ -16,7 +16,7 @@ Alfred.with_friendly_error do |alfred|
     begin
       recommended_events = alfredfm.get_recommended_events
       recommended_events.each do |event|
-        image = event.get(['image', 1, 'content'])
+        image = event.get(['image', 0, 'content'])
         icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path);
 
         fb.add_item(

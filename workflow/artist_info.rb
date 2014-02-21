@@ -18,7 +18,7 @@ Alfred.with_friendly_error do |alfred|
       AlfredfmHelper.get_timestamp_string(artist_info['bio']['formationlist']['formation']) ||
       'No formation dates known.'
 
-    image = artist_info.get(['image', 1, 'content'])
+    image = artist_info.get(['image', 0, 'content'])
     icon  = image && AlfredfmHelper.generate_feedback_icon(image, :volatile_storage_path)
     uuid  = artist_info['mbid'].empty? ? AlfredfmHelper.generate_uuid : artist_info['mbid']
 
