@@ -4,6 +4,8 @@
 <dict>
 	<key>bundleid</key>
 	<string>com.filipebarros.alfredfm</string>
+	<key>category</key>
+	<string>Internet</string>
 	<key>connections</key>
 	<dict>
 		<key>0BCB1B3D-9DAB-4A62-8B18-5CBEC8838EC7</key>

@@ -118,12 +118,23 @@ class AlfredfmHelper
     File.join(@@paths[:volatile_storage_path], "#{name}_feedback")
   end
 
-  # Check if iTunes/Swinsian is running
+  # Check if iTunes/Swinsian/Spotify is running and playing
   # @return [boolean]
   def player_running?
-    %w{com.apple.itunes com.swinsian.swinsian}.each do |player|
-      return player if %x{osascript -e 'get running of application id "#{player}"'}.chomp == 'true'
+    %w{com.apple.itunes com.swinsian.swinsian com.spotify.client}.each do |player|
+      return player if %x{osascript -e 'get running of application id "#{player}"'}.chomp == 'true' && player_playing?(player).eql?('playing')
     end
+  end
+
+  def player_playing?(player)
+    player_command = [
+      "tell application id \"#{player}\"",
+      'try',
+      'get player state',
+      'end try',
+      'end tell'
+    ]
+    %x{osascript -e '#{player_command.join("' -e '")}'}.chomp
   end
 
   # Get currently playing iTunes track information
